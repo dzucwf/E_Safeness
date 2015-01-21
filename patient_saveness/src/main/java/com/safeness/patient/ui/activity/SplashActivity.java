@@ -1,6 +1,5 @@
 package com.safeness.patient.ui.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.patient.R;
-import com.safeness.patient.ui.activity.util.SystemUiHider;
+import com.safeness.patient.ui.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -17,7 +17,7 @@ import com.safeness.patient.ui.activity.util.SystemUiHider;
  *
  * @see SystemUiHider
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends AppBaseActivity {
 
 
     private ProgressDialog pd;
@@ -27,9 +27,24 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_splash);
+
         mContext = this;
         processThread();
+
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_splash;
+    }
+
+    @Override
+    protected void setupView() {
+
+    }
+
+    @Override
+    protected void initializedData() {
 
     }
 

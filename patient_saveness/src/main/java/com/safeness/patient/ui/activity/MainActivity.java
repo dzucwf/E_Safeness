@@ -1,15 +1,15 @@
 package com.safeness.patient.ui.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.RadioGroup;
 
+import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppBaseActivity {
 
 
 
@@ -28,10 +28,26 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void setupView() {
         getViews();
     }
 
+    @Override
+    protected void initializedData() {
+
+    }
+
+    //初始化下层切换
     private void getViews() {
         mSwitcher = (RadioGroup) findViewById(R.id.navi_switcher);
         mSwitcher.setOnCheckedChangeListener(mCheckedChgLitener);

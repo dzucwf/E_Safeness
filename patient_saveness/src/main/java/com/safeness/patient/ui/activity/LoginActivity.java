@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -25,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.patient.R;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppBaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -60,8 +60,18 @@ public class LoginActivity extends FragmentActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
         mContext = this;
+
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void setupView() {
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -88,6 +98,11 @@ public class LoginActivity extends FragmentActivity implements LoaderManager.Loa
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected void initializedData() {
+
     }
 
     private void populateAutoComplete() {

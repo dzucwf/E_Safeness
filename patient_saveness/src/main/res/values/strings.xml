@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">糖糖</string>
+    <string name="app_name">平安E家</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_splash">欢迎</string>
+    <string name="title_activity_splash">平安E家</string>
 
     <string name="food">饮食</string>
     <string name="drug">用药</string>

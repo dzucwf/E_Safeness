@@ -1,4 +1,4 @@
-package com.safeness.patient.ui.activity.util;
+package com.safeness.patient.ui.util;
 
 import android.app.Activity;
 import android.os.Build;

@@ -4,11 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.safeness.patient.ui.activity.fragment.NaviDoctorFragment;
-import com.safeness.patient.ui.activity.fragment.NaviDrugFragment;
-import com.safeness.patient.ui.activity.fragment.NaviFoodFragment;
-import com.safeness.patient.ui.activity.fragment.NaviGlucoseFragment;
-import com.safeness.patient.ui.activity.fragment.NaviSportsFragment;
+import com.safeness.patient.ui.fragment.NaviDoctorFragment;
+import com.safeness.patient.ui.fragment.NaviDrugFragment;
+import com.safeness.patient.ui.fragment.NaviFoodFragment;
+import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
+import com.safeness.patient.ui.fragment.NaviSportsFragment;
 
 import java.util.ArrayList;
 
