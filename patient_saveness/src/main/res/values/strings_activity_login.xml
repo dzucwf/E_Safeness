@@ -4,7 +4,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">用户名</string>
     <string name="prompt_password">密码</string>
-    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_in">登        陆</string>
     <string name="action_sign_in_short">登陆</string>
 
     <string name="error_invalid_email">邮箱地址格式错误</string>

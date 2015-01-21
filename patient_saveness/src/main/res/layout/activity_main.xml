@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:checkedButton="@+id/navi_switcher_item_food" >
+        android:checkedButton="@+id/navi_switcher_item_food"
+        android:background="@drawable/diabetes_nav_background">
         <RadioButton
             android:id="@+id/navi_switcher_item_food"
             style="@style/radio_btn_style"

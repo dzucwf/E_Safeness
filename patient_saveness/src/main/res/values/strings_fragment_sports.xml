@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fragment_sports_title">运动</string>
+    <string name="fragment_sports_navBtn_hint">注意</string>
+
+    <string name="fragment_sports_content_sportItem">运动项目</string>
+    <string name="fragment_sports_content_calorie">热量(大卡)</string>
+    <string name="fragment_sports_content_sportTime">本日时间(分钟)</string>
+
+    <string name="fragment_sports_content_btn_finish">完成了</string>
+</resources>
