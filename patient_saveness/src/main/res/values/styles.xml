@@ -30,7 +30,7 @@
         <item name="android:paddingTop">15dip</item>
         <item name="android:paddingBottom">15dip</item>
         <item name="android:button">@null</item>
-        <item name="android:background">@drawable/btm_navi_item_bkg</item>
+
         <item name="android:textColor">@color/color_btm_navi_txt</item>
         <item name="android:textSize">18sp</item>
         <item name="android:duplicateParentState">true</item>
