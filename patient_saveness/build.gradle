@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.safeness.patient_saveness"
+        applicationId "com.safeness.patient"
         minSdkVersion 10
         targetSdkVersion 21
         versionCode 1

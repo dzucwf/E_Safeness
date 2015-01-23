@@ -12,5 +12,5 @@
     <string name="sports">运动</string>
     <string name="doctor">询医</string>
 
-
+    <string name="input_glucose">录入血糖</string>
 </resources>
