@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,8 +31,9 @@ import com.safeness.patient.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
+import com.safeness.patient.dao.DaoFactory;
+import com.safeness.patient.dao.IBaseDao;
+import com.safeness.patient.model.User;
 /**
  * A login screen that offers login via email/password.
  */
@@ -62,7 +64,30 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         super.onCreate(savedInstanceState);
 
         mContext = this;
+        //Insert An Object
+        IBaseDao<User> userDao = DaoFactory.createGenericDao(mContext, User.class);
 
+        userDao.insert(new User(1,"AAAA"));
+
+        //Insert Object List
+        List<User> insertUserList = new ArrayList<User>();
+        for(int i = 0; i<10;++i){
+            insertUserList.add(new User(1, "BBB"+i));
+        }
+        userDao.batchInsert(insertUserList);
+
+        //ֻ��һ����¼�Ĳ���
+        List<User> userList = userDao.queryByCondition("username=?", "AAAA");
+
+        //InsertOrUpdate
+        userDao.insertOrUpdate(new User(1, "AAAA"), "username"); //update where user_name='AAAA'
+        userDao.insertOrUpdate(new User(1, "CCCC"), "username"); //insert CCCC
+
+        StringBuilder text = new StringBuilder();
+        for (User user : userList) {
+            text.append(user.getUsername()+";");
+            Log.i("asdf",user.getUsername() + ";");
+        }
     }
 
     @Override
