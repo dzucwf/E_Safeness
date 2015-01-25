@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingTop="@dimen/custom_ad_padding"
+    android:paddingBottom="@dimen/custom_ad_padding"
+    android:gravity="top"
+
+    android:orientation="vertical"
+
+    android:layout_marginLeft="10dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/glucose_time_dialog_tv"
+        android:textSize="@dimen/big_font_bigger"
+        android:text="早餐前"
+
+        android:layout_marginBottom="5dp"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal"
+
+        android:gravity="top"
+        >
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="@dimen/big_font_biggest"
+            android:text="9.2"
+            android:inputType="numberDecimal"
+
+            android:textColor="@color/TextColorBlue" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/big_font_bigger"
+            android:text="@string/mmol"
+
+            />
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bloodsugarinput_comments"
+            android:layout_marginRight="5dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_type_bg"
+            android:hint="@string/memo"
+            android:gravity="center"
+            android:id="@+id/memo_et" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="15dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/quickinput_date"
+            android:layout_marginRight="5dp"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_type_bg"
+            android:text="2015年1月24日15点29"
+            android:gravity="center"
+            android:id="@+id/input_time_et" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:textSize="@dimen/big_font_normal"
+            android:layout_marginRight="5dp"
+            android:id="@+id/save_iput_glucose_btn"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textSize="@dimen/big_font_normal"
+            android:layout_marginRight="5dp"
+            android:onClick="cancel"
+            android:id="@+id/cancel_iput_glucose_btn"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear"
+            android:textSize="@dimen/big_font_normal"
+            android:layout_marginRight="5dp"
+            android:id="@+id/clear_iput_glucose_btn"
+            />
+        </LinearLayout>
+</LinearLayout>
