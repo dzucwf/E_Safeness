@@ -1,11 +1,11 @@
-package com.safeness.patient.dao;
-
-import java.lang.reflect.Field;
-import java.util.List;
+package com.safeness.e_saveness_common.dao;
 
 import android.content.ContentValues;
 
-import com.safeness.patient.dao.Table.Column;
+import com.safeness.e_saveness_common.dao.Table.Column;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * SQL语句的辅助类

@@ -33,6 +33,7 @@ import java.util.List;
 
 import com.safeness.patient.dao.DaoFactory;
 import com.safeness.patient.dao.IBaseDao;
+import com.safeness.patient.model.U_d;
 import com.safeness.patient.model.User;
 /**
  * A login screen that offers login via email/password.
@@ -67,27 +68,31 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         //Insert An Object
         IBaseDao<User> userDao = DaoFactory.createGenericDao(mContext, User.class);
 
-        userDao.insert(new User(1,"AAAA"));
+        try{
+            userDao.insert(new User(1,"AAAA"));
+        }
+        catch (Exception ex){
+            Log.v("E", ex.getMessage());
+        }
+
 
         //Insert Object List
         List<User> insertUserList = new ArrayList<User>();
         for(int i = 0; i<10;++i){
-            insertUserList.add(new User(1, "BBB"+i));
+            insertUserList.add(new User(i+10, "BBB"+i));
         }
         userDao.batchInsert(insertUserList);
 
-        //ֻ��һ����¼�Ĳ���
         List<User> userList = userDao.queryByCondition("username=?", "AAAA");
 
         //InsertOrUpdate
         userDao.insertOrUpdate(new User(1, "AAAA"), "username"); //update where user_name='AAAA'
         userDao.insertOrUpdate(new User(1, "CCCC"), "username"); //insert CCCC
 
-        StringBuilder text = new StringBuilder();
         for (User user : userList) {
-            text.append(user.getUsername()+";");
             Log.i("asdf",user.getUsername() + ";");
         }
+
     }
 
     @Override
