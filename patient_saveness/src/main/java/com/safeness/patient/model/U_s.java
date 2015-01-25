@@ -9,7 +9,7 @@ import java.sql.Date;
 * U_s
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-01-25 05:01:52.
+* @author wuwenyi1213@163.com on 2015-01-25 16:01:20.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -57,11 +57,11 @@ public void setCalorie(double calorie) {
     this.calorie = calorie;
 }
 @Column(name="finishedDate",type=Column.TYPE_TIMESTAMP,isNull = false) 
- private Date finishedDate;
-public Date getFinishedDate() {
+ private long finishedDate;
+public long getFinishedDate() {
     return finishedDate;
 }
-public void setFinishedDate(Date finishedDate) {
+public void setFinishedDate(long finishedDate) {
     this.finishedDate = finishedDate;
 }
 @Column(name="life_status",type=Column.TYPE_INTEGER,isNull = false,defaultValue = "1") 
@@ -73,19 +73,19 @@ public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
 @Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date create_datetime;
-public Date getCreate_datetime() {
+ private long create_datetime;
+public long getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Date create_datetime) {
+public void setCreate_datetime(long create_datetime) {
     this.create_datetime = create_datetime;
 }
 @Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date update_datetime;
-public Date getUpdate_datetime() {
+ private long update_datetime;
+public long getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Date update_datetime) {
+public void setUpdate_datetime(long update_datetime) {
     this.update_datetime = update_datetime;
 }
 
@@ -103,7 +103,7 @@ public void setUpdate_datetime(Date update_datetime) {
     *
     *  @return 对象
     */
-    public U_s(Integer u_sid,Integer s_id,double count,double calorie,Date finishedDate) {
+    public U_s(Integer u_sid,Integer s_id,double count,double calorie,long finishedDate) {
        this.u_sid = u_sid;
        this.s_id = s_id;
        this.count = count;

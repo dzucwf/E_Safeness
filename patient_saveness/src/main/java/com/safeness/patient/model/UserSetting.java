@@ -9,7 +9,7 @@ import java.sql.Date;
 * UserSetting
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-01-25 05:01:01.
+* @author wuwenyi1213@163.com on 2015-01-25 16:01:20.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -57,19 +57,19 @@ public void setFunnyFeature(boolean funnyFeature) {
     this.funnyFeature = funnyFeature;
 }
 @Column(name="sleepTimeBg",type=Column.TYPE_TIMESTAMP) 
- private Date sleepTimeBg;
-public Date getSleepTimeBg() {
+ private long sleepTimeBg;
+public long getSleepTimeBg() {
     return sleepTimeBg;
 }
-public void setSleepTimeBg(Date sleepTimeBg) {
+public void setSleepTimeBg(long sleepTimeBg) {
     this.sleepTimeBg = sleepTimeBg;
 }
 @Column(name="sleepTimeEd",type=Column.TYPE_TIMESTAMP) 
- private Date sleepTimeEd;
-public Date getSleepTimeEd() {
+ private long sleepTimeEd;
+public long getSleepTimeEd() {
     return sleepTimeEd;
 }
-public void setSleepTimeEd(Date sleepTimeEd) {
+public void setSleepTimeEd(long sleepTimeEd) {
     this.sleepTimeEd = sleepTimeEd;
 }
 @Column(name="skin",type=Column.TYPE_STRING,defaultValue = "('Orange')") 
@@ -89,19 +89,19 @@ public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
 @Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date create_datetime;
-public Date getCreate_datetime() {
+ private long create_datetime;
+public long getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Date create_datetime) {
+public void setCreate_datetime(long create_datetime) {
     this.create_datetime = create_datetime;
 }
 @Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date update_datetime;
-public Date getUpdate_datetime() {
+ private long update_datetime;
+public long getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Date update_datetime) {
+public void setUpdate_datetime(long update_datetime) {
     this.update_datetime = update_datetime;
 }
 

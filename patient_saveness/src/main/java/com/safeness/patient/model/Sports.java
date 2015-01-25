@@ -9,7 +9,7 @@ import java.sql.Date;
 * Sports
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-01-25 05:01:37.
+* @author wuwenyi1213@163.com on 2015-01-25 16:01:20.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -105,19 +105,19 @@ public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
 @Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date create_datetime;
-public Date getCreate_datetime() {
+ private long create_datetime;
+public long getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Date create_datetime) {
+public void setCreate_datetime(long create_datetime) {
     this.create_datetime = create_datetime;
 }
 @Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date update_datetime;
-public Date getUpdate_datetime() {
+ private long update_datetime;
+public long getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Date update_datetime) {
+public void setUpdate_datetime(long update_datetime) {
     this.update_datetime = update_datetime;
 }
 

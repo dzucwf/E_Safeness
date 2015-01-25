@@ -9,7 +9,7 @@ import java.sql.Date;
 * U_d
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-01-25 05:01:42.
+* @author wuwenyi1213@163.com on 2015-01-25 16:01:20.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -57,11 +57,11 @@ public void setHintDay(String hintDay) {
     this.hintDay = hintDay;
 }
 @Column(name="hintTime",type=Column.TYPE_TIMESTAMP,isNull = false) 
- private Date hintTime;
-public Date getHintTime() {
+ private long hintTime;
+public long getHintTime() {
     return hintTime;
 }
-public void setHintTime(Date hintTime) {
+public void setHintTime(long hintTime) {
     this.hintTime = hintTime;
 }
 @Column(name="desc",type=Column.TYPE_STRING) 
@@ -81,19 +81,19 @@ public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
 @Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date create_datetime;
-public Date getCreate_datetime() {
+ private long create_datetime;
+public long getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Date create_datetime) {
+public void setCreate_datetime(long create_datetime) {
     this.create_datetime = create_datetime;
 }
 @Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
- private Date update_datetime;
-public Date getUpdate_datetime() {
+ private long update_datetime;
+public long getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Date update_datetime) {
+public void setUpdate_datetime(long update_datetime) {
     this.update_datetime = update_datetime;
 }
 
@@ -111,7 +111,7 @@ public void setUpdate_datetime(Date update_datetime) {
     *
     *  @return 对象
     */
-    public U_d(Integer u_sid,Integer d_id,double count,String hintDay,Date hintTime) {
+    public U_d(Integer u_sid,Integer d_id,double count,String hintDay,long hintTime) {
        this.u_sid = u_sid;
        this.d_id = d_id;
        this.count = count;
