@@ -9,7 +9,7 @@ import com.safeness.patient.R;
 public class NaviFoodFragment extends AppBaseFragment {
 
 
-
+    //
     @Override
     protected int getLayoutId() {
         return R.layout.navi_hp_food;

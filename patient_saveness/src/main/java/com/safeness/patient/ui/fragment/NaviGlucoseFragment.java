@@ -7,13 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.safeness.e_saveness_common.base.AppBaseFragment;
+import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.ui.activity.GlucoseInputActivity;
 import com.safeness.patient.ui.view.GlucoseInputView;
@@ -30,15 +30,13 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     private LinearLayout mImageIndex;
     private ViewPager mViewPager;
 
-    ImageButton after_ibt;
-    ImageButton before_ibt;
+
 
     TextView dateTextViw;
     TextView glucose_time_tv;
 
     private int selectTime = 0;
 
-    private int server_id;
 
 
     private void getViews(View view) {
@@ -46,9 +44,11 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
         dateTextViw = (TextView)getActivity().findViewById(R.id.date_glucose_tv);
         glucose_time_tv = (TextView)getActivity().findViewById(R.id.glucose_time_tv);
         glucose_time_tv.setText(getString(R.string.breakfast));
-        Calendar c = Calendar.getInstance();
+      final   Calendar c = Calendar.getInstance();
 
         String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"+c.get(Calendar.DATE)+"日";
+        //TODO:加入日历的选择
+        final int  yearKey = Integer.parseInt( c.get(Calendar.YEAR)+""+c.get(Calendar.MONTH)+1+""+c.get(Calendar.DATE)+""+selectTime);
         dateTextViw.setText(strNow);
 
         mImageIndex = (LinearLayout) view.findViewById(R.id.imageNavi);
@@ -64,7 +64,17 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
                 @Override
                 public void onClickButton(String s) {
                     Intent it  = new Intent(getActivity(), GlucoseInputActivity.class);
-
+                    int yearKey_final = yearKey;
+                    if(s.equals("before")){
+                        yearKey_final =  Integer.parseInt(yearKey_final+""+0);
+                        it.putExtra("afterOrBefore",0);
+                    }else{
+                        yearKey_final =  Integer.parseInt(yearKey_final+""+1);
+                        it.putExtra("afterOrBefore",1);
+                    }
+                    it.putExtra("server_id",yearKey_final);
+                    it.putExtra("takeTag",selectTime);
+                    it.putExtra("inputTime", DateTimeUtil.getSelectedDate(c,"yyyy-Mm-dd HH:mm:ss"));
                     getActivity().startActivity(it);
 
                 }

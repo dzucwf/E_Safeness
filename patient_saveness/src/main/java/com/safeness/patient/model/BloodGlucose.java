@@ -30,8 +30,19 @@ public class BloodGlucose {
     private String create_datetime;
     @Column(name = "update_datetime", type = Column.TYPE_TIMESTAMP, defaultValue = "CURRENT_TIMESTAMP")
     private String update_datetime;
+    @Column(name = "memo", type = Column.TYPE_STRING)
+    private String memo;
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 
     public BloodGlucose() {
+
     }
 
     /**
