@@ -38,7 +38,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
     private int selectTime = 0;
 
-
+    private int server_id;
 
 
     private void getViews(View view) {
