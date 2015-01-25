@@ -33,6 +33,13 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" >
 
         </activity>
+
+        <activity android:name=".ui.activity.GlucoseInputActivity"
+
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+
+        </activity>
+
     </application>
 
 </manifest>

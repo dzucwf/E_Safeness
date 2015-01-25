@@ -11,6 +11,14 @@
     <string name="glucose">血糖</string>
     <string name="sports">运动</string>
     <string name="doctor">询医</string>
-
     <string name="input_glucose">录入血糖</string>
+    <string name="breakfast">早餐</string>
+    <string name="supper">晚餐</string>
+    <string name="lunch">中餐</string>
+    <string name="other">其它</string>
+    <string name="mmol">mmol</string>
+    <string name="memo">备注</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="clear">清空</string>
 </resources>

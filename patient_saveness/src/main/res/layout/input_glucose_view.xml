@@ -18,7 +18,6 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-
             android:orientation="vertical"
 
             >
@@ -43,15 +42,23 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_circle"
+                    android:background="@null"
                     android:gravity="center">
-
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/before_ibt"
+                        android:background="@drawable/shape_circle"
+                        android:tag="before"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/input_glucose"
                         android:textSize="@dimen/big_font_normal"
+                        android:layout_centerInParent="true"
                         />
+
 
                 </RelativeLayout>
             </RelativeLayout>
@@ -84,13 +91,21 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_circle"
+
                     android:gravity="center">
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_circle"
+                        android:id="@+id/after_ibt"
+                        android:tag="after"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/input_glucose"
                         android:textSize="@dimen/big_font_normal"
+                        android:layout_centerInParent="true"
                         />
 
 
