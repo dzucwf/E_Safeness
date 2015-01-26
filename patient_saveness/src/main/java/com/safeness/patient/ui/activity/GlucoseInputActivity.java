@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
-import com.safeness.patient.dao.DaoFactory;
-import com.safeness.patient.dao.IBaseDao;
+import com.safeness.e_saveness_common.dao.DaoFactory;
+import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.patient.model.BloodGlucose;
 
 import java.text.ParseException;
@@ -45,7 +45,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
     boolean isInsert = true;
 
-    private int server_id;
+    private long server_id;
 
     private int afterOrBefore;
 
@@ -68,13 +68,13 @@ public class GlucoseInputActivity extends AppBaseActivity {
         memo_et = (EditText)this.findViewById(R.id.memo_et);
         input_time_et = (TextView)this.findViewById(R.id.input_time_et);
         input_time_et.setOnClickListener(TimeListener);
-        server_id = getIntent().getIntExtra("server_id",0);
+        server_id = getIntent().getLongExtra("server_id",0);
         afterOrBefore = getIntent().getIntExtra("afterOrBefore",0);
         takeTag = getIntent().getIntExtra("takeTag",0);;
         inputTime = getIntent().getStringExtra("inputTime");
 
         try {
-            calendarInput = DateTimeUtil.getSelectCalendar(inputTime,"yyyy-MM-dd HH:mm:ss");
+            calendarInput = DateTimeUtil.getSelectCalendar(inputTime,DateTimeUtil.NORMAL_PATTERN);
             hour = calendarInput.get(Calendar.HOUR);
             minute = calendarInput.get(Calendar.MINUTE);
         } catch (ParseException e) {
@@ -119,8 +119,11 @@ public class GlucoseInputActivity extends AppBaseActivity {
                     }
                     calendarInput.set(Calendar.HOUR,hourOfDay);
                     calendarInput.set(Calendar.MINUTE,minute);
+                    input_time_et.setText(DateTimeUtil.getSelectedDate(calendarInput,DateTimeUtil.NORMAL_PATTERN));
                 }
             },hour,minute,true);
+
+            timePickerDialog.show();
         }
     };
     @Override
@@ -132,6 +135,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
             BloodGlucose bloodGlucose =  daoFactory.queryUniqueRecord("server_id=?",server_id+"");
             if(bloodGlucose == null){
                 isInsert = true;
+                input_time_et.setText(DateTimeUtil.getSelectedDate(calendarInput,DateTimeUtil.NORMAL_PATTERN));
             }else{
                 isInsert = false;
 
@@ -155,7 +159,14 @@ public class GlucoseInputActivity extends AppBaseActivity {
         if(!TextUtils.isEmpty(bloodGlucose.getMemo())){
             memo_et.setText(bloodGlucose.getMemo());
         }
-        input_time_et.setText(inputTime);
+        try {
+            calendarInput = DateTimeUtil.getSelectCalendar(bloodGlucose.getTakeDate(), DateTimeUtil.NORMAL_PATTERN);
+            hour = calendarInput.get(Calendar.HOUR);
+            minute = calendarInput.get(Calendar.MINUTE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        input_time_et.setText(bloodGlucose.getTakeDate());
     }
 
     /**
@@ -198,6 +209,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
     private  void clearValue(){
 
         glucose_value_et.setText("");
+        memo_et.setText("");
     }
 
     private  int setTextColorByValue(double value){
@@ -229,7 +241,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         if(calendarInput ==null){
             calendarInput = Calendar.getInstance();
         }
-        String updateOrInsertTime =  DateTimeUtil.getSelectedDate(calendarInput,"yyyy-MM-dd HH:mm:ss");
+        String updateOrInsertTime =  DateTimeUtil.getSelectedDate(calendarInput,DateTimeUtil.NORMAL_PATTERN);
         BloodGlucose bloodGlucose = new BloodGlucose(server_id,value,takeTag,updateOrInsertTime);
         daoFactory.insertOrUpdate(bloodGlucose);
         finish();

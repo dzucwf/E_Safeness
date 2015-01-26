@@ -13,9 +13,10 @@ public class DateTimeUtil {
 
 
 
+    public static final  String NORMAL_PATTERN ="yyyy-MM-dd HH:mm:ss";
     public static String getNowDate(){
         //SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
-        SimpleDateFormat formatter   =   new   SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter   =   new   SimpleDateFormat(NORMAL_PATTERN);
         Date   curDate   =   new   Date(System.currentTimeMillis());//获取当前时间
         String   str   =   formatter.format(curDate);
         return str;

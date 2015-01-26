@@ -26,15 +26,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
+import com.safeness.e_saveness_common.dao.DaoFactory;
+import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.patient.R;
+import com.safeness.patient.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.safeness.patient.dao.DaoFactory;
-import com.safeness.patient.dao.IBaseDao;
-import com.safeness.patient.model.U_d;
-import com.safeness.patient.model.User;
 /**
  * A login screen that offers login via email/password.
  */
@@ -245,7 +244,6 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         }
     }
 
-
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return null;
@@ -260,7 +258,6 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
 
     }
-
 
 
     private interface ProfileQuery {

@@ -17,7 +17,7 @@ public class BloodGlucose {
     @Column(name = "_id", type = Column.TYPE_INTEGER, isPrimaryKey = true, isUnique = true)
     private Integer _id;
     @Column(name = "server_id", type = Column.TYPE_INTEGER, isNull = false, isUnique = true)
-    private Integer server_id;
+    private Long server_id;
     @Column(name = "bloodGlucose", type = Column.TYPE_DOUBLE, isNull = false)
     private double bloodGlucose;
     @Column(name = "takeTag", type = Column.TYPE_INTEGER, isNull = false)
@@ -54,7 +54,7 @@ public class BloodGlucose {
      * @param takeDate     参数解释
      * @return 对象
      */
-    public BloodGlucose(Integer server_id, double bloodGlucose, Integer takeTag, String takeDate) {
+    public BloodGlucose(Long server_id, double bloodGlucose, Integer takeTag, String takeDate) {
         this.server_id = server_id;
         this.bloodGlucose = bloodGlucose;
         this.takeTag = takeTag;
@@ -69,11 +69,11 @@ public class BloodGlucose {
         this._id = _id;
     }
 
-    public Integer getServer_id() {
+    public Long getServer_id() {
         return server_id;
     }
 
-    public void setServer_id(Integer server_id) {
+    public void setServer_id(Long server_id) {
         this.server_id = server_id;
     }
 

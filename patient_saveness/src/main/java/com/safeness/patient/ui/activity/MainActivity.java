@@ -1,15 +1,18 @@
 package com.safeness.patient.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
+import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
 
 
 public class MainActivity extends AppBaseActivity {
@@ -26,11 +29,16 @@ public class MainActivity extends AppBaseActivity {
     private final int CB_INDEX_SPORT = 3;
     private final int CB_INDEX_DOCTOR = 4;
 
+    private  final  int OPEN_CALENDAR_RQ=11;
+    private  final int SET_DATE_RESULT = 12;
+
     private ImageButton food_imagebtn;
     private ImageButton drugbtn;
     private ImageButton glucosebtn;
     private ImageButton sportbtn;
     private ImageButton doctorbtn;
+
+    BtmNaviSwitchAdapter switchAdapter;
     //上次选中的
     int lastSelectIndex = 0;
 
@@ -59,21 +67,47 @@ public class MainActivity extends AppBaseActivity {
 
     //初始化下层切换
     private void getViews() {
+        switchAdapter = new BtmNaviSwitchAdapter(getSupportFragmentManager());
         mSwitcher = (LinearLayout) findViewById(R.id.navi_switcher);
-
         mSearchVp = (ViewPager) findViewById(R.id.navi_view_pager);
-        mSearchVp.setAdapter(new BtmNaviSwitchAdapter(getSupportFragmentManager()));
+        mSearchVp.setAdapter(switchAdapter);
         mSearchVp.setOnPageChangeListener(mPageChgListener);
         food_imagebtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_food);
         drugbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_drug);
         glucosebtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_glucose);
         sportbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_sports);
         doctorbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_doctor);
+
     }
 
-   /*
-   * 选中导航
-   * */
+    /**
+     * 打开日历选择
+     * @param view
+     */
+    public void openCalendar(View view){
+        Toast.makeText(this,"打开日历",Toast.LENGTH_LONG).show();
+        Intent it = new Intent(this, CalendarContainnerActivity.class);
+        startActivityForResult(it,OPEN_CALENDAR_RQ);
+        overridePendingTransition(R.anim.in_from_down, R.anim.out_to_down);
+    }
+
+    /*
+    * 从日历控件返回后设置选择的日期
+    * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == OPEN_CALENDAR_RQ && resultCode == SET_DATE_RESULT){
+            String selectedDate = data.getStringExtra("selectedDate");
+            NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
+            glucoseFragment.setSelectedDate(selectedDate);
+
+        }
+    }
+
+    /*
+       * 选中导航
+       * */
     public void onNaviCheck(View view){
         int cur = CB_INDEX_FOOD;
 

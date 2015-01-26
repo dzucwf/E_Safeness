@@ -18,6 +18,7 @@ import com.safeness.patient.R;
 import com.safeness.patient.ui.activity.GlucoseInputActivity;
 import com.safeness.patient.ui.view.GlucoseInputView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -38,19 +39,17 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     private int selectTime = 0;
 
 
+    Calendar selected_calendar;
+
+
 
     private void getViews(View view) {
 
         dateTextViw = (TextView)getActivity().findViewById(R.id.date_glucose_tv);
         glucose_time_tv = (TextView)getActivity().findViewById(R.id.glucose_time_tv);
         glucose_time_tv.setText(getString(R.string.breakfast));
-      final   Calendar c = Calendar.getInstance();
-
-        String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"+c.get(Calendar.DATE)+"日";
-        //TODO:加入日历的选择
-        final int  yearKey = Integer.parseInt( c.get(Calendar.YEAR)+""+c.get(Calendar.MONTH)+1+""+c.get(Calendar.DATE)+""+selectTime);
-        dateTextViw.setText(strNow);
-
+        Calendar c = Calendar.getInstance();
+        setCalText(c);
         mImageIndex = (LinearLayout) view.findViewById(R.id.imageNavi);
         mImageIndex.removeAllViews();
         mViewPager = (ViewPager) view.findViewById(R.id.glucose_view_pager);
@@ -63,18 +62,25 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             glucoseinputview.setCallBack(new GlucoseInputView.ICallBack() {
                 @Override
                 public void onClickButton(String s) {
+                    if(selected_calendar==null){
+
+                        selected_calendar = Calendar.getInstance();
+                    }
+
+                    long  yearKey = Integer.parseInt(selected_calendar.get(Calendar.YEAR)+""+selected_calendar.get(Calendar.MONTH)+1+""+
+                            selected_calendar.get(Calendar.DATE)+""+selectTime);
                     Intent it  = new Intent(getActivity(), GlucoseInputActivity.class);
-                    int yearKey_final = yearKey;
+                    long yearKey_final = yearKey;
                     if(s.equals("before")){
-                        yearKey_final =  Integer.parseInt(yearKey_final+""+0);
+                        yearKey_final =  Long.parseLong(yearKey_final+""+0);
                         it.putExtra("afterOrBefore",0);
                     }else{
-                        yearKey_final =  Integer.parseInt(yearKey_final+""+1);
+                        yearKey_final =  Long.parseLong(yearKey_final+""+1);
                         it.putExtra("afterOrBefore",1);
                     }
                     it.putExtra("server_id",yearKey_final);
                     it.putExtra("takeTag",selectTime);
-                    it.putExtra("inputTime", DateTimeUtil.getSelectedDate(c,"yyyy-Mm-dd HH:mm:ss"));
+                    it.putExtra("inputTime", DateTimeUtil.getSelectedDate(selected_calendar,DateTimeUtil.NORMAL_PATTERN));
                     getActivity().startActivity(it);
 
                 }
@@ -91,6 +97,33 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
         }
         mViewPager.setAdapter(new ViewPagerAdapter(list));
         mViewPager.setOnPageChangeListener(this);
+
+    }
+
+    /**
+     * 从日历控件返回后，改变当前的日期
+     * @param date
+     */
+    public void setSelectedDate(String date){
+        try {
+            selected_calendar = DateTimeUtil.getSelectCalendar(date, DateTimeUtil.NORMAL_PATTERN);
+            setCalText(selected_calendar);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置选择的日期
+     * @param c
+     */
+    private void setCalText(Calendar c){
+
+        String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"
+                +c.get(Calendar.DATE)+"日";
+        dateTextViw.setText(strNow);
+
 
     }
 
@@ -190,6 +223,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             ((ViewPager)container).removeView(mList.get(position));
         }
     }
+
 
 
     @Override
