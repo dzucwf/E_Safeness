@@ -38,6 +38,7 @@
             android:background="@null"
             android:onClick="onNaviCheck"
             android:src="@drawable/diabetes_nav_glucose_off"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
         <ImageButton
             android:layout_width="0dp"
@@ -56,50 +57,6 @@
             android:src="@drawable/navigation_refine_06"
             android:layout_height="wrap_content" />
         </LinearLayout>
-    <!--
-    <RadioGroup
-        android:id="@+id/navi_switcher"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical|left"
-        android:checkedButton="@+id/navi_switcher_item_food"
-        android:background="@drawable/diabetes_nav_background">
-        <RadioButton
-            android:id="@+id/navi_switcher_item_food"
-
-            style="@style/radio_btn_style"
-            android:background="@drawable/diabetes_selected"
-
-            android:checked="false"
-          />
-        <RadioButton
-            android:id="@+id/navi_switcher_item_drug"
-            style="@style/radio_btn_style"
-            android:drawableTop="@drawable/diabetes_selected"
-
-           />
-        <RadioButton
-            android:id="@+id/navi_switcher_item_glucose"
-            style="@style/radio_btn_style"
-            android:drawableTop="@drawable/diabetes_nav_glucose_on"
-            android:layout_marginBottom="3dp"
-            android:checked="false" />
-        <RadioButton
-            android:id="@+id/navi_switcher_item_sports"
-            style="@style/radio_btn_style"
-            android:drawableTop="@drawable/diabetes_selected"
-
-            />
-        <RadioButton
-            android:id="@+id/navi_switcher_item_doctor"
-            style="@style/radio_btn_style"
-            android:drawableTop="@drawable/diabetes_selected"
-
-          />
-    </RadioGroup>
--->
 
 
     <android.support.v4.view.ViewPager
@@ -109,4 +66,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="0dip" />
+
+
 </RelativeLayout>

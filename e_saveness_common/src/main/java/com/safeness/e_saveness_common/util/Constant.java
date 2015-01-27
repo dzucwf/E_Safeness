@@ -1,10 +1,6 @@
 package com.safeness.e_saveness_common.util;
 
-/**
- * 系统常量配置类
- * @author laixuezhu
- *
- */
+
 /**
  * @author EISAVISA
  *
@@ -41,14 +37,9 @@ public class Constant {
 	private static final String  SUFFIX = "/rcsServer/";
 	
 	
-	//公司服务器
-	//public static  String SERVER = "123.232.43.140";
-	//河北服务器
-	//public static  String SERVER = "110.249.218.245";
-	//阿里云服务器
-	public static  String SERVER = "114.215.148.214";
+
 	//临时测试服务器
-	//public static  String SERVER = "10.18.11.199";
+	public static  String SERVER = "10.18.11.199";
 
 	
 	

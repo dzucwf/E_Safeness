@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/caldroid" />
             <option value="$PROJECT_DIR$/doctor_saveness" />
             <option value="$PROJECT_DIR$/e_saveness_common" />
             <option value="$PROJECT_DIR$/patient_saveness" />

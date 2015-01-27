@@ -7,17 +7,18 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.safeness.e_saveness_common.base.AppBaseFragment;
+import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.ui.activity.GlucoseInputActivity;
 import com.safeness.patient.ui.view.GlucoseInputView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -30,14 +31,15 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     private LinearLayout mImageIndex;
     private ViewPager mViewPager;
 
-    ImageButton after_ibt;
-    ImageButton before_ibt;
+
 
     TextView dateTextViw;
     TextView glucose_time_tv;
 
     private int selectTime = 0;
 
+
+    Calendar selected_calendar;
 
 
 
@@ -47,10 +49,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
         glucose_time_tv = (TextView)getActivity().findViewById(R.id.glucose_time_tv);
         glucose_time_tv.setText(getString(R.string.breakfast));
         Calendar c = Calendar.getInstance();
-
-        String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"+c.get(Calendar.DATE)+"日";
-        dateTextViw.setText(strNow);
-
+        setCalText(c);
         mImageIndex = (LinearLayout) view.findViewById(R.id.imageNavi);
         mImageIndex.removeAllViews();
         mViewPager = (ViewPager) view.findViewById(R.id.glucose_view_pager);
@@ -63,8 +62,25 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             glucoseinputview.setCallBack(new GlucoseInputView.ICallBack() {
                 @Override
                 public void onClickButton(String s) {
-                    Intent it  = new Intent(getActivity(), GlucoseInputActivity.class);
+                    if(selected_calendar==null){
 
+                        selected_calendar = Calendar.getInstance();
+                    }
+
+                    long  yearKey = Integer.parseInt(selected_calendar.get(Calendar.YEAR)+""+selected_calendar.get(Calendar.MONTH)+1+""+
+                            selected_calendar.get(Calendar.DATE)+""+selectTime);
+                    Intent it  = new Intent(getActivity(), GlucoseInputActivity.class);
+                    long yearKey_final = yearKey;
+                    if(s.equals("before")){
+                        yearKey_final =  Long.parseLong(yearKey_final+""+0);
+                        it.putExtra("afterOrBefore",0);
+                    }else{
+                        yearKey_final =  Long.parseLong(yearKey_final+""+1);
+                        it.putExtra("afterOrBefore",1);
+                    }
+                    it.putExtra("server_id",yearKey_final);
+                    it.putExtra("takeTag",selectTime);
+                    it.putExtra("inputTime", DateTimeUtil.getSelectedDate(selected_calendar,DateTimeUtil.NORMAL_PATTERN));
                     getActivity().startActivity(it);
 
                 }
@@ -81,6 +97,33 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
         }
         mViewPager.setAdapter(new ViewPagerAdapter(list));
         mViewPager.setOnPageChangeListener(this);
+
+    }
+
+    /**
+     * 从日历控件返回后，改变当前的日期
+     * @param date
+     */
+    public void setSelectedDate(String date){
+        try {
+            selected_calendar = DateTimeUtil.getSelectCalendar(date, DateTimeUtil.NORMAL_PATTERN);
+            setCalText(selected_calendar);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置选择的日期
+     * @param c
+     */
+    private void setCalText(Calendar c){
+
+        String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"
+                +c.get(Calendar.DATE)+"日";
+        dateTextViw.setText(strNow);
+
 
     }
 
@@ -180,6 +223,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             ((ViewPager)container).removeView(mList.get(position));
         }
     }
+
 
 
     @Override

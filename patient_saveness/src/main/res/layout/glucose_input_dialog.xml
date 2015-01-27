@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/glucose_time_dialog_tv"
         android:textSize="@dimen/big_font_bigger"
-        android:text="早餐前"
 
         android:layout_marginBottom="5dp"
 
@@ -32,10 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:textSize="@dimen/big_font_biggest"
-            android:text="9.2"
             android:inputType="numberDecimal"
 
-            android:textColor="@color/TextColorBlue" />
+            android:textColor="@color/TextColorBlue"
+            android:id="@+id/glucose_value_et"
+            android:linksClickable="true" />
 
         <TextView
             android:layout_width="0dp"
@@ -89,7 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/input_type_bg"
-            android:text="2015年1月24日15点29"
             android:gravity="center"
             android:id="@+id/input_time_et" />
     </LinearLayout>
@@ -107,7 +106,7 @@
             android:textSize="@dimen/big_font_normal"
             android:layout_marginRight="5dp"
             android:id="@+id/save_iput_glucose_btn"
-            />
+            android:onClick="save" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,6 +123,6 @@
             android:textSize="@dimen/big_font_normal"
             android:layout_marginRight="5dp"
             android:id="@+id/clear_iput_glucose_btn"
-            />
+            android:onClick="clear" />
         </LinearLayout>
 </LinearLayout>

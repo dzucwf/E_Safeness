@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/E_Safeness.iml" filepath="$PROJECT_DIR$/E_Safeness.iml" />
+      <module fileurl="file://$PROJECT_DIR$/caldroid/caldroid.iml" filepath="$PROJECT_DIR$/caldroid/caldroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/doctor_saveness/doctor_saveness.iml" filepath="$PROJECT_DIR$/doctor_saveness/doctor_saveness.iml" />
       <module fileurl="file://$PROJECT_DIR$/e_saveness_common/e_saveness_common.iml" filepath="$PROJECT_DIR$/e_saveness_common/e_saveness_common.iml" />
       <module fileurl="file://$PROJECT_DIR$/patient_saveness/patient_saveness.iml" filepath="$PROJECT_DIR$/patient_saveness/patient_saveness.iml" />

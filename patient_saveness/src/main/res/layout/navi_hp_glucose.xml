@@ -24,7 +24,7 @@
             android:background="@null"
             android:src="@drawable/cal_btn"
             android:id="@+id/cal_btn"
-            ></ImageButton>
+            android:onClick="openCalendar"></ImageButton>
 
             <TextView
                 android:layout_width="wrap_content"
