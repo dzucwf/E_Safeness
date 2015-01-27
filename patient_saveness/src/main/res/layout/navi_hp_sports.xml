@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:text="完成了"
         android:id="@+id/button2"
-        android:layout_marginBottom="53dp"
         android:background="@drawable/save_bg"
         android:textColor="#ffffffff"
         android:textSize="20dp"
@@ -119,6 +118,14 @@
         android:layout_centerHorizontal="true"
         android:textColor="#ff0da6ff"
         android:textSize="50dp" />
+
+    <WebView
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
+        android:id="@+id/webView"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
