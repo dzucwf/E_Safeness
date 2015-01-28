@@ -3,16 +3,22 @@ package com.safeness.e_saveness_common.dao;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
+import android.database.CursorWindow;
+import android.database.CursorWrapper;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 
+import com.safeness.e_saveness_common.util.AndroidVersion;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 数据库实用类
- *
  */
 public class DBUtils {
     private SQLiteDatabase mSQLiteDatabase;
@@ -31,7 +37,7 @@ public class DBUtils {
     /**
      * 更新操作
      *
-     * @param table  表名
+     * @param table       表名
      * @param values
      * @param whereClause
      * @param whereArgs
@@ -52,7 +58,7 @@ public class DBUtils {
     /**
      * 插入操作
      *
-     * @param table 表名
+     * @param table  表名
      * @param values
      * @return
      */
@@ -73,10 +79,10 @@ public class DBUtils {
      * @param values
      * @return
      */
-    public boolean insertOrReplace(String table, ContentValues values){
+    public boolean insertOrReplace(String table, ContentValues values) {
         try {
             openDB();
-            return mSQLiteDatabase.replaceOrThrow(table, null, values)!= -1;
+            return mSQLiteDatabase.replaceOrThrow(table, null, values) != -1;
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -85,11 +91,12 @@ public class DBUtils {
 
     /**
      * 批量插入操作
+     *
      * @param table
      * @param listVal
      * @return
      */
-    public boolean batchInsert(String table,List<ContentValues> listVal){
+    public boolean batchInsert(String table, List<ContentValues> listVal) {
         try {
             openDB();
             for (ContentValues contentValues : listVal) {
@@ -101,6 +108,7 @@ public class DBUtils {
             return false;
         }
     }
+
     /**
      * 删除操作
      *
@@ -123,8 +131,7 @@ public class DBUtils {
      * 查询结果集
      *
      * @param table
-     * @param columns
-     *            当为null的时候查出所有列
+     * @param columns       当为null的时候查出所有列
      * @param selection
      * @param selectionArgs
      * @return 出现异常的话返回null
@@ -137,14 +144,24 @@ public class DBUtils {
             openDB();
             cursor = mSQLiteDatabase.query(table, columns, selection,
                     selectionArgs, groupBy, having, orderBy);
-            List<QueryResult>  resultList = new ArrayList<QueryResult>();
-            parseCursorToResult(cursor, resultList);
+            List<QueryResult> resultList = new ArrayList<QueryResult>();
+            if(AndroidVersion.getSDKVersionNumber()>= Build.VERSION_CODES.HONEYCOMB) {
+                parseCursorToResult(cursor, resultList);
+            }else {
+                try {
+                    parseCursorToResultforLowAndroid(cursor,resultList);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
             return resultList;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         } finally {
-            if(cursor!=null)
+            if (cursor != null)
                 cursor.close();
         }
     }
@@ -153,8 +170,7 @@ public class DBUtils {
      * 查询结果集
      *
      * @param table
-     * @param columns
-     *            当为null的时候查出所有列
+     * @param columns       当为null的时候查出所有列
      * @param selection
      * @param selectionArgs
      * @return
@@ -189,33 +205,45 @@ public class DBUtils {
      * @param bindArgs
      * @return
      */
-    public List<QueryResult> execQuerySQL(String sql, String... bindArgs){
+    public List<QueryResult> execQuerySQL(String sql, String... bindArgs) {
         Cursor cursor = null;
-        try{
-            List<QueryResult>  resultList = new ArrayList<QueryResult>();
+        try {
+            List<QueryResult> resultList = new ArrayList<QueryResult>();
             openDB();
             cursor = mSQLiteDatabase.rawQuery(sql, bindArgs);
-            parseCursorToResult(cursor, resultList);
+
+            if(AndroidVersion.getSDKVersionNumber()>= Build.VERSION_CODES.HONEYCOMB) {
+                parseCursorToResult(cursor, resultList);
+            }else {
+                try {
+                    parseCursorToResultforLowAndroid(cursor,resultList);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
             return resultList;
-        }catch(SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
-        }finally{
-            if(cursor!=null)
+        } finally {
+            if (cursor != null)
                 cursor.close();
         }
 
     }
 
-    public void beginTransaction(){
+    public void beginTransaction() {
         mSQLiteDatabase.beginTransaction();
     }
 
-    public void endTransaction(){
+    public void endTransaction() {
         mSQLiteDatabase.endTransaction();
     }
 
-    public void setTransactionSuccessful(){
+    public void setTransactionSuccessful() {
         mSQLiteDatabase.setTransactionSuccessful();
     }
 
@@ -255,11 +283,12 @@ public class DBUtils {
 
     /**
      * 把Cursor对象的值映射到resultList中
+     *
      * @param cursor
      * @param resultList
      */
     @SuppressLint("NewApi")
-    private void parseCursorToResult(Cursor cursor,List<QueryResult> resultList){
+    private void parseCursorToResult(Cursor cursor, List<QueryResult> resultList) {
         int columnCount;
         int columnType;
         Object columnVal = null;
@@ -290,5 +319,42 @@ public class DBUtils {
             }
             resultList.add(result);
         }
+    }
+
+
+    private void parseCursorToResultforLowAndroid(Cursor cursor, List<QueryResult> resultList) throws NoSuchFieldException, IllegalAccessException {
+        int columnCount;
+        Object columnVal = null;
+        while (cursor.moveToNext()) {
+            columnCount = cursor.getColumnCount();
+            QueryResult result = new QueryResult();
+           // CursorWrapper cw = (CursorWrapper) cursor;
+            CursorWrapper cw = new CursorWrapper(cursor);
+            Class<?> cursorWrapper = CursorWrapper.class;
+            Field mCursor = cursorWrapper.getDeclaredField("mCursor");
+            mCursor.setAccessible(true);
+            AbstractWindowedCursor abstractWindowedCursor = (AbstractWindowedCursor) mCursor.get(cw);
+            CursorWindow cursorWindow = abstractWindowedCursor.getWindow();
+            int pos = abstractWindowedCursor.getPosition();
+            for (int index = 0; index < columnCount; ++index) {
+
+                if (cursorWindow.isNull(pos, index)) {
+
+                } else if (cursorWindow.isLong(pos, index)) {
+                    columnVal = cursor.getInt(index);
+                } else if (cursorWindow.isFloat(pos, index)) {
+                    columnVal = cursor.getFloat(index);
+                } else if (cursorWindow.isString(pos, index)) {
+                    columnVal = cursor.getString(index);
+                } else if (cursorWindow.isBlob(pos, index)) {
+                    columnVal = cursor.getBlob(index);
+                }
+
+                result.setProperty(cursor.getColumnName(index), columnVal);
+
+            }
+            resultList.add(result);
+        }
+
     }
 }

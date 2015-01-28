@@ -101,7 +101,13 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-                Log.d(TAG,s.toString());
+
+
+            try {
+                glucose_value_et.setTextColor(setTextColorByValue(Double.parseDouble(s.toString())));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -154,7 +160,9 @@ public class GlucoseInputActivity extends AppBaseActivity {
      */
     private  void getInitialValue(BloodGlucose bloodGlucose){
 
-        glucose_value_et.setText(bloodGlucose.getBloodGlucose()+"");
+        String str = String.valueOf(bloodGlucose.getBloodGlucose());
+        Log.d(TAG,"value is "+str);
+        glucose_value_et.setText(str);
         glucose_value_et.setTextColor(setTextColorByValue(bloodGlucose.getBloodGlucose()));
         if(!TextUtils.isEmpty(bloodGlucose.getMemo())){
             memo_et.setText(bloodGlucose.getMemo());
@@ -232,9 +240,9 @@ public class GlucoseInputActivity extends AppBaseActivity {
      */
     public void save(View view){
         IBaseDao<BloodGlucose>  daoFactory= DaoFactory.createGenericDao(mContext, BloodGlucose.class);
-        double value = 0;
+        float value = 0.0f;
         if(!TextUtils.isEmpty(glucose_value_et.getText())){
-                value = Double.parseDouble(glucose_value_et.getText().toString());
+                value = Float.parseFloat(glucose_value_et.getText().toString());
         }else{
             Toast.makeText(mContext,getString(R.string.input_tip),Toast.LENGTH_LONG).show();
         }
@@ -243,7 +251,8 @@ public class GlucoseInputActivity extends AppBaseActivity {
         }
         String updateOrInsertTime =  DateTimeUtil.getSelectedDate(calendarInput,DateTimeUtil.NORMAL_PATTERN);
         BloodGlucose bloodGlucose = new BloodGlucose(server_id,value,takeTag,updateOrInsertTime);
-        daoFactory.insertOrUpdate(bloodGlucose);
+        //根据server_id来生成数据
+        daoFactory.insertOrUpdate(bloodGlucose,"server_id");
         finish();
     }
 

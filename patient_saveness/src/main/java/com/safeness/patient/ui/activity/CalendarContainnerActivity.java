@@ -125,7 +125,8 @@ public class CalendarContainnerActivity extends AppBaseActivity {
             it.putExtra("selectedDate",formatter.format(date));
             setSelectDateBackground(date);
             setResult(SET_DATE_RESULT,it);
-
+            finish();
+            overridePendingTransition(R.anim.in_from_up, R.anim.out_to_up);
             Toast.makeText(getApplicationContext(), formatter.format(date),
                     Toast.LENGTH_SHORT).show();
 

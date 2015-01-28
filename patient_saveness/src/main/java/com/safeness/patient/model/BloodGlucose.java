@@ -18,8 +18,8 @@ public class BloodGlucose {
     private Integer _id;
     @Column(name = "server_id", type = Column.TYPE_INTEGER, isNull = false, isUnique = true)
     private Long server_id;
-    @Column(name = "bloodGlucose", type = Column.TYPE_DOUBLE, isNull = false)
-    private double bloodGlucose;
+    @Column(name = "bloodGlucose", type = Column.TYPE_FLOAT, isNull = false)
+    private float bloodGlucose;
     @Column(name = "takeTag", type = Column.TYPE_INTEGER, isNull = false)
     private Integer takeTag;
     @Column(name = "takeDate", type = Column.TYPE_TIMESTAMP, isNull = false)
@@ -54,7 +54,7 @@ public class BloodGlucose {
      * @param takeDate     参数解释
      * @return 对象
      */
-    public BloodGlucose(Long server_id, double bloodGlucose, Integer takeTag, String takeDate) {
+    public BloodGlucose(Long server_id, float bloodGlucose, Integer takeTag, String takeDate) {
         this.server_id = server_id;
         this.bloodGlucose = bloodGlucose;
         this.takeTag = takeTag;
@@ -77,11 +77,16 @@ public class BloodGlucose {
         this.server_id = server_id;
     }
 
-    public double getBloodGlucose() {
+    public float getBloodGlucose() {
+//        java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
+//
+//        BigDecimal   b   =   new   BigDecimal(bloodGlucose);
+//        double   f1   =   b.setScale(1,   BigDecimal.ROUND_HALF_DOWN).doubleValue();
+//        return f1;
         return bloodGlucose;
     }
 
-    public void setBloodGlucose(double bloodGlucose) {
+    public void setBloodGlucose(float bloodGlucose) {
         this.bloodGlucose = bloodGlucose;
     }
 

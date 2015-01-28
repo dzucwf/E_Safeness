@@ -120,7 +120,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
      */
     private void setCalText(Calendar c){
 
-        String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"
+        String strNow = c.get(Calendar.YEAR)+"年"+(c.get(Calendar.MONTH)+1)+"月"
                 +c.get(Calendar.DATE)+"日";
         dateTextViw.setText(strNow);
 
