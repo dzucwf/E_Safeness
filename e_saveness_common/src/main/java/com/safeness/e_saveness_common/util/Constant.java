@@ -4,6 +4,8 @@ package com.safeness.e_saveness_common.util;
 /**
  * @author EISAVISA
  *
+ * 一些服务器配置的常量，如IP等
+ *
  */
 public class Constant {
 	/**

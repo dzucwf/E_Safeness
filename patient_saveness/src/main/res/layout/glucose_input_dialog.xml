@@ -31,10 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:textSize="@dimen/big_font_biggest"
-            android:inputType="numberDecimal"
-
             android:textColor="@color/TextColorBlue"
             android:id="@+id/glucose_value_et"
+            android:inputType="numberDecimal"
             android:linksClickable="true" />
 
         <TextView

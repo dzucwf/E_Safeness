@@ -5,34 +5,15 @@
     android:background="@color/color_view_bkg" >
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/navi_view_pager"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="0dip"
-        android:layout_above="@+id/navi_switcher" />
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView4"
-        android:background="@drawable/diabetes_nav_background"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <LinearLayout
         android:id="@+id/navi_switcher"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical|left"
         android:checkedButton="@+id/navi_switcher_item_food"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="11dp">
+        android:background="@drawable/diabetes_nav_background">
 
         <ImageButton
             android:layout_width="0dp"
@@ -79,4 +60,17 @@
         </LinearLayout>
 
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/navi_view_pager"
+        android:layout_above="@id/navi_switcher"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0dip" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainContainer"
+        ></FrameLayout>
 </RelativeLayout>

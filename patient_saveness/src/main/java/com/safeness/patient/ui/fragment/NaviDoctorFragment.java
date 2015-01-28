@@ -15,7 +15,7 @@ public class NaviDoctorFragment extends AppBaseFragment {
 
     @Override
     protected void setupView() {
-
+        
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.safeness.patient.ui.view;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import com.safeness.patient.R;
@@ -13,6 +14,7 @@ import com.safeness.patient.R;
 public class GlucoseInputView extends LinearLayout {
 
 
+    private WebView chartWebView;
     public GlucoseInputView(final Context context) {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,7 +33,13 @@ public class GlucoseInputView extends LinearLayout {
                 icallBack.onClickButton(v.getTag().toString());
             }
         });
+
+
+
+
     }
+
+
 
     //录入点击事件
     public interface  ICallBack{

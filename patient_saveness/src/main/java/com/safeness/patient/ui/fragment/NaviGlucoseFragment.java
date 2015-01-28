@@ -1,5 +1,6 @@
 package com.safeness.patient.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -7,20 +8,27 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.safeness.e_saveness_common.base.AppBaseFragment;
+import com.safeness.e_saveness_common.chart.GenericChart;
+import com.safeness.e_saveness_common.dao.DaoFactory;
+import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
+import com.safeness.patient.model.BloodGlucose;
 import com.safeness.patient.ui.activity.GlucoseInputActivity;
 import com.safeness.patient.ui.view.GlucoseInputView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 //血糖
 public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.OnPageChangeListener{
@@ -31,19 +39,25 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     private LinearLayout mImageIndex;
     private ViewPager mViewPager;
 
-
-
     TextView dateTextViw;
     TextView glucose_time_tv;
 
     private int selectTime = 0;
 
 
-    Calendar selected_calendar;
+    Calendar selected_calendar = Calendar.getInstance();;
 
+    private WebView chartWebView;
 
 
     private void getViews(View view) {
+
+
+        chartWebView = (WebView)getActivity().findViewById(R.id.glucoseChart);
+        WebSettings webSettings = chartWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
 
         dateTextViw = (TextView)getActivity().findViewById(R.id.date_glucose_tv);
         glucose_time_tv = (TextView)getActivity().findViewById(R.id.glucose_time_tv);
@@ -62,10 +76,6 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             glucoseinputview.setCallBack(new GlucoseInputView.ICallBack() {
                 @Override
                 public void onClickButton(String s) {
-                    if(selected_calendar==null){
-
-                        selected_calendar = Calendar.getInstance();
-                    }
 
                     long  yearKey = Integer.parseInt(selected_calendar.get(Calendar.YEAR)+""+selected_calendar.get(Calendar.MONTH)+1+""+
                             selected_calendar.get(Calendar.DATE)+""+selectTime);
@@ -100,6 +110,15 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
     }
 
+
+    /**
+     * 为webview填充数据
+     */
+    private void LoadChartData(Context context,String[] xAxis,String yAxisTitle , double[] series){
+
+        chartWebView.loadData(GenericChart.getChartStr(context, xAxis, yAxisTitle, series), "text/html", "utf-8");
+    }
+
     /**
      * 从日历控件返回后，改变当前的日期
      * @param date
@@ -115,12 +134,49 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     }
 
     /**
+     *
+     */
+    @Override
+    public void onResume() {
+
+        fillChartData();
+
+        super.onResume();
+
+    }
+
+    /**
+     * 加载完成后初始化图表数据
+     */
+    private void fillChartData() {
+        try {
+            String queryStartTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 00:00:00");
+            String queryEndTime = DateTimeUtil.getSelectedDate(selected_calendar,"yyyy-MM-dd 23:59:59");
+            IBaseDao<BloodGlucose> daoFactory= DaoFactory.createGenericDao(getActivity(), BloodGlucose.class);
+             List<BloodGlucose> sourceList =  daoFactory.queryByCondition("takeDate between ? and ? ", new String[]{queryStartTime, queryEndTime});
+            if(sourceList!= null && sourceList.size()>0){
+                String[] xAxis = new String[sourceList.size()];
+                double[] series = new double[sourceList.size()];
+                for (int i = 0; i <sourceList.size() ; i++) {
+                    xAxis[i] = sourceList.get(i).getTakeDate();
+                    series[i] = sourceList.get(i).getBloodGlucose();
+                }
+                LoadChartData(getActivity(),xAxis,"血糖图表",series);
+
+            }
+
+        }catch (Exception e){
+                e.printStackTrace();
+        }
+    }
+
+    /**
      * 设置选择的日期
      * @param c
      */
     private void setCalText(Calendar c){
 
-        String strNow = c.get(Calendar.YEAR)+"年"+c.get(Calendar.MONTH)+1+"月"
+        String strNow = c.get(Calendar.YEAR)+"年"+(c.get(Calendar.MONTH)+1)+"月"
                 +c.get(Calendar.DATE)+"日";
         dateTextViw.setText(strNow);
 
@@ -190,6 +246,8 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
         @Override
         public Object instantiateItem(View container, int position) {
+
+
             View view = mList.get(position);
             ((ViewPager)container).addView(view, 0);
             return view;

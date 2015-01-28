@@ -8,6 +8,8 @@ import java.util.Date;
 
 /**
  * Created by EISAVISA on 2015/1/24.
+ *
+ * 日期格式化工具类
  */
 public class DateTimeUtil {
 
