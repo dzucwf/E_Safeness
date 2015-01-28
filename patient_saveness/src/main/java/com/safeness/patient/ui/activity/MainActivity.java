@@ -102,7 +102,9 @@ public class MainActivity extends AppBaseActivity {
             NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
             glucoseFragment.setSelectedDate(selectedDate);
 
+
         }
+
     }
 
     /*

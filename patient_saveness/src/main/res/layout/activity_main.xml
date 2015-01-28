@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_view_bkg" >
 
+
     <LinearLayout
         android:id="@+id/navi_switcher"
         android:layout_alignParentBottom="true"
@@ -67,5 +68,9 @@
         android:layout_height="match_parent"
         android:padding="0dip" />
 
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainContainer"
+        ></FrameLayout>
 </RelativeLayout>

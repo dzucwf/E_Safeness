@@ -31,6 +31,7 @@ public class SplashActivity extends AppBaseActivity {
         mContext = this;
         processThread();
 
+
     }
 
     @Override

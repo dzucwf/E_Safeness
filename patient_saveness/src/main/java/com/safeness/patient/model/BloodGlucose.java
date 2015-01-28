@@ -48,10 +48,10 @@ public class BloodGlucose {
     /**
      * 根据所有不允许为null的列，初始化对象
      *
-     * @param server_id    参数解释
-     * @param bloodGlucose 参数解释
-     * @param takeTag      参数解释
-     * @param takeDate     参数解释
+     * @param server_id   主键
+     * @param bloodGlucose 血糖值
+     * @param takeTag      录入血糖时间（早，中，晚，其他）
+     * @param takeDate     录入实际时间
      * @return 对象
      */
     public BloodGlucose(Long server_id, float bloodGlucose, Integer takeTag, String takeDate) {
