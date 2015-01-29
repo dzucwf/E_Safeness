@@ -10,16 +10,28 @@
         android:id="@+id/imageView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/listview_item" />
-    <TextView android:id="@+id/drug_listview_item_title"
+        android:background="@drawable/copd_flat_heading_background" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#555"
-        android:textSize="22dp"
-        android:text="cat"
+        android:text="20:00"
+        android:id="@+id/drug_setting_remind_list_label_time"
+        android:textSize="20dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/imageView6"
+        android:layout_toEndOf="@+id/imageView6" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView6"
+        android:background="@drawable/reminder_check"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp" />
+        android:layout_alignParentStart="true" />
     </RelativeLayout>
