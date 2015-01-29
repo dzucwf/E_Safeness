@@ -4,7 +4,7 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="54dp"
-        android:id="@+id/imageView2"
+        android:id="@+id/img_drugsetting_nav_bg"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/nav_bar" />
@@ -12,7 +12,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/btn_drugsetting_back"
         android:background="@drawable/backbutton"
         android:layout_marginLeft="14dp"
         android:layout_alignParentTop="true"
@@ -27,29 +27,17 @@
         android:id="@+id/textView"
         android:textColor="#ff298bd0"
         android:textSize="18dp"
-        android:layout_alignTop="@+id/imageButton"
+        android:layout_alignBaseline="@+id/btn_drugsetting_delete"
+        android:layout_alignBottom="@+id/btn_drugsetting_delete"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="删除"
-        android:id="@+id/textView8"
-        android:textColor="#ff298bd0"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_alignBottom="@+id/imageButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView5"
-        android:layout_marginTop="15dp"
+        android:id="@+id/img_drugsetting_cell_bg1"
         android:background="@drawable/copd_flat_heading_background"
-        android:layout_below="@+id/imageView2"
+        android:layout_below="@+id/img_drugsetting_nav_bg"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -57,11 +45,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="甲福明"
-        android:id="@+id/textView9"
+        android:id="@+id/txb_drug_setting_name"
         android:textSize="20dp"
         android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
-        android:layout_alignBottom="@+id/imageView5"
+        android:layout_alignBottom="@+id/img_drugsetting_cell_bg1"
         android:layout_toRightOf="@+id/imageView6"
         android:layout_toEndOf="@+id/imageView6"
         android:layout_marginBottom="18dp" />
@@ -71,123 +59,154 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView6"
         android:background="@drawable/more_reminder"
-        android:layout_alignBottom="@+id/imageView5"
-        android:layout_toRightOf="@+id/imageButton"
-        android:layout_toEndOf="@+id/imageButton"
+        android:layout_alignBottom="@+id/img_drugsetting_cell_bg1"
+        android:layout_toRightOf="@+id/btn_drugsetting_back"
+        android:layout_toEndOf="@+id/btn_drugsetting_back"
         android:layout_marginBottom="22dp" />
 
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_drugsetting_cell_bg2"
+        android:background="@drawable/copd_flat_heading_background"
+        android:focusableInTouchMode="false"
+        android:layout_below="@+id/img_drugsetting_cell_bg1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView25"
+        android:background="@drawable/plan_icon"
+        android:layout_marginTop="17dp"
+        android:layout_alignTop="@+id/txb_drug_setting_desc"
+        android:layout_toRightOf="@+id/btn_drugsetting_back"
+        android:layout_toEndOf="@+id/btn_drugsetting_back" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_drugsetting_cell_bg3"
+        android:background="@drawable/copd_flat_heading_background"
+        android:layout_below="@+id/img_drugsetting_cell_bg2"
+        android:layout_alignRight="@+id/btn_drugsetting_delete"
+        android:layout_alignEnd="@+id/btn_drugsetting_delete"
+        android:layout_marginTop="17dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView9"
+        android:background="@drawable/reminder_clock"
+        android:layout_above="@+id/img_drugsetting_cell_bg4"
+        android:layout_alignRight="@+id/imageView12"
+        android:layout_alignEnd="@+id/imageView12"
+        android:layout_marginBottom="19dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提醒"
+        android:id="@+id/textView11"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/imageView9"
+        android:layout_alignLeft="@+id/txb_drug_setting_desc"
+        android:layout_alignStart="@+id/txb_drug_setting_desc" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_drugsetting_cell_bg4"
+        android:background="@drawable/copd_flat_heading_background"
+        android:layout_below="@+id/img_drugsetting_cell_bg3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView12"
+        android:background="@drawable/reminder_add"
+        android:layout_alignTop="@+id/textView12"
+        android:layout_alignLeft="@+id/imageView25"
+        android:layout_alignStart="@+id/imageView25"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加提醒"
+        android:id="@+id/textView12"
+        android:textSize="20dp"
+        android:textColor="#ff39a7ff"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/img_drugsetting_cell_bg3"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/drug_setting_remind_list"
+        android:layout_below="@+id/img_drugsetting_cell_bg4"
+        android:layout_above="@+id/btn_drug_setting_finish" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView2"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/imageView5"
+        android:layout_below="@+id/img_drugsetting_cell_bg4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/button">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView7"
-                    android:background="@drawable/copd_flat_heading_background"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView9"
-                    android:background="@drawable/reminder_clock"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginStart="23dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="提醒"
-                    android:id="@+id/textView11"
-                    android:textSize="20dp"
-                    android:layout_alignTop="@+id/imageView9"
-                    android:layout_toRightOf="@+id/imageView9"
-                    android:layout_toEndOf="@+id/imageView9"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginStart="22dp" />" />
+        android:layout_above="@+id/btn_drug_setting_finish">
 
 
-            </RelativeLayout>
-
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/drug_setting_remind_list" />
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView11"
-                    android:background="@drawable/copd_flat_heading_background"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView12"
-                    android:background="@drawable/reminder_add"
-                    android:layout_marginLeft="26dp"
-                    android:layout_marginStart="26dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="添加提醒"
-                    android:id="@+id/textView12"
-                    android:textSize="20dp"
-                    android:layout_alignTop="@+id/imageView12"
-                    android:layout_toRightOf="@+id/imageView12"
-                    android:layout_toEndOf="@+id/imageView12"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginStart="22dp"
-                    android:textColor="#ff39a7ff" />
-            </RelativeLayout>
-
-
-        </LinearLayout>
     </ScrollView>
+
+
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="吃过了"
-        android:id="@+id/button"
+        android:id="@+id/btn_drug_setting_finish"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:background="#ff54b4ff"
         android:textColor="#ffffffff"
         android:textSize="22dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" 注意，Andrid四大组件都必须在AndroidManifest.xml中做相关的声明才可以使用，   可能有时候你会发现，明明已经声明了，但是Eclipse还是会报错！ 什么原因？   你仔细看看，你的声明是否包含在application标签中，   如果不是，呵呵，那就说明你错了～   对于四大组件的声明必须要包含在application标签中才可以被识别，"
+        android:id="@+id/txb_drug_setting_desc"
+        android:layout_alignLeft="@+id/txb_drug_setting_name"
+        android:layout_alignStart="@+id/txb_drug_setting_name"
+        android:layout_below="@+id/txb_drug_setting_name"
+        android:textSize="12sp"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="4dp"
+        android:textColor="#ffb2b2b2"
+        android:layout_alignBottom="@+id/img_drugsetting_cell_bg2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="删除"
+        android:id="@+id/btn_drugsetting_delete"
+        android:background="#00ffffff"
+        android:textColor="#ff298bd0"
+        android:layout_above="@+id/img_drugsetting_cell_bg1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textSize="13sp"
+        android:minWidth="60dp"/>
 
 </RelativeLayout>

@@ -18,16 +18,16 @@
         android:text="20:00"
         android:id="@+id/drug_setting_remind_list_label_time"
         android:textSize="20dp"
-        android:layout_marginLeft="34dp"
-        android:layout_marginStart="34dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageView6"
-        android:layout_toEndOf="@+id/imageView6" />
+        android:layout_toRightOf="@+id/drug_setting_remind_list_image_status"
+        android:layout_toEndOf="@+id/drug_setting_remind_list_image_status" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView6"
+        android:id="@+id/drug_setting_remind_list_image_status"
         android:background="@drawable/reminder_check"
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
