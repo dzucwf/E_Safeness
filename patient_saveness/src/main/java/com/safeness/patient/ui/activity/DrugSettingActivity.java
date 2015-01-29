@@ -1,8 +1,10 @@
 package com.safeness.patient.ui.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -54,6 +56,7 @@ public class DrugSettingActivity extends AppBaseActivity {
     private  List<Drug> drugList;
     private List<U_d> u_dList;
 
+    private Button btn_delete;
     private TextView txb_desc;
     private Button btn_finish;
     private TextView txb_name;
@@ -142,6 +145,13 @@ public class DrugSettingActivity extends AppBaseActivity {
                         showDialog(R.id.drug_setting_remind_list_label_time);
                     }
                 });
+
+                btn_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        buildDialog(DrugSettingActivity.this).show();
+                    }
+                });
                 switchVisible();
             }
 
@@ -184,6 +194,8 @@ public class DrugSettingActivity extends AppBaseActivity {
         txb_remind = (TextView)findViewById(R.id.txv_drugsetting_cell_remind);
         lst_remind_list = (ListView)findViewById(R.id.drug_setting_remind_list);
 
+
+        btn_delete = (Button)findViewById(R.id.btn_drugsetting_delete);
         btn_back = (ImageView)findViewById(R.id.btn_drugsetting_back);
         img_cell_remind = (ImageView)findViewById(R.id.img_drugsetting_cell_bg3);
         img_cell_addRemind = (ImageView)findViewById(R.id.img_drugsetting_cell_bg4);
@@ -206,6 +218,26 @@ public class DrugSettingActivity extends AppBaseActivity {
                         this, mTimeSetListener, curDate.getHours(), curDate.getMinutes(), true);
         }
         return null;
+    }
+    private Dialog buildDialog(Context context) {
+        AlertDialog.Builder builder = new  AlertDialog.Builder(context);
+        builder.setTitle("您确定要删除么？");
+        builder.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        u_dDao.delete("u_sid=? and d_id=?","1",_id.toString());
+                        Drug drug= new Drug();
+                        drug.setLife_status(-1);
+                        drugDao.update(drug,"_id=?",_id.toString());
+                        DrugSettingActivity.this.finish();
+                    }
+                });
+        builder.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+        return builder.create();
     }
     private TimePickerDialog.OnTimeSetListener mTimeSetListener =
             new TimePickerDialog.OnTimeSetListener()
