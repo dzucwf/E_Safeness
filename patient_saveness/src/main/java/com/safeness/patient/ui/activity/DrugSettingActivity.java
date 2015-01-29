@@ -11,6 +11,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,8 +22,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
+import com.safeness.e_saveness_common.dao.DBUtils;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
+import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
 import com.safeness.patient.model.Drug;
@@ -32,6 +35,8 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +51,8 @@ public class DrugSettingActivity extends AppBaseActivity {
     private ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
     private  IBaseDao<Drug> drugDao;
     private  IBaseDao<U_d> u_dDao;
-    List<Drug> drugList;
+    private  List<Drug> drugList;
+    private List<U_d> u_dList;
 
     private TextView txb_desc;
     private Button btn_finish;
@@ -82,19 +88,34 @@ public class DrugSettingActivity extends AppBaseActivity {
                 img_cell_switch.setBackgroundResource(drugList.get(0).getLife_status() > 0 ?R.drawable.switch_on : R.drawable.switch_off);
 
                 u_dDao = DaoFactory.createGenericDao(this, U_d.class);
-                List<U_d> u_dList = u_dDao.queryByCondition("u_sid=? and d_id=?","1",_id.toString());
+                u_dList = u_dDao.queryByCondition("u_sid=? and d_id=?","1",_id.toString());
                 mData= new ArrayList<Map<String,Object>>();
                 for(int i =0; i < u_dList.size(); i++) {
                     Map<String,Object> item = new HashMap<String,Object>();
                     item.put("title", u_dList.get(i).getHintTime());
                     item.put("status", u_dList.get(i).getLife_status());
-                    item.put("id", u_dList.get(i).get_id());
+                    item.put("_id", u_dList.get(i).get_id());
                     mData.add(item);
                 }
+                Collections.sort(mData, new SortByID());
                 adapter = new MyAdapter(this,mData,R.layout.drug_setting_listitem,
                         new String[]{"title","status"},new int[]{R.id.drug_setting_remind_list_label_time,R.id.drug_setting_remind_list_image_status});
                 lst_remind_list.setAdapter(adapter);
 
+                lst_remind_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Map<String, Object> map = (Map<String, Object>) DrugSettingActivity.this.adapter
+                                .getItem(position);
+                        U_d u_d = new U_d();
+                        u_d.setLife_status(Integer.parseInt(map.get("status").toString()) > 0 ? -1 : 1);
+                        if(u_dDao.update(u_d, "_id=?", map.get("_id").toString())){
+                            mData.get(position).put("status", Integer.parseInt(map.get("status").toString()) > 0 ? -1 : 1);
+                            adapter.mItemList = mData;
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
                 btn_back.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -193,7 +214,7 @@ public class DrugSettingActivity extends AppBaseActivity {
                         TimePicker view, int hourOfDay, int minuteOfHour)
                 {
 
-                    SimpleDateFormat timeFormat = new SimpleDateFormat("1970-1-1 hh:mm:00");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("1970-1-1 HH:mm:00");
                     Date date = new Date(0,0,0, hourOfDay, minuteOfHour);
                     String strDate = timeFormat.format(date);
                     Log.v("v",strDate);
@@ -205,7 +226,7 @@ public class DrugSettingActivity extends AppBaseActivity {
                     u_d.setHintTime(strDate);
                     if(u_dDao.insert(u_d)){
                         HashMap<String ,Object> map = new HashMap<String, Object>();
-                        SimpleDateFormat ttt = new SimpleDateFormat("hh:mm");
+                        SimpleDateFormat ttt = new SimpleDateFormat("HH:mm");
                         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         try{
                             date = ConvertToDate(strDate);
@@ -213,8 +234,11 @@ public class DrugSettingActivity extends AppBaseActivity {
                             map.put("title",ttt.format(date));}
                         catch(Exception ex){}
                         map.put("status", 1);
+                        List<QueryResult> aaaad = u_dDao.execQuerySQL("select _id from u_d order by _id desc LIMIT 1");
+                        map.put("_id", aaaad.size() > 0 ? Integer.parseInt(aaaad.get(0).getNameValueMap().get("_id").toString()) : -1);
                         mData.add(map);
-                        adapter.mItemList = mData;
+                        Collections.sort(mData, new SortByID());
+                        adapter.mItemList =  mData;
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -237,7 +261,7 @@ public class DrugSettingActivity extends AppBaseActivity {
         }
 
         public Object getItem(int pos) {
-            return pos;
+            return mItemList.get(pos);
         }
 
         public long getItemId(int pos) {
@@ -251,7 +275,7 @@ public class DrugSettingActivity extends AppBaseActivity {
             ImageView imageview = (ImageView)view.findViewById(R.id.drug_setting_remind_list_image_status);
             TextView tv = (TextView)view.findViewById(R.id.drug_setting_remind_list_label_time);
             imageview.setVisibility(Integer.parseInt(map.get("status").toString())>0 ? View.VISIBLE : View.INVISIBLE);
-            SimpleDateFormat ttt = new SimpleDateFormat("hh:mm");
+            SimpleDateFormat ttt = new SimpleDateFormat("HH:mm");
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             try{
             Date date = ConvertToDate(map.get("title").toString());
@@ -262,6 +286,14 @@ public class DrugSettingActivity extends AppBaseActivity {
         }
 
 
+    }
+
+    class SortByID implements Comparator {
+        public int compare(Object o1, Object o2) {
+            Map<String,Object> s1 = (Map<String,Object>) o1;
+            Map<String,Object> s2 = (Map<String,Object>) o2;
+            return s2.get("_id").toString().compareTo(s1.get("_id").toString());
+        }
     }
     private  Date ConvertToDate(String strDate) throws Exception{
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");

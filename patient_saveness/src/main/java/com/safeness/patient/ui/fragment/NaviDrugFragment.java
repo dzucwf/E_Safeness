@@ -178,7 +178,7 @@ public class NaviDrugFragment extends AppBaseFragment {
         }
 
         public Object getItem(int pos) {
-            return pos;
+            return mItemList.get(pos);
         }
 
         public long getItemId(int pos) {
