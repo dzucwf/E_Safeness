@@ -29,7 +29,8 @@
         <activity
             android:name=".ui.activity.DrugSettingActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:configChanges="orientation|keyboardHidden" >
         </activity>
         <activity
             android:name=".ui.activity.SplashActivity"

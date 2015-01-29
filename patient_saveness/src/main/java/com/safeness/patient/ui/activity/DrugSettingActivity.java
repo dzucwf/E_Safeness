@@ -60,7 +60,7 @@ public class DrugSettingActivity extends AppBaseActivity {
     private ListView lst_remind_list;
     private TextView txb_remind;
 
-    private ImageButton btn_back;
+    private ImageView btn_back;
     private ImageView img_cell_remind;
     private ImageView img_cell_addRemind;
 
@@ -184,7 +184,7 @@ public class DrugSettingActivity extends AppBaseActivity {
         txb_remind = (TextView)findViewById(R.id.txv_drugsetting_cell_remind);
         lst_remind_list = (ListView)findViewById(R.id.drug_setting_remind_list);
 
-        btn_back = (ImageButton)findViewById(R.id.btn_drugsetting_back);
+        btn_back = (ImageView)findViewById(R.id.btn_drugsetting_back);
         img_cell_remind = (ImageView)findViewById(R.id.img_drugsetting_cell_bg3);
         img_cell_addRemind = (ImageView)findViewById(R.id.img_drugsetting_cell_bg4);
         img_cell_switch = (ImageView)findViewById(R.id.img_drugsetting_cell_remind_switch);
