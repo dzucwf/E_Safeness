@@ -5,6 +5,6 @@
     <dimen name="big_font_normal">22sp</dimen>
     <dimen name="big_font_bigger">25sp</dimen>
 
-    <dimen name="big_font_biggest">65sp</dimen>
+    <dimen name="big_font_biggest">30sp</dimen>
     <dimen name="custom_ad_padding">90dip</dimen>
 </resources>

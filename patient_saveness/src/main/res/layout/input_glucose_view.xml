@@ -55,7 +55,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/input_glucose"
-                        android:textSize="@dimen/big_font_normal"
+                        android:textSize="@dimen/big_font_bigger"
+                        android:tag="before"
+                        android:id="@+id/glucose_value_before_tv"
+                        android:textColor="@color/black"
                         android:layout_centerInParent="true"
                         />
 
@@ -98,14 +101,19 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_circle"
                         android:id="@+id/after_ibt"
+
                         android:tag="after"
                         />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/input_glucose"
-                        android:textSize="@dimen/big_font_normal"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/big_font_bigger"
+                        android:tag="after"
                         android:layout_centerInParent="true"
+                        android:id="@+id/glucose_value_after_tv"
+
                         />
 
 

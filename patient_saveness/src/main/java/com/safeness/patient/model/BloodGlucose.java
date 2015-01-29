@@ -24,7 +24,7 @@ public class BloodGlucose {
     private Integer takeTag;
     @Column(name = "takeDate", type = Column.TYPE_TIMESTAMP, isNull = false)
     private String takeDate;
-    @Column(name = "life_status", type = Column.TYPE_INTEGER, isNull = false, defaultValue = "1")
+    @Column(name = "life_status", type = Column.TYPE_INTEGER, isNull = false, defaultValue = "0")
     private Integer life_status;
     @Column(name = "create_datetime", type = Column.TYPE_TIMESTAMP, defaultValue = "CURRENT_TIMESTAMP")
     private String create_datetime;
@@ -54,11 +54,12 @@ public class BloodGlucose {
      * @param takeDate     录入实际时间
      * @return 对象
      */
-    public BloodGlucose(Long server_id, float bloodGlucose, Integer takeTag, String takeDate) {
+    public BloodGlucose(Long server_id, float bloodGlucose, Integer takeTag, String takeDate,int life_status) {
         this.server_id = server_id;
         this.bloodGlucose = bloodGlucose;
         this.takeTag = takeTag;
         this.takeDate = takeDate;
+        this.life_status = life_status;
     }
 
     public Integer get_id() {

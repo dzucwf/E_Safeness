@@ -13,11 +13,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
-import com.safeness.e_saveness_common.util.DateTimeUtil;
-import com.safeness.patient.R;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
+import com.safeness.e_saveness_common.util.DateTimeUtil;
+import com.safeness.patient.R;
 import com.safeness.patient.model.BloodGlucose;
+import com.safeness.patient.ui.util.GlucoseUtil;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -53,6 +54,8 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
     private  String inputTime;
     Calendar calendarInput;
+
+    GlucoseUtil glucoseUtil;
     @Override
     protected int getLayoutId() {
         return R.layout.glucose_input_dialog;
@@ -82,6 +85,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         }
         getGlucose_time_Text();
         clearValue();
+        glucoseUtil = new GlucoseUtil(this);
     }
 
 
@@ -104,7 +108,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
 
             try {
-                glucose_value_et.setTextColor(setTextColorByValue(Double.parseDouble(s.toString())));
+                glucose_value_et.setTextColor(glucoseUtil.setTextColorByValue(Double.parseDouble(s.toString())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -163,7 +167,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         String str = String.valueOf(bloodGlucose.getBloodGlucose());
         Log.d(TAG,"value is "+str);
         glucose_value_et.setText(str);
-        glucose_value_et.setTextColor(setTextColorByValue(bloodGlucose.getBloodGlucose()));
+        glucose_value_et.setTextColor(glucoseUtil.setTextColorByValue(bloodGlucose.getBloodGlucose()));
         if(!TextUtils.isEmpty(bloodGlucose.getMemo())){
             memo_et.setText(bloodGlucose.getMemo());
         }
@@ -220,14 +224,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         memo_et.setText("");
     }
 
-    private  int setTextColorByValue(double value){
 
-        if(value >9 || value <3){
-            return getResources().getColor(R.color.red);
-        }else{
-            return getResources().getColor(R.color.blue);
-        }
-    }
 
     public void cancel(View view){
 
@@ -242,7 +239,11 @@ public class GlucoseInputActivity extends AppBaseActivity {
         IBaseDao<BloodGlucose>  daoFactory= DaoFactory.createGenericDao(mContext, BloodGlucose.class);
         float value = 0.0f;
         if(!TextUtils.isEmpty(glucose_value_et.getText())){
+            try {
                 value = Float.parseFloat(glucose_value_et.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }else{
             Toast.makeText(mContext,getString(R.string.input_tip),Toast.LENGTH_LONG).show();
         }
@@ -250,7 +251,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
             calendarInput = Calendar.getInstance();
         }
         String updateOrInsertTime =  DateTimeUtil.getSelectedDate(calendarInput,DateTimeUtil.NORMAL_PATTERN);
-        BloodGlucose bloodGlucose = new BloodGlucose(server_id,value,takeTag,updateOrInsertTime);
+        BloodGlucose bloodGlucose = new BloodGlucose(server_id,value,takeTag,updateOrInsertTime,afterOrBefore);
         //根据server_id来生成数据
         daoFactory.insertOrUpdate(bloodGlucose,"server_id");
         finish();
@@ -260,4 +261,6 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
         clearValue();
     }
+
+
 }

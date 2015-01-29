@@ -9,10 +9,17 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
+import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
 import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends AppBaseActivity {
@@ -42,7 +49,12 @@ public class MainActivity extends AppBaseActivity {
     //上次选中的
     int lastSelectIndex = 0;
 
+    //打开的日历控件
+    private CaldroidFragment dialogCaldroidFragment;
+    final String dialogTag = "CALDROID_DIALOG_FRAGMENT";
 
+    //日期控件选择的时间
+    private  Calendar saveCalendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +89,83 @@ public class MainActivity extends AppBaseActivity {
         glucosebtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_glucose);
         sportbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_sports);
         doctorbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_doctor);
+        createCalControl();
 
     }
+
+    private void createCalControl(){
+        // Setup caldroid to use as dialog
+
+
+        dialogCaldroidFragment = new CaldroidFragment();
+
+        // Setup dialogTitle
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(dialogCaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(dialogCaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putBoolean(dialogCaldroidFragment.ENABLE_SWIPE, true);
+        args.putBoolean(dialogCaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
+        args.putBoolean(dialogCaldroidFragment.SHOW_NAVIGATION_ARROWS,true);
+        dialogCaldroidFragment.setArguments(args);
+        dialogCaldroidFragment.setCaldroidListener(Callistener);
+
+    }
+    final SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.NORMAL_PATTERN);
+    // Setup listener
+    final CaldroidListener Callistener = new CaldroidListener() {
+
+        @Override
+        public void onSelectDate(Date date, View view) {
+            saveCalendar.setTime(date);
+
+            String dateStr = formatter.format(date);
+            NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
+            glucoseFragment.setSelectedDate(dateStr);
+            dialogCaldroidFragment.setSelectedDates(date,date);
+            //setSelectDateBackground(date);
+            dialogCaldroidFragment.dismiss();
+
+        }
+
+        @Override
+        public void onChangeMonth(int month, int year) {
+            String text = "month: " + month + " year: " + year;
+            Toast.makeText(getApplicationContext(), text,
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onLongClickDate(Date date, View view) {
+            Toast.makeText(getApplicationContext(),
+                    "Long click " + formatter.format(date),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCaldroidViewCreated() {
+
+        }
+
+    };
+
+    /**
+     * 设置选中的日期的背景颜色
+     * @param date
+     */
+    private void setSelectDateBackground(Date date){
+
+
+        if(dialogCaldroidFragment!=null){
+            dialogCaldroidFragment.setBackgroundResourceForDate(R.color.blue,
+                    date);
+
+            dialogCaldroidFragment.setTextColorForDate(R.color.white, date);
+        }
+
+
+    }
+
 
     /**
      * 打开日历选择
@@ -86,9 +173,16 @@ public class MainActivity extends AppBaseActivity {
      */
     public void openCalendar(View view){
         Toast.makeText(this,"打开日历",Toast.LENGTH_LONG).show();
-        Intent it = new Intent(this, CalendarContainnerActivity.class);
-        startActivityForResult(it,OPEN_CALENDAR_RQ);
-        overridePendingTransition(R.anim.in_from_down, R.anim.out_to_down);
+        dialogCaldroidFragment.show(getSupportFragmentManager(),
+                dialogTag);
+
+        //以上代码，改成弹窗的形式
+        //NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
+       // glucoseFragment.showCalControl();
+
+//        Intent it = new Intent(this, CalendarContainnerActivity.class);
+//        startActivityForResult(it,OPEN_CALENDAR_RQ);
+//        overridePendingTransition(R.anim.in_from_down, R.anim.out_to_down);
     }
 
     /*
