@@ -105,11 +105,21 @@
         android:layout_alignEnd="@+id/imageView12"
         android:layout_marginBottom="19dp" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_drugsetting_cell_remind_switch"
+        android:background="@drawable/switch_on"
+        android:layout_above="@+id/img_drugsetting_cell_bg4"
+        android:layout_alignRight="@+id/txb_drug_setting_desc"
+        android:layout_alignEnd="@+id/txb_drug_setting_desc"
+        android:layout_marginBottom="7dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="提醒"
-        android:id="@+id/textView11"
+        android:text="提醒(已开启)"
+        android:id="@+id/txv_drugsetting_cell_remind"
         android:textSize="20dp"
         android:layout_alignBottom="@+id/imageView9"
         android:layout_alignLeft="@+id/txb_drug_setting_desc"
@@ -143,8 +153,8 @@
         android:textColor="#ff39a7ff"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/img_drugsetting_cell_bg3"
-        android:layout_alignLeft="@+id/textView11"
-        android:layout_alignStart="@+id/textView11" />
+        android:layout_alignLeft="@+id/txv_drugsetting_cell_remind"
+        android:layout_alignStart="@+id/txv_drugsetting_cell_remind" />
 
     <ListView
         android:layout_width="fill_parent"

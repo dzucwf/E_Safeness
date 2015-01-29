@@ -27,6 +27,11 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
+            android:name=".ui.activity.DrugSettingActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"
@@ -45,6 +50,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
 
         </activity>
+
     </application>
 
 </manifest>
