@@ -39,6 +39,7 @@ public class NaviSportsFragment extends AppBaseFragment {
         String yAxisTitle = "血糖值(mmol/L)";
         double[] series = {4.5,7.8,5.6,3.2};
         myWebView.loadData(GenericChart.getChartStr(getActivity(),xAxis,yAxisTitle,series), "text/html", "utf-8");
+
     }
 
 }
