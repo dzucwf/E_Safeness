@@ -26,6 +26,7 @@ import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Food;
 import com.safeness.patient.model.U_f;
 import com.safeness.patient.ui.activity.DrugSettingActivity;
+import com.safeness.patient.ui.activity.HistoryActivity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -114,8 +115,8 @@ public class NaviFoodFragment extends AppBaseFragment {
         btn_food_nav_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in=new Intent(getActivity(),DrugSettingActivity.class);
-                in.putExtra("chart_type",  Integer.parseInt("food"));
+                Intent in=new Intent(getActivity(),HistoryActivity.class);
+                in.putExtra("chart_type",  "food");
                 startActivity(in);
             }
         });
