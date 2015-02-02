@@ -116,7 +116,7 @@ public class NaviFoodFragment extends AppBaseFragment {
             @Override
             public void onClick(View v) {
                 Intent in=new Intent(getActivity(),HistoryActivity.class);
-                in.putExtra("chart_type",  "food");
+                in.putExtra("chart_type", "food");
                 startActivity(in);
             }
         });
