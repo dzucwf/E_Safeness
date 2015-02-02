@@ -30,18 +30,22 @@ public class LauncherActivity extends Activity {
         setContentView(R.layout.activity_launcher);
 
         IBaseDao<Drug> drugDao = DaoFactory.createGenericDao(this, Drug.class);
-        if (drugDao.execQuerySQL("select count(*) from drug").size()<=0){//写入测试数据
-            initSqlData_Drug(drugDao);
+        if (drugDao.execQuerySQL("select count(*) from drug").size()>0){//写入测试数据
+            if(drugDao.execQuerySQL("select count(*) from drug").get(0).getIndexValueMap().get(0).toString().equals("0")){
+                initSqlData_Drug(drugDao);
+            }
         }
 
         IBaseDao<Food> foodDao = DaoFactory.createGenericDao(this, Food.class);
-        if (foodDao.execQuerySQL("select count(*) from food").size()<=0){//写入测试数据
-            initSqlData(foodDao);
+        if (foodDao.execQuerySQL("select count(*) from food").size()>0){//写入测试数据
+            if(foodDao.execQuerySQL("select count(*) from food").get(0).getIndexValueMap().get(0).toString().equals("0")){
+                initSqlData(foodDao);}
         }
 
         IBaseDao<U_f> u_fdDao = DaoFactory.createGenericDao(this, U_f.class);
-        if (drugDao.execQuerySQL("select count(*) from u_f").size()<=0){//写入测试数据
-            initSqlDataUF(u_fdDao);
+        if (u_fdDao.execQuerySQL("select count(*) from u_f").size()>0){//写入测试数据
+            if(u_fdDao.execQuerySQL("select count(*) from u_f").get(0).getIndexValueMap().get(0).toString().equals("0")){
+                initSqlDataUF(u_fdDao);}
         }
 
         new Handler().postDelayed(new Runnable() {
