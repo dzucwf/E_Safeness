@@ -174,7 +174,8 @@ public class NaviFoodFragment extends AppBaseFragment {
 
             txv_dateText.setText(df.format(date));
 
-            adapter.mItemList =  getData();
+            adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
+                    new String[]{"title","desc","calorie","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
             listView.setAdapter(adapter);
             //setCalText(selected_calendar);
 
