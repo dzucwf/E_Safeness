@@ -35,6 +35,7 @@ public class NaviDrugFragment extends AppBaseFragment {
 
 
     private ListView listView;
+    IBaseDao<Drug> drugDao;
 
     private ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
     private MyAdapter adapter = null;
@@ -43,6 +44,24 @@ public class NaviDrugFragment extends AppBaseFragment {
 
 	}
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (adapter != null){
+            List<Drug> drugList = drugDao.queryByCondition("");
+
+            for(int i =0; i < drugList.size(); i++) {
+                for (int j = 0; j < mData.size(); j++) {
+                    if (mData.get(j).get("_id").toString().equals(drugList.get(i).get_id().toString())){
+                        mData.get(j).put("imgAlert", drugList.get(i).getLife_status());
+                    }
+                }
+            }
+            adapter.mItemList = mData;
+            adapter.notifyDataSetChanged();
+        }
+    }
 
     @Override
     protected int getLayoutId() {
@@ -64,10 +83,9 @@ public class NaviDrugFragment extends AppBaseFragment {
         listView = (ListView)getActivity().findViewById(R.id.listView);
         //listView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1,getData()));
 
+        mData= new ArrayList<Map<String,Object>>();
 
-       mData= new ArrayList<Map<String,Object>>();
-
-        IBaseDao<Drug> drugDao = DaoFactory.createGenericDao(getActivity(), Drug.class);
+        drugDao = DaoFactory.createGenericDao(getActivity(), Drug.class);
         List<Drug> drugList = drugDao.queryByCondition("");
 
         for(int i =0; i < drugList.size(); i++) {
@@ -80,6 +98,7 @@ public class NaviDrugFragment extends AppBaseFragment {
         adapter = new MyAdapter(getActivity(),mData,R.layout.drug_listitem,
                 new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
         listView.setAdapter(adapter);
+
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
