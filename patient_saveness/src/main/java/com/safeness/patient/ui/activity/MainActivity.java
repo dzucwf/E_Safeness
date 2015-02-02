@@ -2,6 +2,7 @@ package com.safeness.patient.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
+import com.safeness.patient.ui.fragment.NaviFoodFragment;
 import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
 
 import java.text.SimpleDateFormat;
@@ -119,12 +121,28 @@ public class MainActivity extends AppBaseActivity {
         public void onSelectDate(Date date, View view) {
             saveCalendar.setTime(date);
 
-            String dateStr = formatter.format(date);
-            NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
-            glucoseFragment.setSelectedDate(dateStr);
+
             dialogCaldroidFragment.setSelectedDates(date,date);
             //setSelectDateBackground(date);
             dialogCaldroidFragment.dismiss();
+
+            String dateStr = formatter.format(date);
+            switch (mSearchVp.getCurrentItem()){
+                case CB_INDEX_FOOD:
+                    NaviFoodFragment foodFragment = (NaviFoodFragment)switchAdapter.getItem(CB_INDEX_FOOD);
+                    foodFragment.setSelectedDate(date);
+                    break;
+                case R.id.navi_switcher_item_drug:
+                    break;
+                case CB_INDEX_GLUCOSE:
+                    NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
+                    glucoseFragment.setSelectedDate(dateStr);
+                    break;
+                case R.id.navi_switcher_item_sports:
+                    break;
+                case R.id.navi_switcher_item_doctor:
+                    break;
+            }
 
         }
 
