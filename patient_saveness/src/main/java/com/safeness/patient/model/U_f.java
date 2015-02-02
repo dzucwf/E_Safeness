@@ -7,15 +7,50 @@ import com.safeness.e_saveness_common.dao.Table.Column;
  * U_f
  * Project name: com.safeness.patient
  *
- * @author wuwenyi1213@163.com on 2015-01-25 21:01:02.
- *         Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
+ * @author wuwenyi1213@163.com on 2015-01-31 02:01:28.
+ * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
  */
 
 @Table(name = "u_f")
 public class U_f {
 
-    @Column(name = "_id", type = Column.TYPE_INTEGER, isPrimaryKey = true, isUnique = true)
+    @Column(name="_id",type=Column.TYPE_INTEGER,isPrimaryKey=true,isUnique = true)
     private Integer _id;
+    @Column(name="u_sid",type=Column.TYPE_INTEGER,isNull = false)
+    private Integer u_sid;
+    @Column(name="f_id",type=Column.TYPE_INTEGER,isNull = false)
+    private Integer f_id;
+    @Column(name="count",type=Column.TYPE_DOUBLE)
+    private double count;
+    @Column(name="suggestDate",type=Column.TYPE_TIMESTAMP,isNull = false)
+    private String suggestDate;
+    @Column(name="finishedDate",type=Column.TYPE_TIMESTAMP)
+    private String finishedDate;
+    @Column(name="type",type=Column.TYPE_INTEGER,isNull = false)
+    private Integer type;
+    @Column(name="life_status",type=Column.TYPE_INTEGER,isNull = false,defaultValue = "1")
+    private Integer life_status;
+    @Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP")
+    private String create_datetime;
+    @Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP")
+    private String update_datetime;
+    public U_f() {}
+    /**
+     *根据所有不允许为null的列，初始化对象
+     *
+     * @param u_sid 参数解释
+     * @param f_id 参数解释
+     * @param suggestDate 参数解释
+     * @param type 参数解释
+     *
+     *  @return 对象
+     */
+    public U_f(Integer u_sid,Integer f_id,String suggestDate,Integer type) {
+        this.u_sid = u_sid;
+        this.f_id = f_id;
+        this.suggestDate = suggestDate;
+        this.type = type;
+    }
 
     public Integer get_id() {
         return _id;
@@ -25,9 +60,6 @@ public class U_f {
         this._id = _id;
     }
 
-    @Column(name = "u_sid", type = Column.TYPE_INTEGER, isNull = false)
-    private Integer u_sid;
-
     public Integer getU_sid() {
         return u_sid;
     }
@@ -35,9 +67,6 @@ public class U_f {
     public void setU_sid(Integer u_sid) {
         this.u_sid = u_sid;
     }
-
-    @Column(name = "f_id", type = Column.TYPE_INTEGER, isNull = false)
-    private Integer f_id;
 
     public Integer getF_id() {
         return f_id;
@@ -47,9 +76,6 @@ public class U_f {
         this.f_id = f_id;
     }
 
-    @Column(name = "count", type = Column.TYPE_DOUBLE, isNull = false)
-    private double count;
-
     public double getCount() {
         return count;
     }
@@ -58,19 +84,13 @@ public class U_f {
         this.count = count;
     }
 
-    @Column(name = "calorie", type = Column.TYPE_DOUBLE, isNull = false)
-    private double calorie;
-
-    public double getCalorie() {
-        return calorie;
+    public String getSuggestDate() {
+        return suggestDate;
     }
 
-    public void setCalorie(double calorie) {
-        this.calorie = calorie;
+    public void setSuggestDate(String suggestDate) {
+        this.suggestDate = suggestDate;
     }
-
-    @Column(name = "finishedDate", type = Column.TYPE_TIMESTAMP, isNull = false)
-    private String finishedDate;
 
     public String getFinishedDate() {
         return finishedDate;
@@ -80,8 +100,13 @@ public class U_f {
         this.finishedDate = finishedDate;
     }
 
-    @Column(name = "life_status", type = Column.TYPE_INTEGER, isNull = false, defaultValue = "1")
-    private Integer life_status;
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getLife_status() {
         return life_status;
@@ -91,9 +116,6 @@ public class U_f {
         this.life_status = life_status;
     }
 
-    @Column(name = "create_datetime", type = Column.TYPE_TIMESTAMP, defaultValue = "CURRENT_TIMESTAMP")
-    private String create_datetime;
-
     public String getCreate_datetime() {
         return create_datetime;
     }
@@ -102,37 +124,12 @@ public class U_f {
         this.create_datetime = create_datetime;
     }
 
-    @Column(name = "update_datetime", type = Column.TYPE_TIMESTAMP, defaultValue = "CURRENT_TIMESTAMP")
-    private String update_datetime;
-
     public String getUpdate_datetime() {
         return update_datetime;
     }
 
     public void setUpdate_datetime(String update_datetime) {
         this.update_datetime = update_datetime;
-    }
-
-
-    public U_f() {
-    }
-
-    /**
-     * 根据所有不允许为null的列，初始化对象
-     *
-     * @param u_sid        参数解释
-     * @param f_id         参数解释
-     * @param count        参数解释
-     * @param calorie      参数解释
-     * @param finishedDate 参数解释
-     * @return 对象
-     */
-    public U_f(Integer u_sid, Integer f_id, double count, double calorie, String finishedDate) {
-        this.u_sid = u_sid;
-        this.f_id = f_id;
-        this.count = count;
-        this.calorie = calorie;
-        this.finishedDate = finishedDate;
     }
 
 

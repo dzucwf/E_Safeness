@@ -68,11 +68,6 @@ public class NaviDrugFragment extends AppBaseFragment {
        mData= new ArrayList<Map<String,Object>>();
 
         IBaseDao<Drug> drugDao = DaoFactory.createGenericDao(getActivity(), Drug.class);
-
-
-
-
-
         List<Drug> drugList = drugDao.queryByCondition("");
 
         Drug drug = new Drug();

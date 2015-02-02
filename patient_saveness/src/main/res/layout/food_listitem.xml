@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="?android:attr/listPreferredItemHeight">
+
+
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/food_list_item"
+        android:background="@drawable/listview_item" />
+
+    <TextView
+        android:id="@+id/food_list_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#666"
+        android:textSize="15sp"
+        android:width="280dp"
+        android:lines="1"
+        android:text="多种谷物面包(包括原粒谷物、七种谷物面包)"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/food_list_item_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#666"
+        android:textSize="13sp"
+        android:width="60dp"
+        android:lines="1"
+        android:text="100克"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="34dp"
+        android:singleLine="false"
+        android:gravity="right" />
+
+    <TextView
+        android:id="@+id/food_list_item_calorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff959595"
+        android:textSize="13sp"
+        android:width="160dp"
+        android:lines="1"
+        android:text="热量：599卡路里"
+        android:layout_below="@+id/food_list_item_title"
+        android:layout_alignLeft="@+id/food_list_item_title"
+        android:layout_alignStart="@+id/food_list_item_title"
+        android:layout_marginTop="4dp"/>
+</RelativeLayout>

@@ -20,7 +20,8 @@
         android:layout_alignParentStart="true"
         android:background="@drawable/navbar_btn_date"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="12dp"
+        android:onClick="openCalendar"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,13 +41,14 @@
         android:layout_below="@+id/img_drugsetting_nav_bg"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/ll_segment">
+        android:id="@+id/food_ll_segment">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:background="@drawable/segment_btn_center_normal"
-            android:layout_weight="1">
+            android:background="@drawable/segment_btn_center_pressed"
+            android:layout_weight="1"
+            android:id="@+id/food_ll_item_1">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -54,14 +56,16 @@
                 android:text="早餐"
                 android:gravity="center"
                 android:id="@+id/txv_food_breakfast"
+                android:textColor="#ffffff"
                 android:textSize="16dp" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:background="@drawable/segment_btn_center_pressed"
-            android:layout_weight="1">
+            android:background="@drawable/segment_btn_center_normal"
+            android:layout_weight="1"
+            android:id="@+id/food_ll_item_2">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -76,7 +80,8 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:background="@drawable/segment_btn_center_normal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+            android:id="@+id/food_ll_item_3">
 
         <TextView
             android:layout_width="fill_parent"
@@ -91,7 +96,8 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:background="@drawable/segment_btn_center_normal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:id="@+id/food_ll_item_4">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -107,6 +113,6 @@
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/linearLayout111"
-        android:id="@+id/listView3" />
+        android:layout_below="@+id/food_ll_segment"
+        android:id="@+id/food_list" />
 </RelativeLayout>
