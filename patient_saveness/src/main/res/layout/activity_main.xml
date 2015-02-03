@@ -41,11 +41,12 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/mainContainer">
 
-        <ImageView
+        <ImageButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/navi_switcher_item_food"
             android:src="@drawable/nav_myday_selected"
+            android:background="@null"
             android:onClick="onNaviCheck"
             android:layout_height="wrap_content" />
         <ImageButton
