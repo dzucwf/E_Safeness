@@ -55,10 +55,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/input_glucose"
-                        android:textSize="@dimen/big_font_bigger"
+                        android:textSize="18sp"
                         android:tag="before"
                         android:id="@+id/glucose_value_before_tv"
-                        android:textColor="@color/black"
+                        android:textColor="#9e9e9e"
                         android:layout_centerInParent="true"
                         />
 
@@ -108,8 +108,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/input_glucose"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/big_font_bigger"
+                        android:textColor="#9e9e9e"
+                        android:textSize="18sp"
                         android:tag="after"
                         android:layout_centerInParent="true"
                         android:id="@+id/glucose_value_after_tv"

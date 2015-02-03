@@ -9,22 +9,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/nav_bar">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
             android:layout_height="wrap_content">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:scaleType="centerInside"
             android:layout_alignParentLeft="true"
-            android:layout_margin="5dp"
-            android:background="@null"
-            android:src="@drawable/cal_btn"
+            android:src="@drawable/navbar_btn_date"
+
             android:id="@+id/cal_btn"
-            android:onClick="openCalendar"></ImageButton>
+            android:onClick="openCalendar"></ImageView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,18 +32,19 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                android:text="2015年1月21日"
-                android:textSize="20sp"
+                android:textColor="#ff298bd0"
+                android:textSize="18sp"
                 android:id="@+id/date_glucose_tv"
                 />
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:scaleType="centerInside"
                 android:layout_alignParentRight="true"
-                android:layout_margin="5dp"
                 android:background="@null"
                 android:src="@drawable/set_btn"
                 android:id="@+id/set_btn"
-                ></ImageButton>
+                ></ImageView>
         </RelativeLayout>
 
         <TextView
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="其他"
             android:id="@+id/glucose_time_tv"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:layout_margin="5dp"
             />
 
