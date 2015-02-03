@@ -1,0 +1,77 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+
+    <script type="text/javascript" src="j.js"></script>
+    <script type="text/javascript" src="h.js"></script>
+    <script>
+       var options = {
+              chart: {
+                  type: 'line',
+                  renderTo:'container'
+              },
+              title: {
+                  text: null
+              },
+              credits:{
+                  enabled:false
+              },
+              xAxis: {
+                  gridLineWidth: 1,
+                  gridLineDashStyle: 'Dash',
+                  gridLineColor: '#e2e2e2',
+                  tickmarkPlacement: 'on',
+                  categories: []
+              },
+              yAxis: {
+                  title: {
+                      text: null
+                  },
+                  labels: { step: 0.5, style: { color: '#999999'} },
+                  min: 0,
+                  minorGridLineWidth: 1,
+                  gridLineWidth: 0,
+                  alternateGridColor: null,
+                  plotBands: [{
+                      from: 3.9,
+                      to: 7.2,
+                      color: '#e7f0f5',
+                      label: {
+                          text: '正常范围 3.9~7.2mmol/L',
+                          style: {
+                              color: '#606060'
+                          }
+                      }
+                  }]
+              },
+              legend:{enabled:false},
+              tooltip: {
+                  valueSuffix: ' mmol/L'
+              },
+              plotOptions: {
+                  line: {
+                      color: '#db322e',
+
+                      marker: {
+                          fillColor: '#d50600',
+                          lineColor: '#db322e'
+                      }
+                  }
+              },
+              series: []
+          };
+          function update(p1,p2,p3){
+                options.series = eval('(' + p1 + ')');
+                options.xAxis.categories = eval('(' + p2 + ')');
+                options.yAxis.title = eval('(' + p3 + ')');
+                chart = new Highcharts.Chart(options);
+          }
+  </script>
+</head>
+<body>
+
+<div id="container" style="width:100%;min-height:160px;text-align:center;"><span style="color:#b1b1b1; margin:40px auto;">正在载入...</span></div>
+</body>
+</html>

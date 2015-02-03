@@ -1,0 +1,110 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+
+    <script type="text/javascript" src="j.js"></script>
+    <script type="text/javascript" src="h.js"></script>
+    <script>
+var colors = Highcharts.getOptions().colors,
+        categories = ['cal'],
+        name = 'cal',
+        data = [{
+            y: 100,
+            sliced: false,
+            color: '#ff6a21',
+            drilldown: {
+                name: 'cal',
+                categories: ['a', 'b'],
+                data: [],
+                color: '#ff6221'
+            }
+        }];
+        var options = {
+            chart: {
+                type: 'pie',
+                renderTo: 'container',
+                backgroundColor: 'rgba(0,0,0,0)',
+                margin: [0, 0, 0, 0],
+                padding: [0, 0, 0, 0]
+            },
+            title: {
+                text: '170',
+                y: 90,
+                style: {
+                    color: '#fff',
+                    fontSize: '38px'
+                }
+            },
+            subtitle: {
+                text: '卡路里kCal',
+                y: 110,
+                style: {
+                    color: '#fff',
+                    fontSize: '16px'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Total percent market share'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: true,
+                    center: ['50%', '34%'],
+                    showInLegend: false
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            series: [{
+                name: 'Browsers',
+                data: [{
+                    name: 'Lionnd',
+                    y: 100,
+                    color: '#ff6221'
+                }],
+                size: '100%',
+                dataLabels: {
+                    enabled: false
+                }
+            }, {
+                name: 'Versions',
+                data: [],
+                size: '100%',
+                innerSize: '80%',
+                dataLabels: {
+                    enabled: false
+                }
+            }]
+        };
+
+
+        var chart = new Highcharts.Chart(options);
+          function update(p1,p2,p3){
+                var versionsData = [];
+                data[0].drilldown.data = eval('(' + p1 + ')');;
+                for (var j = 0; j < data[0].drilldown.data.length; j++) {
+                    var brightness = 0.2 - (j / data[0].drilldown.data.length) / 5;
+                    versionsData.push({
+                        name: data[0].drilldown.categories[j],
+                        y: data[0].drilldown.data[j],
+                        color: Highcharts.Color(data[0].color).brighten(brightness).get()
+                    });
+                }
+                options.title.text = p2;
+                options.subtitle.text = p3;
+                options.series[1].data = versionsData;
+                chart = new Highcharts.Chart(options);
+          }
+  </script>
+</head>
+<body>
+<div id="container" style="width: 100%; min-height:260px; text-align: center;">
+    <span style="color:#b1b1b1; margin:40px auto;">正在载入...</span>
+</div>
+</body>
+</html>

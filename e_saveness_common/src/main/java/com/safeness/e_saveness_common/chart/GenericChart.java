@@ -23,7 +23,7 @@ public class GenericChart {
     public static String getChartStr(Context ttt, String[] xAxis, String yAxisTitle, double[] series){
         String reStr = "";
         try {
-            reStr = getFromAssets(ttt, "h.htm");
+            reStr = getFromAssets(ttt, "www/h.htm");
             reStr = reStr.replace("<LIONND|REPLACE|SERIES>", arrayToString(series));
             reStr = reStr.replace("<LIONND|REPLACE|XAXIS>",arrayToString(xAxis));
             reStr = reStr.replace("<LIONND|REPLACE|YAXIS|TITLE>", yAxisTitle);
