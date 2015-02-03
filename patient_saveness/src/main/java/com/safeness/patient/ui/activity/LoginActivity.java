@@ -63,7 +63,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
+        mContext = this;/*
         //Insert An Object
         IBaseDao<User> userDao = DaoFactory.createGenericDao(mContext, User.class);
 
@@ -91,7 +91,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         for (User user : userList) {
             Log.i("asdf",user.getUsername() + ";");
         }
-
+*/
     }
 
     @Override

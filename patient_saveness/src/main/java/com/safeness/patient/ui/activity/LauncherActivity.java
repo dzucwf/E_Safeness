@@ -51,7 +51,8 @@ public class LauncherActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             public void run() {
                  /* Create an Intent that will start the Main WordPress Activity. */
-                Intent mainIntent = new Intent(LauncherActivity.this, LoginActivity.class);
+                //Intent mainIntent = new Intent(LauncherActivity.this, LoginActivity.class);
+                Intent mainIntent = new Intent(LauncherActivity.this, MainActivity.class);
                 LauncherActivity.this.startActivity(mainIntent);
                 LauncherActivity.this.finish();
             }
