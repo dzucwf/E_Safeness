@@ -1,8 +1,11 @@
 package com.safeness.e_saveness_common.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +61,7 @@ public abstract class AppBaseFragment extends Fragment implements
 
 		// setContentView(getLayoutId());
 
+        Log.d(TAG,"onCreateView");
 		// TODO Auto-generated method stub
 		return inflater.inflate(getLayoutId(), container, false);
 	}
@@ -78,7 +82,9 @@ public abstract class AppBaseFragment extends Fragment implements
 
 
 		super.onViewCreated(view, savedInstanceState);
-	}
+
+        Log.d(TAG,"onViewCreated");
+    }
 
 	/**
 	 * 布局文件ID
@@ -124,7 +130,60 @@ public abstract class AppBaseFragment extends Fragment implements
 		}
 	}
 
-	/**
+    @Override
+    public void setInitialSavedState(SavedState state) {
+        super.setInitialSavedState(state);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG,"onDetach");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"onActivityCreated");
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG,"onAttach");
+    }
+
+    /**
 	 * 显示Toast形式的提示信息
 	 * 
 	 * @param message

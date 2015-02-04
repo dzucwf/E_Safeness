@@ -1,5 +1,6 @@
-package com.safeness.patient.model;
+package com.safeness.e_saveness_common.model;
 
+import com.easemob.chat.EMContact;
 import com.safeness.e_saveness_common.dao.Table;
 import com.safeness.e_saveness_common.dao.Table.Column;
 
@@ -12,7 +13,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
  */
 
 @Table(name = "user")
-public class User {
+public class User extends EMContact {
 
     @Column(name = "_id", type = Column.TYPE_INTEGER, isPrimaryKey = true, isUnique = true)
     private Integer _id;
@@ -193,6 +194,43 @@ public class User {
     public User(Integer server_id, String username) {
         this.server_id = server_id;
         this.username = username;
+    }
+
+    private int unreadMsgCount;
+    private String header;
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public int getUnreadMsgCount() {
+        return unreadMsgCount;
+    }
+
+    public void setUnreadMsgCount(int unreadMsgCount) {
+        this.unreadMsgCount = unreadMsgCount;
+    }
+
+    @Override
+    public int hashCode() {
+        return 17 * getUsername().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof User)) {
+            return false;
+        }
+        return getUsername().equals(((User) o).getUsername());
+    }
+
+    @Override
+    public String toString() {
+        return nick == null ? username : nick;
     }
 
 

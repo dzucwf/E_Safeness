@@ -2,14 +2,12 @@ package com.safeness.patient.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -17,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidListener;
 import com.safeness.e_saveness_common.base.AppBaseFragment;
 import com.safeness.e_saveness_common.chart.GenericChart;
 import com.safeness.e_saveness_common.dao.DaoFactory;
@@ -33,7 +29,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 //血糖
@@ -58,8 +53,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     List<BloodGlucose> sourceValueList;
     Calendar selected_calendar = Calendar.getInstance();
 
-    //打开的日历控件
-    private CaldroidFragment dialogCaldroidFragment;
+
     final String dialogTag = "CALDROID_DIALOG_FRAGMENT";
     private WebView chartWebView;
 
@@ -111,7 +105,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
                 }
             });
-            glucoseinputview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            glucoseinputview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             glucoseViewList.add(glucoseinputview);
             // add for index container
             ImageView index = new ImageView(getActivity());
@@ -124,70 +118,15 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
         }
 
-       // createCalControl();
+
         mViewPager.setAdapter(new ViewPagerAdapter(glucoseViewList));
         mViewPager.setOnPageChangeListener(this);
 
     }
 
-    private void createCalControl(){
-        // Setup caldroid to use as dialog
 
 
-        dialogCaldroidFragment = new CaldroidFragment();
 
-        // Setup dialogTitle
-        Bundle args = new Bundle();
-        Calendar cal = Calendar.getInstance();
-        args.putInt(dialogCaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-        args.putInt(dialogCaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        args.putBoolean(dialogCaldroidFragment.ENABLE_SWIPE, true);
-        args.putBoolean(dialogCaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
-        args.putBoolean(dialogCaldroidFragment.SHOW_NAVIGATION_ARROWS,true);
-        dialogCaldroidFragment.setArguments(args);
-        dialogCaldroidFragment.setCaldroidListener(Callistener);
-
-    }
-
-    public void showCalControl(){
-        if(dialogCaldroidFragment == null){
-            createCalControl();
-        }
-        dialogCaldroidFragment.show(getActivity().getSupportFragmentManager(),
-                dialogTag);
-    }
-
-
-    // Setup listener
-    final CaldroidListener Callistener = new CaldroidListener() {
-
-        @Override
-        public void onSelectDate(Date date, View view) {
-            Toast.makeText(getActivity().getApplicationContext(), formatter.format(date),
-                    Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        public void onChangeMonth(int month, int year) {
-            String text = "month: " + month + " year: " + year;
-            Toast.makeText(getActivity().getApplicationContext(), text,
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onLongClickDate(Date date, View view) {
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Long click " + formatter.format(date),
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCaldroidViewCreated() {
-
-        }
-
-    };
 
 
     /**
@@ -225,7 +164,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
         super.onResume();
         fillChartData();
-        loadCurrentTimeValue();
+       loadCurrentTimeValue();
 
 
     }
@@ -242,13 +181,19 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             IBaseDao<BloodGlucose> daoFactory = DaoFactory.createGenericDao(getActivity(), BloodGlucose.class);
             sourceValueList = daoFactory.queryByCondition("takeDate between ? and ? ", new String[]{queryStartTime, queryEndTime});
             if (sourceValueList != null && sourceValueList.size() > 0) {
-                String[] xAxis = new String[sourceValueList.size()];
-                double[] series = new double[sourceValueList.size()];
+                final String[] xAxis = new String[sourceValueList.size()];
+                final double[] series = new double[sourceValueList.size()];
                 for (int i = 0; i < sourceValueList.size(); i++) {
                     xAxis[i] = sourceValueList.get(i).getTakeDate();
                     series[i] = sourceValueList.get(i).getBloodGlucose();
                 }
-                LoadChartData(getActivity(), xAxis, "血糖图表", series);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadChartData(getActivity(), xAxis, "血糖图表", series);
+                    }
+                });
+
 
             } else {
                 chartWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
