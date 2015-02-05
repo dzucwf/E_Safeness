@@ -2,11 +2,7 @@ package com.safeness.patient.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-<<<<<<< Updated upstream
-=======
 import android.graphics.Color;
-import android.os.Bundle;
->>>>>>> Stashed changes
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -143,9 +139,6 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
         }
 
-<<<<<<< Updated upstream
-
-=======
         btn_set = (ImageView) view.findViewById(R.id.set_btn);
         btn_set.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,8 +147,6 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
                 getActivity().startActivity(it1);
             }
         });
-       // createCalControl();
->>>>>>> Stashed changes
         mViewPager.setAdapter(new ViewPagerAdapter(glucoseViewList));
         mViewPager.setOnPageChangeListener(this);
 
@@ -240,17 +231,12 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             String queryStartTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 00:00:00");
             String queryEndTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 23:59:59");
             IBaseDao<BloodGlucose> daoFactory = DaoFactory.createGenericDao(getActivity(), BloodGlucose.class);
-            sourceValueList = daoFactory.queryByCondition("takeDate between ? and ? order by takeDate desc", new String[]{queryStartTime, queryEndTime});
+            sourceValueList = daoFactory.queryByCondition("takeDate between ? and ? order by takeDate", new String[]{queryStartTime, queryEndTime});
             if (sourceValueList != null && sourceValueList.size() > 0) {
-<<<<<<< Updated upstream
                 final String[] xAxis = new String[sourceValueList.size()];
                 final double[] series = new double[sourceValueList.size()];
-=======
-                String[] xAxis = new String[sourceValueList.size()];
-                double[] series = new double[sourceValueList.size()];
                 SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 SimpleDateFormat sf2=new SimpleDateFormat("HH:mm");
->>>>>>> Stashed changes
                 for (int i = 0; i < sourceValueList.size(); i++) {
                     xAxis[i] = sf2.format(sf.parse(sourceValueList.get(i).getTakeDate()));
                     series[i] = sourceValueList.get(i).getBloodGlucose();
