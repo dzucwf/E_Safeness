@@ -10,10 +10,12 @@
        var options = {
               chart: {
                   type: 'line',
-                  renderTo:'container'
+                  renderTo:'container',
+                  backgroundColor: 'rgba(0,0,0,0)',
+                padding: [0, 0, 0, 0]
               },
               title: {
-                  text: null
+                  text: '24小时血糖变化'
               },
               credits:{
                   enabled:false
@@ -65,7 +67,7 @@
           function update(p1,p2,p3){
                 options.series = eval('(' + p1 + ')');
                 options.xAxis.categories = eval('(' + p2 + ')');
-                options.yAxis.title = eval('(' + p3 + ')');
+                options.yAxis.title = p3;
                 chart = new Highcharts.Chart(options);
           }
   </script>

@@ -1,0 +1,103 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title></title>
+
+    <script type="text/javascript" src="j.js"></script>
+    <script type="text/javascript" src="h.js"></script>
+    <script>
+$(function () {
+    Highcharts.setOptions({
+
+global: {
+
+useUTC: false
+
+},
+
+lang:{
+
+shortMonths:['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月','九月', '十月','十一月', '十二月'],
+
+weekdays:['星期日',  '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+
+}
+
+});
+    $('#container').highcharts({
+        chart: {
+
+                renderTo: 'container',
+                backgroundColor: 'rgba(0,0,0,0)',
+                padding: [0, 0, 0, 0],
+                margin:[10,0,30]
+        },
+title: {
+                  text: null
+              },
+              credits:{
+                  enabled:false
+              },
+        xAxis: {
+            type: 'datetime',
+            maxZoom: 1 * 24 * 3600000, // fourteen days
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            title: {
+                text: '卡路里'
+            }
+        },
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                lineWidth: 1,
+                marker: {
+                    enabled: false
+                },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
+
+        series: [{
+            type: 'area',
+            pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC(2015, 1, 01),
+            data: [
+                154.68, 204.34, 241.26,273.87, 294.59, 310.56, 319.82,
+            		320.40, 312.33, 292.24, 273.42, 266.62,269.56, 279.12, 289.99, 289.65, 278.26, 255.79,
+            		257.22, 248.26, 246.05,243.04, 234.64, 237.08, 240.99, 243.57, 242.37, 244.01, 243.44,
+            		235.86,223.80, 210.04, 172.87, 147.47, 130.76, 125.55, 121.44, 110.09, 109.50
+            ]
+        }]
+    });
+});
+  </script>
+</head>
+<body>
+<div id="container" style="width: 100%; min-height:200px; text-align: center;">
+    <span style="color:#b1b1b1; margin:40px auto;">正在载入...</span>
+</div>
+</body>
+</html>
