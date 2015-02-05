@@ -24,15 +24,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.easemob.EMCallBack;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMContactManager;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.util.EMLog;
+import com.easemob.util.HanziToPinyin;
+import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
-import com.safeness.e_saveness_common.dao.DaoFactory;
-import com.safeness.e_saveness_common.dao.IBaseDao;
+import com.safeness.e_saveness_common.util.Constant;
+import com.safeness.im.db.UserDao;
 import com.safeness.patient.R;
-import com.safeness.patient.model.User;
+import com.safeness.e_saveness_common.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
@@ -44,7 +54,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "pp1:pp1", "pp2:pp2"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -200,12 +210,14 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        //return email.contains("@");
+        //puchao
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 1;
     }
 
     /**
@@ -309,6 +321,158 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         mEmailView.setAdapter(adapter);
     }
 
+    boolean progressShow = false;
+
+    //登陆聊天是否成功
+    boolean isSuccess = false;
+    /**
+     * 登陆聊天服务器
+     * @param currentUsername
+     * @param currentPassword
+     */
+    private void loginIM(final String currentUsername, final String currentPassword){
+
+
+            PatientApplication.currentUserNick = "pp1";
+
+            progressShow = true;
+
+             isSuccess = false;
+
+            final long start = System.currentTimeMillis();
+            // 调用sdk登陆方法登陆聊天服务器
+            EMChatManager.getInstance().login(currentUsername, currentPassword, new EMCallBack() {
+
+
+                @Override
+                public void onSuccess() {
+                    //umeng自定义事件，开发者可以把这个删掉
+                    //loginSuccess2Umeng(start);
+
+                    if (!progressShow) {
+                        return;
+                    }
+                    // 登陆成功，保存用户名密码
+                    PatientApplication.getInstance().setUserName(currentUsername);
+                    PatientApplication.getInstance().setPassword(currentPassword);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+
+                        }
+                    });
+                    try {
+                        // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
+                        // ** manually load all local groups and
+                        // conversations in case we are auto login
+                        EMGroupManager.getInstance().loadAllGroups();
+                        EMChatManager.getInstance().loadAllConversations();
+
+                        // demo中简单的处理成每次登陆都去获取好友username，开发者自己根据情况而定
+                        List<String> usernames = EMContactManager.getInstance().getContactUserNames();
+                        EMLog.d("roster", "contacts size: " + usernames.size());
+                        Map<String, User> userlist = new HashMap<String, User>();
+                        for (String username : usernames) {
+                            User user = new User();
+                            user.setUsername(username);
+                            setUserHearder(username, user);
+                            userlist.put(username, user);
+                        }
+                       //puchao
+                        /*
+                        // 添加user"申请与通知"
+                        User newFriends = new User();
+                        newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
+                        newFriends.setNick("申请与通知");
+                        newFriends.setHeader("");
+                        userlist.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
+                        // 添加"群聊"
+                        User groupUser = new User();
+                        groupUser.setUsername(Constant.GROUP_USERNAME);
+                        groupUser.setNick("群聊");
+                        groupUser.setHeader("");
+                        userlist.put(Constant.GROUP_USERNAME, groupUser);
+                        */
+                        // 存入内存
+                        PatientApplication.getInstance().setContactList(userlist);
+                        // 存入db
+                        UserDao dao = new UserDao(LoginActivity.this);
+                        List<User> users = new ArrayList<User>(userlist.values());
+                        dao.saveContactList(users);
+
+                        // 获取群聊列表(群聊里只有groupid和groupname等简单信息，不包含members),sdk会把群组存入到内存和db中
+                        EMGroupManager.getInstance().getGroupsFromServer();
+                        isSuccess = true;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        //取好友或者群聊失败，不让进入主页面，也可以不管这个exception继续进到主页面
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+
+                                PatientApplication.getInstance().logout(null);
+                                Toast.makeText(getApplicationContext(), "登录失败: 获取好友或群聊失败", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        return;
+                    }
+                    //更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
+                    boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(PatientApplication.currentUserNick.trim());
+                    if (!updatenick) {
+                        Log.e("LoginActivity", "update current user nick fail");
+                    }
+
+
+
+                }
+
+                @Override
+                public void onProgress(int progress, String status) {
+                }
+
+                @Override
+                public void onError(final int code, final String message) {
+                    //loginFailure2Umeng(start,code,message);
+                    if (!progressShow) {
+                        return;
+                    }
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+
+                            Toast.makeText(getApplicationContext(), "登录失败: " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+
+
+    }
+
+    /**
+     * 设置hearder属性，方便通讯中对联系人按header分类显示，以及通过右侧ABCD...字母栏快速定位联系人
+     *
+     * @param username
+     * @param user
+     */
+    protected void setUserHearder(String username, User user) {
+        String headerName = null;
+        if (!TextUtils.isEmpty(user.getNick())) {
+            headerName = user.getNick();
+        } else {
+            headerName = user.getUsername();
+        }
+        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
+            user.setHeader("");
+        } else if (Character.isDigit(headerName.charAt(0))) {
+            user.setHeader("#");
+        } else {
+            user.setHeader(HanziToPinyin.getInstance().get(headerName.substring(0, 1)).get(0).target.substring(0, 1).toUpperCase());
+            char header = user.getHeader().toLowerCase().charAt(0);
+            if (header < 'a' || header > 'z') {
+                user.setHeader("#");
+            }
+        }
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -327,12 +491,9 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+
+
+                loginIM(mEmail,mPassword);
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.safeness.patient.ui.fragment.NaviDoctorFragment;
+import com.safeness.im.activity.ContactlistFragment;
 import com.safeness.patient.ui.fragment.NaviDrugFragment;
 import com.safeness.patient.ui.fragment.NaviFoodFragment;
 import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
@@ -22,7 +22,8 @@ public class BtmNaviSwitchAdapter extends FragmentPagerAdapter{
         mFragments.add(new NaviDrugFragment());
 		mFragments.add(new NaviGlucoseFragment());
 		mFragments.add(new NaviSportsFragment());
-        mFragments.add(new NaviDoctorFragment());
+
+        mFragments.add(new ContactlistFragment());
 	}
 
 	@Override

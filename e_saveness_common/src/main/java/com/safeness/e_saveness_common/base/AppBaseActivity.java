@@ -28,7 +28,9 @@ import java.util.Map;
  *
  */
 public abstract class AppBaseActivity extends FragmentActivity implements ResultCallback {
-	
+
+
+
     /**
      * 当前activity所持有的所有网络请求
      */
@@ -184,6 +186,12 @@ public abstract class AppBaseActivity extends FragmentActivity implements Result
   	public void onFail(int errorCode, int reqCode) {
   		// TODO Auto-generated method stub
   	}
-  	
+
+    /*
+    * 以下是聊天方法
+    * */
+
+
+
 
 }
