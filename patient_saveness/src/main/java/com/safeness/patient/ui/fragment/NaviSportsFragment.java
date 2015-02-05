@@ -142,7 +142,7 @@ public class NaviSportsFragment extends AppBaseFragment {
         myWebView.setBackgroundColor(Color.TRANSPARENT);
 
         web_cal.loadUrl("file:///android_asset/www/pie2.htm");
-        myWebView.loadUrl("file:///android_asset/www/h.htm");
+        myWebView.loadUrl("file:///android_asset/www/sports.htm");
 
         web_cal.setWebViewClient(new WebViewClient()
         {
@@ -162,7 +162,7 @@ public class NaviSportsFragment extends AppBaseFragment {
                 }
             }
         });
-
+/*
         myWebView.setWebViewClient(new WebViewClient()
         {
             @Override
@@ -201,7 +201,7 @@ public class NaviSportsFragment extends AppBaseFragment {
             }
         });
 
-
+*/
 
 
 

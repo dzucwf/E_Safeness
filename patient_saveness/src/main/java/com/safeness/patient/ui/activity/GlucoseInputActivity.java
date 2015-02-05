@@ -83,6 +83,23 @@ public class GlucoseInputActivity extends AppBaseActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        TextView btn_save = (TextView)this.findViewById(R.id.glucose_btn_save);
+        TextView btn_clear = (TextView)this.findViewById(R.id.glucose_btn_clear);
+
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearValue();
+            }
+        });
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
+
         getGlucose_time_Text();
         clearValue();
         glucoseUtil = new GlucoseUtil(this);
@@ -232,10 +249,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
     }
 
 
-    /**保存
-     * @param view
-     */
-    public void save(View view){
+    public void save(){
         IBaseDao<BloodGlucose>  daoFactory= DaoFactory.createGenericDao(mContext, BloodGlucose.class);
         float value = 0.0f;
         if(!TextUtils.isEmpty(glucose_value_et.getText())){

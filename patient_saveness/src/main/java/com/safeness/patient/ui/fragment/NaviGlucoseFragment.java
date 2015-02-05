@@ -2,6 +2,11 @@ package com.safeness.patient.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+<<<<<<< Updated upstream
+=======
+import android.graphics.Color;
+import android.os.Bundle;
+>>>>>>> Stashed changes
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +29,11 @@ import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.model.BloodGlucose;
 import com.safeness.patient.ui.activity.GlucoseInputActivity;
+import com.safeness.patient.ui.activity.MoreActivity;
 import com.safeness.patient.ui.view.GlucoseInputView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,6 +52,8 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
     TextView dateTextViw;
     TextView glucose_time_tv;
+
+    ImageView btn_set;
 
     private int selectTime = 0;
 
@@ -63,11 +75,24 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
         chartWebView = (WebView) getActivity().findViewById(R.id.glucoseChart);
 
-        WebSettings webSettings = chartWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        chartWebView.getSettings().setJavaScriptEnabled(true);
+        chartWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        chartWebView.getSettings().setDefaultTextEncodingName("utf-8");
+
+        chartWebView.setBackgroundColor(Color.TRANSPARENT);
         //不使用缓存
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        chartWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+        chartWebView.loadUrl("file:///android_asset/www/h.htm");
+        chartWebView.setWebViewClient(new WebViewClient()
+        {
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                super.onPageFinished(view, url);
+                fillChartData();
+            }
+        });
 
         dateTextViw = (TextView) getActivity().findViewById(R.id.date_glucose_tv);
         glucose_time_tv = (TextView) getActivity().findViewById(R.id.glucose_time_tv);
@@ -118,7 +143,19 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
         }
 
+<<<<<<< Updated upstream
 
+=======
+        btn_set = (ImageView) view.findViewById(R.id.set_btn);
+        btn_set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it1 = new Intent(getActivity(), MoreActivity.class);
+                getActivity().startActivity(it1);
+            }
+        });
+       // createCalControl();
+>>>>>>> Stashed changes
         mViewPager.setAdapter(new ViewPagerAdapter(glucoseViewList));
         mViewPager.setOnPageChangeListener(this);
 
@@ -132,10 +169,34 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     /**
      * 为webview填充数据
      */
-    private void LoadChartData(Context context, String[] xAxis, String yAxisTitle, double[] series) {
+    private void LoadChartData(Context context, String[] xAxis, String yAxisTitle, final double[] series) {
 
-        chartWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-        chartWebView.loadData(GenericChart.getChartStr(context, xAxis, yAxisTitle, series), "text/html", "utf-8");
+        try {
+            JSONArray j_series = new JSONArray();
+            JSONArray j_xAxis = new JSONArray();
+
+            for (int i = 0; i < xAxis.length; i++) {
+                j_xAxis.put(xAxis[i]);
+            }
+
+            JSONObject series1 = new JSONObject();
+            JSONArray s1name = new JSONArray();
+            s1name.put("血糖值");
+            series1.put("name", s1name);
+
+            JSONArray s1data = new JSONArray();
+            for (int i = 0; i < series.length; i++) {
+                s1data.put(series[i]);
+            }
+            if (s1data.length() == 0){s1data.put(null).put(null).put(null).put(null);}
+            series1.put("data", s1data);
+            j_series.put(series1);
+            chartWebView.loadUrl("javascript:update('"+j_series.toString()+"','"+(j_xAxis.length() == 0 ? "[6,12,18,0]" : j_xAxis.toString())+"','"+yAxisTitle+"');");
+        }
+        catch (Exception ex) {
+            // 键为null或使用json不支持的数字格式(NaN, infinities)
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
@@ -179,12 +240,19 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             String queryStartTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 00:00:00");
             String queryEndTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 23:59:59");
             IBaseDao<BloodGlucose> daoFactory = DaoFactory.createGenericDao(getActivity(), BloodGlucose.class);
-            sourceValueList = daoFactory.queryByCondition("takeDate between ? and ? ", new String[]{queryStartTime, queryEndTime});
+            sourceValueList = daoFactory.queryByCondition("takeDate between ? and ? order by takeDate desc", new String[]{queryStartTime, queryEndTime});
             if (sourceValueList != null && sourceValueList.size() > 0) {
+<<<<<<< Updated upstream
                 final String[] xAxis = new String[sourceValueList.size()];
                 final double[] series = new double[sourceValueList.size()];
+=======
+                String[] xAxis = new String[sourceValueList.size()];
+                double[] series = new double[sourceValueList.size()];
+                SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                SimpleDateFormat sf2=new SimpleDateFormat("HH:mm");
+>>>>>>> Stashed changes
                 for (int i = 0; i < sourceValueList.size(); i++) {
-                    xAxis[i] = sourceValueList.get(i).getTakeDate();
+                    xAxis[i] = sf2.format(sf.parse(sourceValueList.get(i).getTakeDate()));
                     series[i] = sourceValueList.get(i).getBloodGlucose();
                 }
                 getActivity().runOnUiThread(new Runnable() {
@@ -196,7 +264,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
 
             } else {
-                chartWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+                LoadChartData(getActivity(), new String[0], "血糖图表", new double[0]);
             }
 
         } catch (Exception e) {

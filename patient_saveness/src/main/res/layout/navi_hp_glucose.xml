@@ -71,17 +71,45 @@
     </LinearLayout>
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/glucose_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="0dip" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView4" >
 
-    <WebView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/glucoseChart"
-        ></WebView>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sports_bg">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/glucose_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:padding="0dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center">
+
+                <WebView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/glucoseChart"
+                    ></WebView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

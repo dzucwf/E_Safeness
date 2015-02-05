@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +25,7 @@ import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Food;
+import com.safeness.patient.model.U_d;
 import com.safeness.patient.model.U_f;
 import com.safeness.patient.ui.activity.DrugSettingActivity;
 import com.safeness.patient.ui.activity.HistoryActivity;
@@ -49,6 +51,8 @@ public class NaviFoodFragment extends AppBaseFragment {
     private LinearLayout ll_segment;
 
     private ImageView btn_food_nav_item;
+    private LinearLayout btn_eated;
+    private ImageView btn_eated_status;
 
     private  final  int OPEN_CALENDAR_RQ=11;
     private  final int SET_DATE_RESULT = 12;
@@ -58,10 +62,20 @@ public class NaviFoodFragment extends AppBaseFragment {
 
     private int cutTab = 1;
     private Date selectDate = Calendar.getInstance().getTime();
+
+    private IBaseDao<Food> foodDao;
+    private IBaseDao<U_f> u_fdDao;
     //
     @Override
     protected int getLayoutId() {
         return R.layout.navi_hp_food;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        btn_eated_status.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -89,9 +103,11 @@ public class NaviFoodFragment extends AppBaseFragment {
                                     else if (ll_segment_item.getId() ==R.id.food_ll_item_3){cutTab = 3;}
                                     else if (ll_segment_item.getId() ==R.id.food_ll_item_4){cutTab = 4;}
                                     adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
-                                            new String[]{"title","desc","calorie","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
+                                            new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
                                     listView.setAdapter(adapter);
                                     //listView.setAdapter(adapter);
+
+                                    btn_eated_status.setVisibility(View.INVISIBLE);
                                 }
                             }
                         }
@@ -104,8 +120,18 @@ public class NaviFoodFragment extends AppBaseFragment {
 
 
         adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
-                new String[]{"title","desc","calorie","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
+                new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.mItemList.get(position).put("status", Integer.parseInt(adapter.mItemList.get(position).get("status").toString()) > 0 ? -1 : 1);
+                adapter.notifyDataSetChanged();
+
+                btn_eated_status.setVisibility(View.INVISIBLE);
+            }
+        });
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         //saveCalendar = DateTimeUtil.getSelectCalendar(df.format(date), DateTimeUtil.NORMAL_PATTERN);
@@ -121,6 +147,23 @@ public class NaviFoodFragment extends AppBaseFragment {
             }
         });
 
+
+        btn_eated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* List<User> insertUserList = new ArrayList<User>();
+        for(int i = 0; i<10;++i){
+            insertUserList.add(new User(i+10, "BBB"+i));
+        }
+        userDao.batchInsert(insertUserList);*/
+                for(int i = 0; i<adapter.mItemList.size();++i){
+                    U_f u_f = new U_f();
+                    u_f.setLife_status(Integer.parseInt(adapter.mItemList.get(i).get("status").toString()));
+                    u_fdDao.update(u_f, "_id=?", adapter.mItemList.get(i).get("_id").toString());
+                }
+                btn_eated_status.setVisibility(View.VISIBLE);
+            }
+        });
 
     }
 
@@ -150,6 +193,8 @@ public class NaviFoodFragment extends AppBaseFragment {
         txv_dateText = (TextView)getActivity().findViewById(R.id.txv_food_nav_date_text);
 
         btn_food_nav_item = (ImageView)getActivity().findViewById(R.id.btn_food_nav_item);
+        btn_eated = (LinearLayout)getActivity().findViewById(R.id.food_ll_bottomBar);
+        btn_eated_status = (ImageView)getActivity().findViewById(R.id.food_ll_bottomBar_status);
     }
 
     private String getDateBg(Date date){
@@ -175,7 +220,7 @@ public class NaviFoodFragment extends AppBaseFragment {
             txv_dateText.setText(df.format(date));
 
             adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
-                    new String[]{"title","desc","calorie","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
+                    new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
             listView.setAdapter(adapter);
             //setCalText(selected_calendar);
 
@@ -190,8 +235,8 @@ public class NaviFoodFragment extends AppBaseFragment {
     private ArrayList<Map<String,Object>> getData(){
         ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
 
-        IBaseDao<Food> foodDao = DaoFactory.createGenericDao(getActivity(), Food.class);
-        IBaseDao<U_f> u_fdDao = DaoFactory.createGenericDao(getActivity(), U_f.class);
+        foodDao = DaoFactory.createGenericDao(getActivity(), Food.class);
+        u_fdDao = DaoFactory.createGenericDao(getActivity(), U_f.class);
 
         List<U_f> u_fList = u_fdDao.queryByCondition("u_sid=? and suggestDate between ? and ? and type=?", "1", getDateBg(selectDate),getDateEd(selectDate),String.valueOf(cutTab));
         //List<U_f> u_fList = u_fdDao.queryByCondition("u_sid=? and suggestDate between '2015-01-31 00:00:00' and '2015-01-31 23:59:59' and type=?", "1",String.valueOf(cutTab));
@@ -212,6 +257,7 @@ public class NaviFoodFragment extends AppBaseFragment {
                 item.put("title", tempF.getFoodname());
                 item.put("desc", tempF.getDesc());
                 item.put("calorie", tempF.getCalorie());
+                item.put("status", u_fList.get(i).getLife_status());
                 item.put("_id",u_fList.get(i).get_id());
                 mData.add(item);
             }
@@ -254,6 +300,8 @@ public class NaviFoodFragment extends AppBaseFragment {
             TextView tv_desc = (TextView)view.findViewById(R.id.food_list_item_desc);
             TextView tv_calorie = (TextView)view.findViewById(R.id.food_list_item_calorie);
 
+            ImageView imageview = (ImageView)view.findViewById(R.id.food_list_item_status);
+            imageview.setVisibility(Integer.parseInt(map.get("status").toString())>0 ? View.VISIBLE : View.INVISIBLE);
             tv_title.setText(map.get("title").toString());
             tv_desc.setText(map.get("desc").toString());
             tv_calorie.setText(map.get("calorie").toString() +"卡路里");

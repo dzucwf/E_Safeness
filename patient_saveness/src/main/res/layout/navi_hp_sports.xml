@@ -24,7 +24,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@drawable/button_calendar"
+            android:src="@drawable/navbar_btn_date_select"
             android:onClick="openCalendar"
             android:id="@+id/btn_sports_nav_date" />
 
@@ -197,7 +197,7 @@
 
                 <WebView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/web_sports_chart" />
 
             </LinearLayout>

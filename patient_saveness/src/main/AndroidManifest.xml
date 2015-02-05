@@ -57,6 +57,18 @@
             android:windowSoftInputMode="adjustPan|stateHidden" >
         </activity>
         <activity
+            android:name=".ui.activity.MoreActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity
+            android:name=".ui.activity.UserInforActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"

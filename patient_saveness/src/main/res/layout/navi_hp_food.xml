@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/button_calendar"
+        android:src="@drawable/navbar_btn_date_select"
         android:onClick="openCalendar"
         android:id="@+id/btn_food_nav_date" />
     <TextView
@@ -57,7 +57,7 @@
         android:layout_alignRight="@+id/btn_food_nav_item"
         android:layout_alignTop="@+id/btn_food_nav_item"
         android:layout_alignBottom="@+id/btn_food_nav_item"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textColor="#ff0f82da"
         android:gravity="center_horizontal|center_vertical"
         />
@@ -142,7 +142,32 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/food_ll_segment"
+        android:layout_above="@+id/food_ll_bottomBar"
         android:id="@+id/food_list" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/copd_flat_heading_background"
+        android:gravity="center"
+        android:id="@+id/food_ll_bottomBar">
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:id="@+id/food_ll_bottomBar_status"
+            android:background="@drawable/scene_select" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="吃过了"
+            android:id="@+id/textView4"
+            android:textColor="#ff397eff"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 
 </RelativeLayout>

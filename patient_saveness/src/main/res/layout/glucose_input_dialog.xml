@@ -1,127 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:paddingTop="@dimen/custom_ad_padding"
-    android:paddingBottom="@dimen/custom_ad_padding"
-    android:gravity="top"
-
-    android:orientation="vertical"
-
-    android:layout_marginLeft="10dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     >
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:id="@+id/glucose_nav_bg"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/nav_bar" />
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/glucose_time_dialog_tv"
-        android:textSize="@dimen/big_font_bigger"
+        android:textColor="#ff298bd0"
+        android:textSize="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
 
-        android:layout_marginBottom="5dp"
+    <ImageView
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:scaleType="centerInside"
+        android:id="@+id/glucose_nav_btn_back"
+        android:src="@drawable/backbutton"
+        android:onClick="cancel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:orientation="horizontal"
 
-        android:gravity="top"
-        >
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textSize="@dimen/big_font_biggest"
-            android:textColor="@color/TextColorBlue"
-            android:id="@+id/glucose_value_et"
-            android:inputType="numberDecimal"
-            android:linksClickable="true" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="@dimen/big_font_bigger"
-            android:text="@string/mmol"
-
-            />
-        </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView5"
+        android:layout_below="@+id/glucose_nav_bg">
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-            android:layout_marginBottom="5dp"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bloodsugarinput_comments"
-            android:layout_marginRight="5dp"
-            />
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/input_type_bg"
-            android:hint="@string/memo"
-            android:gravity="center"
-            android:id="@+id/memo_et" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/copd_flat_heading_background"
+                android:gravity="center"
+                >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="15dp"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/quickinput_date"
-            android:layout_marginRight="5dp"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:background="@drawable/more_log_a1c"
+                    android:layout_marginLeft="17dp" />
 
-            />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textSize="14sp"
+                    android:textColor="@color/TextColorBlue"
+                    android:id="@+id/glucose_value_et"
+                    android:inputType="numberDecimal"
+                    android:linksClickable="true"
+                    android:layout_weight="1.16"
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/edittext_no_frame"
+                    android:hint="请输入血糖值"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/input_type_bg"
-            android:gravity="center"
-            android:id="@+id/input_time_et" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="@string/mmol"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:textSize="@dimen/big_font_normal"
-            android:layout_marginRight="5dp"
-            android:id="@+id/save_iput_glucose_btn"
-            android:onClick="save" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:textSize="@dimen/big_font_normal"
-            android:layout_marginRight="5dp"
-            android:onClick="cancel"
-            android:id="@+id/cancel_iput_glucose_btn"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/clear"
-            android:textSize="@dimen/big_font_normal"
-            android:layout_marginRight="5dp"
-            android:id="@+id/clear_iput_glucose_btn"
-            android:onClick="clear" />
+                    android:layout_marginRight="20dp" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/copd_flat_heading_background"
+                android:gravity="center"
+                    android:id="@+id/linearLayout2">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pacer_flat_icon_blue_addactivity"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="16dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/edittext_no_frame"
+                    android:hint="@string/memo"
+                    android:id="@+id/memo_et"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/copd_flat_heading_background"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/food_clock"
+
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/edittext_no_frame"
+                    android:id="@+id/input_time_et"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical|left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/copd_flat_heading_background"
+                android:gravity="center"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:background="#ffee8361"
+                    android:text="@string/save"
+                    android:gravity="center"
+                    android:textColor="#ffffffff"
+                    android:layout_marginLeft="30dp"
+                    android:id="@+id/glucose_btn_save"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:background="#60b3ed"
+                    android:text="@string/clear"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="#ffffffff"
+                    android:layout_marginRight="30dp"
+                    android:id="@+id/glucose_btn_clear"/>
+                </LinearLayout>
+
         </LinearLayout>
-</LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

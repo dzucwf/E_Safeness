@@ -320,7 +320,7 @@ public class MainActivity extends AppBaseActivity {
        * 选中导航
        * */
     public void onNaviCheck(View view){
-        int cur = CB_INDEX_FOOD;
+        int cur = CB_INDEX_GLUCOSE;
 
         switch (view.getId()){
 
