@@ -73,7 +73,7 @@ public class LauncherActivity extends Activity {
                         initSqlDataUF(u_fdDao);}
                 }
 
-                Intent mainIntent = new Intent(LauncherActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(LauncherActivity.this, LoginActivity.class);
                 LauncherActivity.this.startActivity(mainIntent);
                 LauncherActivity.this.finish();
             }
