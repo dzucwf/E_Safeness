@@ -16,7 +16,7 @@ public class BloodGlucose {
 
     @Column(name = "_id", type = Column.TYPE_INTEGER, isPrimaryKey = true, isUnique = true)
     private Integer _id;
-    @Column(name = "server_id", type = Column.TYPE_INTEGER, isNull = false, isUnique = true)
+    @Column(name = "server_id", type = Column.TYPE_INTEGER, isNull = false)
     private Long server_id;
     @Column(name = "bloodGlucose", type = Column.TYPE_FLOAT, isNull = false)
     private float bloodGlucose;
