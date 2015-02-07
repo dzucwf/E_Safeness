@@ -137,6 +137,34 @@ public class MainActivity extends AppBaseActivity {
 
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 注销广播接收者
+        try {
+            unregisterReceiver(msgReceiver);
+        } catch (Exception e) {
+        }
+        try {
+            unregisterReceiver(ackMessageReceiver);
+        } catch (Exception e) {
+        }
+        try {
+            unregisterReceiver(cmdMessageReceiver);
+        } catch (Exception e) {
+        }
+
+        // try {
+        // unregisterReceiver(offlineMessageReceiver);
+        // } catch (Exception e) {
+        // }
+
+        if (conflictBuilder != null) {
+            conflictBuilder.create().dismiss();
+            conflictBuilder = null;
+        }
+
+    }
 
     @Override
     protected int getLayoutId() {
