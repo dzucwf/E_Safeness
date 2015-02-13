@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/top_bar_normal_bg">
+
+    </RelativeLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:columnCount="2"
+
+        android:orientation="horizontal"
+        android:useDefaultMargins="true">
+
+        <Button
+            android:layout_gravity="right"
+            android:text="Short label:" />
+
+        <Button
+            android:id="@+id/start_time"
+            android:layout_gravity="left"
+            android:text="Long extended value" />
+
+        <Button
+            android:layout_gravity="right"
+            android:text="A very long extended label:" />
+
+        <Button
+            android:id="@+id/elapsed_time"
+            android:layout_gravity="left"
+            android:text="Short valueddddddddddddddddddd" />
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"></LinearLayout>
+</LinearLayout>

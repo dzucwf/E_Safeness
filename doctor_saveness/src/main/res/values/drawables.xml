@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <item type="drawable" name="translucent_background">#01000000</item>
+    <item type="drawable" name="listitem_pressed">#ffd2d2d2</item>
+    <item type="drawable" name="transparent">#00000000</item>
+    <item type="drawable" name="bt_press">#ffd2d2d2</item>
+</resources>
