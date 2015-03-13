@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * Scheme
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-11 22:03:19.
+* @author wuwenyi1213@163.com on 2015-03-11 23:03:46.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -54,20 +54,20 @@ public String getDesc() {
 public void setDesc(String desc) {
     this.desc = desc;
 }
-@Column(name="dateBegin",type=Column.Unknown type) 
- private Unknown type dateBegin;
-public Unknown type getDateBegin() {
+@Column(name="dateBegin",type=Column.TYPE_TIMESTAMP) 
+ private String dateBegin;
+public String getDateBegin() {
     return dateBegin;
 }
-public void setDateBegin(Unknown type dateBegin) {
+public void setDateBegin(String dateBegin) {
     this.dateBegin = dateBegin;
 }
-@Column(name="dateEnd",type=Column.Unknown type) 
- private Unknown type dateEnd;
-public Unknown type getDateEnd() {
+@Column(name="dateEnd",type=Column.TYPE_TIMESTAMP) 
+ private String dateEnd;
+public String getDateEnd() {
     return dateEnd;
 }
-public void setDateEnd(Unknown type dateEnd) {
+public void setDateEnd(String dateEnd) {
     this.dateEnd = dateEnd;
 }
 @Column(name="life_status",type=Column.TYPE_INTEGER,defaultValue = "1") 
@@ -78,20 +78,20 @@ public Integer getLife_status() {
 public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
-@Column(name="create_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type create_datetime;
-public Unknown type getCreate_datetime() {
+@Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String create_datetime;
+public String getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Unknown type create_datetime) {
+public void setCreate_datetime(String create_datetime) {
     this.create_datetime = create_datetime;
 }
-@Column(name="update_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type update_datetime;
-public Unknown type getUpdate_datetime() {
+@Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String update_datetime;
+public String getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Unknown type update_datetime) {
+public void setUpdate_datetime(String update_datetime) {
     this.update_datetime = update_datetime;
 }
 

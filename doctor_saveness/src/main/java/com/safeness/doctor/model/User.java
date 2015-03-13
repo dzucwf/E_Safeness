@@ -1,4 +1,4 @@
-package com.safeness.patient.model;
+package com.safeness.doctor.model;
 
 import com.safeness.e_saveness_common.dao.Table;
 import com.safeness.e_saveness_common.dao.Table.Column;
@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * User
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-11 22:03:19.
+* @author wuwenyi1213@163.com on 2015-03-11 23:03:46.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -54,12 +54,12 @@ public String getTel() {
 public void setTel(String tel) {
     this.tel = tel;
 }
-@Column(name="birthday",type=Column.Unknown type) 
- private Unknown type birthday;
-public Unknown type getBirthday() {
+@Column(name="birthday",type=Column.TYPE_TIMESTAMP) 
+ private String birthday;
+public String getBirthday() {
     return birthday;
 }
-public void setBirthday(Unknown type birthday) {
+public void setBirthday(String birthday) {
     this.birthday = birthday;
 }
 @Column(name="height",type=Column.TYPE_DOUBLE) 
@@ -102,20 +102,20 @@ public Integer getLife_status() {
 public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
-@Column(name="create_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type create_datetime;
-public Unknown type getCreate_datetime() {
+@Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String create_datetime;
+public String getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Unknown type create_datetime) {
+public void setCreate_datetime(String create_datetime) {
     this.create_datetime = create_datetime;
 }
-@Column(name="update_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type update_datetime;
-public Unknown type getUpdate_datetime() {
+@Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String update_datetime;
+public String getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Unknown type update_datetime) {
+public void setUpdate_datetime(String update_datetime) {
     this.update_datetime = update_datetime;
 }
 

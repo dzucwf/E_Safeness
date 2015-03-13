@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * Forum_item_evaluate
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-11 22:03:18.
+* @author wuwenyi1213@163.com on 2015-03-11 23:03:45.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -54,20 +54,20 @@ public Integer getLife_status() {
 public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
-@Column(name="create_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type create_datetime;
-public Unknown type getCreate_datetime() {
+@Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String create_datetime;
+public String getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Unknown type create_datetime) {
+public void setCreate_datetime(String create_datetime) {
     this.create_datetime = create_datetime;
 }
-@Column(name="update_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type update_datetime;
-public Unknown type getUpdate_datetime() {
+@Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String update_datetime;
+public String getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Unknown type update_datetime) {
+public void setUpdate_datetime(String update_datetime) {
     this.update_datetime = update_datetime;
 }
 

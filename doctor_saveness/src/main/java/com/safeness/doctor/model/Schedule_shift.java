@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * Schedule_shift
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-11 22:03:18.
+* @author wuwenyi1213@163.com on 2015-03-11 23:03:46.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -30,12 +30,12 @@ public Integer getServer_id() {
 public void setServer_id(Integer server_id) {
     this.server_id = server_id;
 }
-@Column(name="shift_date",type=Column.Unknown type,isNull = false) 
- private Unknown type shift_date;
-public Unknown type getShift_date() {
+@Column(name="shift_date",type=Column.TYPE_TIMESTAMP,isNull = false) 
+ private String shift_date;
+public String getShift_date() {
     return shift_date;
 }
-public void setShift_date(Unknown type shift_date) {
+public void setShift_date(String shift_date) {
     this.shift_date = shift_date;
 }
 @Column(name="shift_name",type=Column.TYPE_STRING,isNull = false) 
@@ -46,20 +46,20 @@ public String getShift_name() {
 public void setShift_name(String shift_name) {
     this.shift_name = shift_name;
 }
-@Column(name="shift_begin",type=Column.Unknown type) 
- private Unknown type shift_begin;
-public Unknown type getShift_begin() {
+@Column(name="shift_begin",type=Column.TYPE_TIMESTAMP) 
+ private String shift_begin;
+public String getShift_begin() {
     return shift_begin;
 }
-public void setShift_begin(Unknown type shift_begin) {
+public void setShift_begin(String shift_begin) {
     this.shift_begin = shift_begin;
 }
-@Column(name="shift_end",type=Column.Unknown type) 
- private Unknown type shift_end;
-public Unknown type getShift_end() {
+@Column(name="shift_end",type=Column.TYPE_TIMESTAMP) 
+ private String shift_end;
+public String getShift_end() {
     return shift_end;
 }
-public void setShift_end(Unknown type shift_end) {
+public void setShift_end(String shift_end) {
     this.shift_end = shift_end;
 }
 @Column(name="desc",type=Column.TYPE_STRING) 
@@ -86,20 +86,20 @@ public Integer getLife_status() {
 public void setLife_status(Integer life_status) {
     this.life_status = life_status;
 }
-@Column(name="create_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type create_datetime;
-public Unknown type getCreate_datetime() {
+@Column(name="create_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String create_datetime;
+public String getCreate_datetime() {
     return create_datetime;
 }
-public void setCreate_datetime(Unknown type create_datetime) {
+public void setCreate_datetime(String create_datetime) {
     this.create_datetime = create_datetime;
 }
-@Column(name="update_datetime",type=Column.Unknown type,defaultValue = "CURRENT_TIMESTAMP") 
- private Unknown type update_datetime;
-public Unknown type getUpdate_datetime() {
+@Column(name="update_datetime",type=Column.TYPE_TIMESTAMP,defaultValue = "CURRENT_TIMESTAMP") 
+ private String update_datetime;
+public String getUpdate_datetime() {
     return update_datetime;
 }
-public void setUpdate_datetime(Unknown type update_datetime) {
+public void setUpdate_datetime(String update_datetime) {
     this.update_datetime = update_datetime;
 }
 
@@ -115,7 +115,7 @@ public void setUpdate_datetime(Unknown type update_datetime) {
     *
     *  @return 对象
     */
-    public Schedule_shift(Integer server_id,Unknown type shift_date,String shift_name) {
+    public Schedule_shift(Integer server_id,String shift_date,String shift_name) {
        this.server_id = server_id;
        this.shift_date = shift_date;
        this.shift_name = shift_name;
