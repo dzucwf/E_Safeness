@@ -17,9 +17,10 @@ import android.app.Application;
 import android.content.Context;
 
 import com.easemob.EMCallBack;
-import com.safeness.im.widget.DemoHXSDKHelper;
 import com.safeness.e_saveness_common.model.User;
+import com.safeness.im.widget.DemoHXSDKHelper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PatientApplication extends Application {
@@ -72,6 +73,10 @@ public class PatientApplication extends Application {
 	 * @return
 	 */
 	public Map<String, User> getContactList() {
+        if(hxSDKHelper.getContactList() == null){
+            return  new HashMap<String, User>();
+        }
+
 	    return hxSDKHelper.getContactList();
 	}
 

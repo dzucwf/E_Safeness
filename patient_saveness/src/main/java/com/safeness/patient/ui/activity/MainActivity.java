@@ -42,16 +42,16 @@ import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
+import com.safeness.e_saveness_common.model.User;
 import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.e_saveness_common.util.DateTimeUtil;
-import com.safeness.im.activity.*;
+import com.safeness.im.activity.ChatActivity;
 import com.safeness.im.db.InviteMessgeDao;
 import com.safeness.im.db.UserDao;
 import com.safeness.im.domain.InviteMessage;
 import com.safeness.im.utils.CommonUtils;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
-import com.safeness.e_saveness_common.model.User;
 import com.safeness.patient.ui.fragment.NaviFoodFragment;
 import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
 
@@ -1013,7 +1013,7 @@ public class MainActivity extends AppBaseActivity {
                         dialog.dismiss();
                         conflictBuilder = null;
                         finish();
-                        startActivity(new Intent(MainActivity.this, com.safeness.im.activity.LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
                 });
                 conflictBuilder.setCancelable(false);
@@ -1050,7 +1050,7 @@ public class MainActivity extends AppBaseActivity {
                         dialog.dismiss();
                         accountRemovedBuilder = null;
                         finish();
-                        startActivity(new Intent(MainActivity.this, com.safeness.im.activity.LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
                 });
                 accountRemovedBuilder.setCancelable(false);

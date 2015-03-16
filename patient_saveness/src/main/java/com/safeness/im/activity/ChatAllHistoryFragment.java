@@ -38,6 +38,7 @@ import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.im.adapter.ChatAllHistoryAdapter;
 import com.safeness.im.db.InviteMessgeDao;
 import com.safeness.patient.R;
+import com.safeness.patient.ui.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -186,8 +187,8 @@ public class ChatAllHistoryFragment extends Fragment {
 			adapter.remove(tobeDeleteCons);
 			adapter.notifyDataSetChanged();
 
-			// 更新消息未读数
-			((MainActivity) getActivity()).updateUnreadLabel();
+			// 更新消息未读数 puchao
+			//((MainActivity) getActivity()).updateUnreadLabel();
 
 			return true;
 		}

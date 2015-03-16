@@ -13,6 +13,8 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.safeness.im.widget.DemoHXSDKHelper;
 import com.safeness.patient.R;
+import com.safeness.patient.ui.activity.LoginActivity;
+import com.safeness.patient.ui.activity.MainActivity;
 
 
 /**

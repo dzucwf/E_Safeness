@@ -47,10 +47,10 @@ import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
 import com.safeness.app.PatientApplication;
+import com.safeness.e_saveness_common.model.User;
 import com.safeness.im.adapter.ChatHistoryAdapter;
 import com.safeness.im.db.InviteMessgeDao;
 import com.safeness.patient.R;
-import com.safeness.e_saveness_common.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -182,8 +182,8 @@ public class ChatHistoryFragment extends Fragment {
 			adapter.remove(tobeDeleteUser);
 			adapter.notifyDataSetChanged();
 
-			// 更新消息未读数
-			((MainActivity) getActivity()).updateUnreadLabel();
+			// 更新消息未读数 puchao
+			//((MainActivity) getActivity()).updateUnreadLabel();
 
 			return true;
 		}

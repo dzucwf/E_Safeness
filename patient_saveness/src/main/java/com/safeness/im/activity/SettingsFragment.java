@@ -35,6 +35,8 @@ import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.im.applib.controller.HXSDKHelper;
 import com.safeness.patient.R;
+import com.safeness.patient.ui.activity.LoginActivity;
+import com.safeness.patient.ui.activity.MainActivity;
 
 /**
  * 设置界面

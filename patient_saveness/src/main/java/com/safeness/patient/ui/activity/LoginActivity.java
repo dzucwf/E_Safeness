@@ -57,7 +57,7 @@ import java.util.Map;
 public class LoginActivity extends AppBaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    private  static final int LOGIN_RQ = 21;
+    private static final int LOGIN_RQ = 21;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -65,7 +65,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "pp1:pp1", "pp2:pp2"
     };
-    private static final int GOTO_MAIN = 1;
+    private static final int LOGIN_ERROR_RQ = 22;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -114,17 +114,29 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 */
     }
 
-    private Handler hander = new Handler(){
+    private Handler hander = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
 
-            switch (msg.what){
-                case GOTO_MAIN:
+            switch (msg.what) {
+                case LOGIN_RQ:
 
+                    //登陆判断成功
+                    Intent it = new Intent();
+                    it.setClass(mContext, MainActivity.class);
+                    LoginActivity.this.startActivity(it);
+                    //登陆完服务器后再次登陆聊天服务器
+                    attemptLoginIM();
+                    finish();
+                    break;
+                case LOGIN_ERROR_RQ:
+                    String messageStr = msg.getData().getString("message");
+                    Toast.makeText(mContext, messageStr, Toast.LENGTH_LONG).show();
                     break;
             }
             super.handleMessage(msg);
+            dissProgressDialog();
         }
     };
 
@@ -178,17 +190,16 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         }
     }
 
-    private void login(){
+    private void login() {
 
         verificationLogin();
     }
 
 
-
-    private  void verificationLogin(){
+    private void verificationLogin() {
 
         if (mAuthTask != null) {
-            return ;
+            return;
         }
 
         // Reset errors.
@@ -231,38 +242,43 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         }
     }
 
-    private  void loginServer(String userName,String password){
+    private void loginServer(String userName, String password) {
 
-        String url = Constant.getServier()+ WebServiceName.login;
-        Map<String,String> parameter = new HashMap<String,String>();
-        parameter.put("uName",userName);
-        parameter.put("uPass",password);
-        this.request(parameter,url,LOGIN_RQ,this,new SourceJsonHandler());
+        String url = Constant.getServier() + WebServiceName.login;
+        Map<String, String> parameter = new HashMap<String, String>();
+        parameter.put("uName", userName);
+        parameter.put("uPass", password);
+        this.request(parameter, url, LOGIN_RQ, this, new SourceJsonHandler());
 
     }
 
     @Override
-    public void onSuccess(Object obj, int reqCode)  {
+    public void onSuccess(Object obj, int reqCode) {
 
-        if(reqCode == LOGIN_RQ){
-            JSONObject jsobject = (JSONObject)obj;
+        if (reqCode == LOGIN_RQ) {
+            JSONObject jsobject = (JSONObject) obj;
+            Message msg = new Message();
+            Bundle b = new Bundle();
             try {
-                if(jsobject.getString("code").equals("USER_LOGIN_SUCCESS")){
+                b.putString("message", jsobject.getString("message"));
+                msg.setData(b);
+
+                if (jsobject.getString("code").equals("USER_LOGIN_SUCCESS")) {
 
 
-                    hander.sendEmptyMessage(LOGIN_RQ);
-                    //登陆判断成功
-                    Intent it = new Intent();
-                    it.setClass(mContext,MainActivity.class);
-                    LoginActivity.this.startActivity(it);
-                    //登陆完服务器后再次登陆聊天服务器
-                    attemptLoginIM();
-                    finish();
+                    msg.what = LOGIN_RQ;
 
+
+                } else {
+                    msg.what = LOGIN_ERROR_RQ;
                 }
+                hander.sendMessage(msg);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
         }
     }
 
@@ -272,8 +288,6 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     }
 
     /**
-     *
-     *
      * 登陆即时通讯服务器
      */
     public void attemptLoginIM() {
@@ -286,7 +300,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        showProgress(true);
+        //showProgress(true);
         mAuthTask = new UserLoginTask(email, password);
         mAuthTask.execute((Void) null);
 
@@ -406,60 +420,60 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     }
 
 
-
     //登陆聊天是否成功
     boolean isSuccess = false;
+
     /**
      * 登陆聊天服务器
+     *
      * @param currentUsername
      * @param currentPassword
      */
-    private boolean loginIM(final String currentUsername, final String currentPassword){
+    private boolean loginIM(final String currentUsername, final String currentPassword) {
 
 
-            PatientApplication.currentUserNick = "pp1";
+        PatientApplication.currentUserNick = "pp1";
 
 
+        isSuccess = false;
 
-             isSuccess = false;
-
-            final long start = System.currentTimeMillis();
-            // 调用sdk登陆方法登陆聊天服务器
-            EMChatManager.getInstance().login(currentUsername, currentPassword, new EMCallBack() {
-
-
-                @Override
-                public void onSuccess() {
-                    //umeng自定义事件，开发者可以把这个删掉
-                    //loginSuccess2Umeng(start);
+        final long start = System.currentTimeMillis();
+        // 调用sdk登陆方法登陆聊天服务器
+        EMChatManager.getInstance().login(currentUsername, currentPassword, new EMCallBack() {
 
 
-                    // 登陆成功，保存用户名密码
-                    PatientApplication.getInstance().setUserName(currentUsername);
-                    PatientApplication.getInstance().setPassword(currentPassword);
-                    runOnUiThread(new Runnable() {
-                        public void run() {
+            @Override
+            public void onSuccess() {
+                //umeng自定义事件，开发者可以把这个删掉
+                //loginSuccess2Umeng(start);
 
-                        }
-                    });
-                    try {
-                        // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
-                        // ** manually load all local groups and
-                        // conversations in case we are auto login
-                        EMGroupManager.getInstance().loadAllGroups();
-                        EMChatManager.getInstance().loadAllConversations();
 
-                        // demo中简单的处理成每次登陆都去获取好友username，开发者自己根据情况而定
-                        List<String> usernames = EMContactManager.getInstance().getContactUserNames();
-                        EMLog.d("roster", "contacts size: " + usernames.size());
-                        Map<String, User> userlist = new HashMap<String, User>();
-                        for (String username : usernames) {
-                            User user = new User();
-                            user.setUsername(username);
-                            setUserHearder(username, user);
-                            userlist.put(username, user);
-                        }
-                       //puchao
+                // 登陆成功，保存用户名密码
+                PatientApplication.getInstance().setUserName(currentUsername);
+                PatientApplication.getInstance().setPassword(currentPassword);
+                runOnUiThread(new Runnable() {
+                    public void run() {
+
+                    }
+                });
+                try {
+                    // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
+                    // ** manually load all local groups and
+                    // conversations in case we are auto login
+                    EMGroupManager.getInstance().loadAllGroups();
+                    EMChatManager.getInstance().loadAllConversations();
+
+                    // demo中简单的处理成每次登陆都去获取好友username，开发者自己根据情况而定
+                    List<String> usernames = EMContactManager.getInstance().getContactUserNames();
+                    EMLog.d("roster", "contacts size: " + usernames.size());
+                    Map<String, User> userlist = new HashMap<String, User>();
+                    for (String username : usernames) {
+                        User user = new User();
+                        user.setUsername(username);
+                        setUserHearder(username, user);
+                        userlist.put(username, user);
+                    }
+                    //puchao
                         /*
                         // 添加user"申请与通知"
                         User newFriends = new User();
@@ -474,56 +488,55 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                         groupUser.setHeader("");
                         userlist.put(Constant.GROUP_USERNAME, groupUser);
                         */
-                        // 存入内存
-                        PatientApplication.getInstance().setContactList(userlist);
-                        // 存入db
-                        UserDao dao = new UserDao(LoginActivity.this);
-                        List<User> users = new ArrayList<User>(userlist.values());
-                        dao.saveContactList(users);
+                    // 存入内存
+                    PatientApplication.getInstance().setContactList(userlist);
+                    // 存入db
+                    UserDao dao = new UserDao(LoginActivity.this);
+                    List<User> users = new ArrayList<User>(userlist.values());
+                    dao.saveContactList(users);
 
-                        // 获取群聊列表(群聊里只有groupid和groupname等简单信息，不包含members),sdk会把群组存入到内存和db中
-                        EMGroupManager.getInstance().getGroupsFromServer();
-                        isSuccess = true;
+                    // 获取群聊列表(群聊里只有groupid和groupname等简单信息，不包含members),sdk会把群组存入到内存和db中
+                    EMGroupManager.getInstance().getGroupsFromServer();
+                    isSuccess = true;
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        //取好友或者群聊失败，不让进入主页面，也可以不管这个exception继续进到主页面
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-
-                                PatientApplication.getInstance().logout(null);
-                                Toast.makeText(getApplicationContext(), "登录失败: 获取好友或群聊失败", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        isSuccess = false;
-                    }
-                    //更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-                    boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(PatientApplication.currentUserNick.trim());
-                    if (!updatenick) {
-                        Log.e("LoginActivity", "update current user nick fail");
-                    }
-
-
-
-                }
-
-                @Override
-                public void onProgress(int progress, String status) {
-                }
-
-                @Override
-                public void onError(final int code, final String message) {
-                    //loginFailure2Umeng(start,code,message);
-                    isSuccess = false;
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //取好友或者群聊失败，不让进入主页面，也可以不管这个exception继续进到主页面
                     runOnUiThread(new Runnable() {
                         public void run() {
 
-                            Toast.makeText(getApplicationContext(), "登录消息失败: " + message, Toast.LENGTH_SHORT).show();
+                            PatientApplication.getInstance().logout(null);
+                            Toast.makeText(getApplicationContext(), "登录失败: 获取好友或群聊失败", Toast.LENGTH_LONG).show();
                         }
                     });
+                    isSuccess = false;
                 }
-            });
+                //更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
+                boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(PatientApplication.currentUserNick.trim());
+                if (!updatenick) {
+                    Log.e("LoginActivity", "update current user nick fail");
+                }
+
+
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(final int code, final String message) {
+                //loginFailure2Umeng(start,code,message);
+                isSuccess = false;
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+
+                        Toast.makeText(getApplicationContext(), "登录消息失败: " + message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
 
         return isSuccess;
@@ -576,13 +589,11 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             // TODO: attempt authentication against a network service.
 
 
-
-                boolean getLogin = loginIM(mEmail,mPassword);
-
+            boolean getLogin = loginIM(mEmail, mPassword);
 
 
             // TODO: register the new account here.
-                return getLogin;
+            return getLogin;
         }
 
         @Override
@@ -594,8 +605,8 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                 Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
 
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
             }
         }
 
