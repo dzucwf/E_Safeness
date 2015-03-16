@@ -11,6 +11,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager;
 import android.text.TextUtils;
@@ -34,10 +36,15 @@ import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
+import com.safeness.e_saveness_common.model.User;
+import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.im.db.UserDao;
 import com.safeness.patient.R;
-import com.safeness.e_saveness_common.model.User;
+import com.safeness.patient.bussiness.WebServiceName;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +56,8 @@ import java.util.Map;
  */
 public class LoginActivity extends AppBaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+
+    private  static final int LOGIN_RQ = 21;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -56,6 +65,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "pp1:pp1", "pp2:pp2"
     };
+    private static final int GOTO_MAIN = 1;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -104,6 +114,20 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 */
     }
 
+    private Handler hander = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what){
+                case GOTO_MAIN:
+
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -120,7 +144,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    login();
                     return true;
                 }
                 return false;
@@ -131,7 +155,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                login();
             }
         });
 
@@ -154,15 +178,17 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         }
     }
 
+    private void login(){
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptLogin() {
+        verificationLogin();
+    }
+
+
+
+    private  void verificationLogin(){
+
         if (mAuthTask != null) {
-            return;
+            return ;
         }
 
         // Reset errors.
@@ -200,12 +226,70 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            loginServer(email, password);
+
         }
+    }
+
+    private  void loginServer(String userName,String password){
+
+        String url = Constant.getServier()+ WebServiceName.login;
+        Map<String,String> parameter = new HashMap<String,String>();
+        parameter.put("uName",userName);
+        parameter.put("uPass",password);
+        this.request(parameter,url,LOGIN_RQ,this,new SourceJsonHandler());
+
+    }
+
+    @Override
+    public void onSuccess(Object obj, int reqCode)  {
+
+        if(reqCode == LOGIN_RQ){
+            JSONObject jsobject = (JSONObject)obj;
+            try {
+                if(jsobject.getString("code").equals("USER_LOGIN_SUCCESS")){
+
+
+                    hander.sendEmptyMessage(LOGIN_RQ);
+                    //登陆判断成功
+                    Intent it = new Intent();
+                    it.setClass(mContext,MainActivity.class);
+                    LoginActivity.this.startActivity(it);
+                    //登陆完服务器后再次登陆聊天服务器
+                    attemptLoginIM();
+                    finish();
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onFail(int errorCode, int reqCode) {
+        super.onFail(errorCode, reqCode);
+    }
+
+    /**
+     *
+     *
+     * 登陆即时通讯服务器
+     */
+    public void attemptLoginIM() {
+
+
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        showProgress(true);
+        mAuthTask = new UserLoginTask(email, password);
+        mAuthTask.execute((Void) null);
+
     }
 
     private boolean isEmailValid(String email) {
@@ -321,7 +405,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
         mEmailView.setAdapter(adapter);
     }
 
-    boolean progressShow = false;
+
 
     //登陆聊天是否成功
     boolean isSuccess = false;
@@ -330,12 +414,12 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
      * @param currentUsername
      * @param currentPassword
      */
-    private void loginIM(final String currentUsername, final String currentPassword){
+    private boolean loginIM(final String currentUsername, final String currentPassword){
 
 
             PatientApplication.currentUserNick = "pp1";
 
-            progressShow = true;
+
 
              isSuccess = false;
 
@@ -349,9 +433,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     //umeng自定义事件，开发者可以把这个删掉
                     //loginSuccess2Umeng(start);
 
-                    if (!progressShow) {
-                        return;
-                    }
+
                     // 登陆成功，保存用户名密码
                     PatientApplication.getInstance().setUserName(currentUsername);
                     PatientApplication.getInstance().setPassword(currentPassword);
@@ -413,7 +495,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                                 Toast.makeText(getApplicationContext(), "登录失败: 获取好友或群聊失败", Toast.LENGTH_LONG).show();
                             }
                         });
-                        return;
+                        isSuccess = false;
                     }
                     //更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
                     boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(PatientApplication.currentUserNick.trim());
@@ -432,17 +514,19 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                 @Override
                 public void onError(final int code, final String message) {
                     //loginFailure2Umeng(start,code,message);
-                    if (!progressShow) {
-                        return;
-                    }
+                    isSuccess = false;
+
                     runOnUiThread(new Runnable() {
                         public void run() {
 
-                            Toast.makeText(getApplicationContext(), "登录失败: " + message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "登录消息失败: " + message, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             });
+
+
+        return isSuccess;
 
 
     }
@@ -493,18 +577,12 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
 
 
-                loginIM(mEmail,mPassword);
+                boolean getLogin = loginIM(mEmail,mPassword);
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+
 
             // TODO: register the new account here.
-            return true;
+                return getLogin;
         }
 
         @Override
@@ -513,12 +591,8 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             showProgress(false);
 
             if (success) {
+                Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
 
-                //登陆判断成功
-                Intent it = new Intent();
-                it.setClass(mContext,MainActivity.class);
-                LoginActivity.this.startActivity(it);
-                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

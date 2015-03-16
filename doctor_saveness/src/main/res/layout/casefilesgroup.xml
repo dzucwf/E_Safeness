@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay01"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv01"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv01"
+                />
+
+            <TextView
+                android:id="@+id/hzxx_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+               />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/hzxx_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay01" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_hzxx"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hzxx_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_hzxx"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay02"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv02"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv02"
+                />
+
+            <TextView
+                android:id="@+id/xbs_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+                />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/xbs_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay02" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_xbs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xbs_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_xbs"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay03"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv03"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv03"
+                />
+
+            <TextView
+                android:id="@+id/lcbx_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+                />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/lcbx_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay03" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_lcbx"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lcbx_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_lcbx"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay04"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv04"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv04"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/fzjc_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+               />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/fzjc_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay04" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_fzjc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fzjc_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_fzjc"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay05"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv05"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv05"
+                 />
+
+            <TextView
+                android:id="@+id/tsjc_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+               />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tsjc_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay05" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_tsjc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tsjc_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_tsjc"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay06"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv06"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv06"
+                />
+
+            <TextView
+                android:id="@+id/zd_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+               />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/zd_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay06" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_zd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/zd_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_zd"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay07"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv07"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv07"
+              />
+
+            <TextView
+                android:id="@+id/zl_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+               />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/zl_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay07" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_zl"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/zl_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_zl"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="1.0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10.0dip"
+            android:background="#ffa8a8a8" />
+
+        <RelativeLayout
+            android:id="@+id/lay08"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv08"
+                android:layout_width="15.0dip"
+                android:layout_height="15.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2.5dip"
+                android:src="@drawable/headview_point" />
+
+            <TextView
+                style="\@style/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv08"
+               />
+
+            <TextView
+                android:id="@+id/ss_add"
+                style="\@style/group_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="onClick"
+               />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/ss_remark"
+            style="\@style/remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay08" />
+
+        <com.medicool.zhenlipai.common.utils.widget.MyGridView
+            android:id="@+id/gv_ss"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ss_remark"
+            android:layout_marginLeft="5.0dip"
+            android:horizontalSpacing="2.0dip"
+            android:listSelector="@drawable/translucent_background"
+            android:numColumns="4"
+            android:paddingLeft="12.0dip"
+            android:paddingRight="12.0dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.0dip" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dip"
+            android:layout_below="@+id/gv_ss"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/medi_bg_listline"
+            android:contentDescription="描述" />
+    </RelativeLayout>
+</LinearLayout>

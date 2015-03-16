@@ -1,7 +1,6 @@
 package com.safeness.patient.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -12,8 +11,7 @@ import com.safeness.patient.model.BloodGlucose;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Food;
 import com.safeness.patient.model.U_f;
-
-import java.util.List;
+import com.safeness.patient.ui.util.UpdateManager;
 
 /**
  * Created by Lionnd on 2015/2/2.
@@ -73,11 +71,13 @@ public class LauncherActivity extends Activity {
                         initSqlDataUF(u_fdDao);}
                 }
 
-                Intent mainIntent = new Intent(LauncherActivity.this, LoginActivity.class);
-                LauncherActivity.this.startActivity(mainIntent);
-                LauncherActivity.this.finish();
+
             }
         }).start();
+
+        UpdateManager updateTester = new UpdateManager(this);
+
+        updateTester.checkUpdate();
 
     }
 

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_bg">
+
+    <include
+        android:id="@+id/cases_title"
+        layout="\@layout/activity_top" />
+
+    <LinearLayout
+        android:id="@+id/cases_icon"
+        android:layout_width="fill_parent"
+        android:layout_height="45.0dip"
+        android:layout_below="@+id/cases_title"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/casesList_cloud"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="#ffffffff"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/cloud_img"
+                android:layout_width="26.0dip"
+                android:layout_height="22.0dip"
+                android:contentDescription="描述"
+                android:src="@drawable/cases_cloud" />
+
+            <TextView
+                android:id="@+id/textCloud"
+                style="\@style/CasesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/cloud_img"
+                android:layout_marginLeft="3.0dip"
+                android:layout_toRightOf="@+id/cloud_img"
+                android:text="" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="0.70000005dip"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="7.0dip"
+            android:layout_marginTop="7.0dip"
+            android:background="#ffcccccc"
+            android:contentDescription="描述" />
+
+        <RelativeLayout
+            android:id="@+id/casesList_pc"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="#ffffffff"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/pc_img"
+                android:layout_width="22.0dip"
+                android:layout_height="22.0dip"
+                android:contentDescription="描述"
+                android:src="@drawable/cases_pc" />
+
+            <TextView
+                android:id="@+id/textPC"
+                style="\@style/CasesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/pc_img"
+                android:layout_marginLeft="3.0dip"
+                android:layout_toRightOf="@+id/pc_img"
+                android:text="" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="0.70000005dip"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="7.0dip"
+            android:layout_marginTop="7.0dip"
+            android:background="#ffcccccc"
+            android:contentDescription="描述" />
+
+        <RelativeLayout
+            android:id="@+id/casesList_delete"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="#ffffffff"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/delete_img"
+                android:layout_width="20.0dip"
+                android:layout_height="22.0dip"
+                android:contentDescription="描述"
+                android:src="@drawable/cases_delete" />
+
+            <TextView
+                style="\@style/CasesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/delete_img"
+                android:layout_marginLeft="3.0dip"
+                android:layout_toRightOf="@+id/delete_img"
+                android:text="" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="0.70000005dip"
+        android:layout_below="@+id/cases_icon"
+        android:background="#ffc7c7c7"
+        android:contentDescription="描述" />
+
+    <TextView
+        android:id="@+id/democase"
+        style="\@style/CasesList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"
+        android:background="@drawable/listitem_selector"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:paddingBottom="10.0dip"
+        android:paddingTop="10.0dip"
+        android:text="示范病历" />
+
+    <ImageView
+        android:id="@+id/line2"
+        android:layout_width="fill_parent"
+        android:layout_height="0.70000005dip"
+        android:layout_below="@+id/democase"
+        android:background="#ffc7c7c7"
+        android:contentDescription="描述" />
+
+    <ProgressBar
+        android:id="@+id/cases_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <ListView
+        android:id="@+id/cases"
+        style="\@style/listDivi"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/line2"
+        android:layout_marginBottom="55.0dip"
+        android:listSelector="@drawable/transparent"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="none" />
+
+    <include
+        android:id="@+id/cases_bottom"
+        layout="\@layout/select_all"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/cases_create_bottom"
+        layout="\@layout/cases_create_bottom"
+        android:visibility="gone" />
+</RelativeLayout>

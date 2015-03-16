@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_bg">
+
+    <include
+        android:id="@+id/lay"
+        layout="@layout/activity_top" />
+
+    <RelativeLayout
+        android:id="@+id/lay01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lay"
+        android:background="#ffc7c7ca"
+        android:paddingBottom="5.0dip"
+        android:paddingTop="5.0dip">
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="fill_parent"
+            android:layout_height="28.0dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@drawable/search_edit_bg"
+            android:drawableLeft="@drawable/search_icon"
+            android:drawablePadding="3.0dip"
+            android:hint="患者信息"
+            android:singleLine="true"
+            android:textSize="14.0sp" />
+
+        <ImageView
+            android:id="@+id/search_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10.0dip"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="5.0dip"
+            android:src="@drawable/search_delete"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/lay01"
+        android:layout_marginTop="2.0dip">
+
+        <ListView
+            android:id="@+id/listView"
+            style="\@style/listDivi"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5.0dip"
+            android:layout_marginRight="18.0dip"
+            android:listSelector="@drawable/transparent"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbars="none" />
+
+        <com.safeness.doctor.util.silderbar.SideBar
+            android:id="@+id/sideBar"
+
+            android:layout_width="30.0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/isGone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="没有患者"
+        android:textSize="16.0sp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/mDialogText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/show_search_toast_bg"
+        android:gravity="center"
+        android:maxHeight="50.0dip"
+        android:maxWidth="50.0dip"
+        android:minHeight="50.0dip"
+        android:minWidth="50.0dip"
+        android:text="\#"
+        android:textColor="@android:color/white"
+        android:textSize="30.0sp"
+        android:visibility="invisible" />
+</RelativeLayout>

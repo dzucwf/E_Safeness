@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_bg"
+    android:orientation="vertical">
+
+    <include layout="\@layout/activity_top" />
+
+    <RelativeLayout
+        android:id="@+id/patient_infor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_marginTop="20.0dip"
+        android:background="@drawable/edit_bg"
+        android:clickable="true"
+        android:onClick="onClick">
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5.0dip"
+            android:text="患者资料"
+            android:textSize="16.0sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv"
+            android:layout_marginBottom="5.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8.0dip"
+                android:text="示范病历"
+                android:textSize="15.0sp" />
+
+            <TextView
+                android:id="@+id/sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8.0dip"
+                android:text="男"
+                android:textSize="14.0sp" />
+
+            <TextView
+                android:id="@+id/age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="39岁"
+                android:textSize="14.0sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/layout_groupName_image2"
+            android:layout_width="25.0dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5.0dip"
+            android:contentDescription="描述"
+            android:src="@drawable/schedule_pb_group_right" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        style="\@style/listDivi"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15.0dip"
+        android:listSelector="@drawable/transparent"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="none" />
+</LinearLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_bottom"
+    android:layout_width="fill_parent"
+    android:layout_height="55.0dip"
+    android:layout_alignParentBottom="true"
+    android:layout_marginTop="10.0dip"
+    android:background="@color/top_bg"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/quickcreate"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:background="@null"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30.0dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/quickcreate" />
+
+        <TextView
+            style="\@style/new_icon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0dip"
+            android:text="快速采集"
+            android:textColor="#ffffffff"
+            android:textSize="12.0sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1.0dip"
+        android:layout_height="fill_parent"
+        android:background="#ffffffff"
+        android:textColor="#ffffffff" />
+
+    <LinearLayout
+        android:id="@+id/createCases"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:background="@null"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30.0dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/createcases" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0dip"
+            android:text="规范采集"
+            android:textColor="#ffffffff"
+            android:textSize="12.0sp" />
+    </LinearLayout>
+</LinearLayout>

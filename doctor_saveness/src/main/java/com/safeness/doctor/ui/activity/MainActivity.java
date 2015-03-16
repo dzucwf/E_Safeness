@@ -13,7 +13,6 @@ import com.safeness.doctor.R;
 import com.safeness.doctor.adapter.DoctorNaviSwitchAdapter;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
 
-
 public class MainActivity extends AppBaseActivity {
 
     private static final String TAG = "MainActivity";

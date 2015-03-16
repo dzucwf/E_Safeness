@@ -33,15 +33,15 @@ public class Constant {
 	 */
 	public static final int JSON_HANDLER_ERROR = 3;
 	
-	private static final String PORT = "5020";
+	private static final String PORT = "8080";
 	//河北服务器端口
 	//private static final String PORT = "5060";
-	private static final String  SUFFIX = "/rcsServer/";
+	private static final String  SUFFIX = "/cdm/webservice/";
 	
 	
 
 	//临时测试服务器
-	public static  String SERVER = "10.18.11.199";
+	public static  String SERVER = "114.215.154.226";
 
 	
 	
@@ -50,29 +50,24 @@ public class Constant {
 		SERVER = server;
 		PRE_URL = "http://"+SERVER+":"+PORT+SUFFIX;
 	}
+
+    public static String getServier(){
+        return PRE_URL;
+    }
 	
 	//public static final String SERVER = "192.168.0.103";
 	/**
 	 * 网络请求前缀
 	 */
 
-	public static  String PRE_URL = "http://"+SERVER+":"+PORT+SUFFIX;
+	private static  String PRE_URL = "http://"+SERVER+":"+PORT+SUFFIX;
 
 	//
 	
 	
 	
 	
-	/**
-	 * 用于铃声问题
-	 */
-	public static  boolean isMIUI;
-	
 
-	public static final int  SIP_PORT = 5060;
-
-	public static final String INVITE_STRING="快来使用RCS吧，网址是"+PRE_URL+"RCS.apk";
-	public static final String REMIND_STRING="刚打你融信不在线，上来后请回话";
 	/**
 	 * 单条短信最大长度
 	 */

@@ -39,7 +39,7 @@
         <Button
             android:id="@+id/elapsed_time"
             android:layout_gravity="left"
-            android:text="Short valueddddddddddddddddddd" />
+            android:text="Short value" />
     </GridLayout>
 
     <LinearLayout

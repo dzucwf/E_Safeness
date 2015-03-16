@@ -56,7 +56,6 @@ import com.easemob.util.FileUtils;
 import com.easemob.util.LatLng;
 import com.easemob.util.TextFormater;
 import com.safeness.e_saveness_common.util.Constant;
-import com.safeness.im.activity.BaiduMapActivity;
 import com.safeness.im.activity.ChatActivity;
 import com.safeness.im.activity.ContextMenu;
 import com.safeness.im.activity.ShowBigImage;
@@ -1339,12 +1338,13 @@ public class MessageAdapter extends BaseAdapter {
 
 		@Override
 		public void onClick(View v) {
-			Intent intent;
-			intent = new Intent(context, BaiduMapActivity.class);
-			intent.putExtra("latitude", location.latitude);
-			intent.putExtra("longitude", location.longitude);
-			intent.putExtra("address", address);
-			activity.startActivity(intent);
+            //puchao 临时去掉
+//			Intent intent;
+//			intent = new Intent(context, BaiduMapActivity.class);
+//			intent.putExtra("latitude", location.latitude);
+//			intent.putExtra("longitude", location.longitude);
+//			intent.putExtra("address", address);
+//			activity.startActivity(intent);
 		}
 
 	}

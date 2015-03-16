@@ -15,6 +15,7 @@ public class DoctorNaviSwitchAdapter extends FragmentPagerAdapter{
 	private ArrayList<Fragment> mFragments;
 
 	public DoctorNaviSwitchAdapter(FragmentManager fm) {
+
 		super(fm);
 		mFragments = new ArrayList<>();
 		mFragments.add(new MainFragment());

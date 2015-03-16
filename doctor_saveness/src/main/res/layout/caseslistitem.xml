@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:descendantFocusability="blocksDescendants">
+
+    <TextView
+        android:id="@+id/case_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/case_createDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8.0dip"
+        android:paddingTop="8.0dip"
+        android:textColor="#ff8c8c8c"
+        android:textSize="15.0sp" />
+
+    <RelativeLayout
+        android:id="@+id/case_item_up"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/case_createDate"
+        android:layout_toRightOf="@+id/case_id"
+        android:background="@drawable/listitem_selector">
+
+        <TextView
+            android:id="@+id/case_name"
+            style="\@style/CasesList"
+            android:layout_width="230.0dip"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/case_patient_name"
+            style="\@style/CasesList"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/case_check"
+            android:layout_toRightOf="@+id/case_name"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/case_filesSize"
+            android:layout_width="230.0dip"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/case_name"
+            android:paddingLeft="8.0dip"
+            android:singleLine="true"
+            android:textColor="#ff8c8c8c"
+            android:textSize="12.0sp" />
+
+        <TextView
+            android:id="@+id/case_upload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/case_patient_name"
+            android:layout_toLeftOf="@+id/case_check"
+            android:layout_toRightOf="@+id/case_filesSize"
+            android:gravity="right"
+            android:paddingLeft="8.0dip"
+            android:paddingRight="8.0dip"
+            android:text="上传"
+            android:textColor="#ff4eb333"
+            android:textSize="12.0sp"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/case_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/case_patient_name"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

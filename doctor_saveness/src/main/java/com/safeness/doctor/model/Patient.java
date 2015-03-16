@@ -78,12 +78,12 @@ public String getAddress() {
 public void setAddress(String address) {
     this.address = address;
 }
-@Column(name="QQ",type=Column.TYPE_INTEGER,isUnique = true) 
- private Integer QQ;
-public Integer getQQ() {
+@Column(name="QQ",type=Column.TYPE_STRING,isUnique = true)
+ private String QQ;
+public String getQQ() {
     return QQ;
 }
-public void setQQ(Integer QQ) {
+public void setQQ(String QQ) {
     this.QQ = QQ;
 }
 @Column(name="weixin",type=Column.TYPE_STRING,isUnique = true) 

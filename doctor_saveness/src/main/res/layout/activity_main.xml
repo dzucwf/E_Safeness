@@ -5,63 +5,63 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/navi_view_pager"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="0dip"
         android:layout_above="@+id/imageView3"
-        android:layout_marginBottom="-7dp" />
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="-7dp"
+        android:padding="0dip" />
 
     <FrameLayout
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mainContainer"
         android:layout_alignBottom="@+id/navi_view_pager"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="74dp"></FrameLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:background="@drawable/tab_bg"
-        android:paddingTop="2.0dip"
         android:id="@+id/imageView3"
         android:layout_width="fill_parent"
+        android:layout_height="50.0dip"
         android:layout_alignParentBottom="true"
-        android:layout_height="50.0dip">
+        android:background="@drawable/tab_bg"
+        android:orientation="horizontal"
+        android:paddingTop="2.0dip">
 
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
             android:id="@+id/channel1"
+            style="@style/main_tab_bt_linear"
+            android:gravity="center"
             android:onClick=""
-          
-            style="@style/main_tab_bt_linear">
+
+            android:orientation="vertical">
 
             <ImageView
-                android:gravity="bottom"
                 android:id="@+id/navi_switcher_item_main"
                 android:layout_width="50.0dip"
                 android:layout_height="22.0dip"
-                android:src="@drawable/icon01_pressed"
                 android:layout_weight="1.0"
-                android:contentDescription="" />
+                android:contentDescription=""
+                android:gravity="bottom"
+                android:src="@drawable/icon01_pressed" />
 
             <TextView
-                android:textColor="#ff2cadde"
-                android:gravity="bottom"
                 android:id="@+id/textView1"
-                android:text="@string/first_page"
+                style="@style/main_tab_bt_text"
                 android:layout_weight="1.0"
-                style="@style/main_tab_bt_text" />
+                android:gravity="bottom"
+                android:text="@string/first_page"
+                android:textColor="#ff2cadde" />
         </LinearLayout>
 
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
             android:id="@+id/channel2"
             style="@style/main_tab_bt_linear"
-            android:onClick="onNaviCheck">
+            android:gravity="center"
+            android:onClick="onNaviCheck"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -69,40 +69,40 @@
                 android:layout_weight="1.0">
 
                 <ImageView
-                    android:gravity="bottom"
                     android:id="@+id/navi_switcher_item_message"
                     android:layout_width="50.0dip"
                     android:layout_height="22.0dip"
-                    android:src="@drawable/icon02_nomal"
-                    android:contentDescription="" />
+                    android:contentDescription=""
+                    android:gravity="bottom"
+                    android:src="@drawable/icon02_nomal" />
 
                 <TextView
-                    android:textSize="12.0sp"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:layout_gravity="top|right|center"
                     android:id="@+id/channel2_number"
-                    android:background="@drawable/red_circle"
-                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="7" />
+                    android:layout_gravity="top|right|center"
+                    android:background="@drawable/red_circle"
+                    android:gravity="center"
+                    android:text="7"
+                    android:textColor="@android:color/white"
+                    android:textSize="12.0sp"
+                    android:visibility="invisible" />
             </FrameLayout>
 
             <TextView
-                android:textColor="#ff8b8b8b"
                 android:id="@+id/textView2"
-                android:text="@string/message"
+                style="@style/main_tab_bt_text"
                 android:layout_weight="1.0"
-                style="@style/main_tab_bt_text" />
+                android:text="@string/message"
+                android:textColor="#ff8b8b8b" />
         </LinearLayout>
 
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
             android:id="@+id/channel3"
-        android:onClick="onNaviCheck"
-            style="@style/main_tab_bt_linear">
+            style="@style/main_tab_bt_linear"
+            android:gravity="center"
+            android:onClick="onNaviCheck"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -110,56 +110,56 @@
                 android:layout_weight="1.0">
 
                 <ImageView
-                    android:gravity="bottom"
                     android:id="@+id/navi_switcher_item_content"
                     android:layout_width="50.0dip"
                     android:layout_height="22.0dip"
-                    android:src="@drawable/icon03_nomal"
-                    android:contentDescription=""/>
+                    android:contentDescription=""
+                    android:gravity="bottom"
+                    android:src="@drawable/icon03_nomal" />
 
                 <TextView
-                    android:textSize="12.0sp"
-                    android:textColor="@android:color/white"
-                    android:gravity="center"
-                    android:layout_gravity="top|right|center"
                     android:id="@+id/channel3_number"
-                    android:background="@drawable/red_circle"
-                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="7"></TextView>
+                    android:layout_gravity="top|right|center"
+                    android:background="@drawable/red_circle"
+                    android:gravity="center"
+                    android:text="7"
+                    android:textColor="@android:color/white"
+                    android:textSize="12.0sp"
+                    android:visibility="invisible"></TextView>
             </FrameLayout>
 
             <TextView
-                android:textColor="#ff8b8b8b"
                 android:id="@+id/textView3"
-                android:text="@string/contact"
+                style="@style/main_tab_bt_text"
                 android:layout_weight="1.0"
-                style="@style/main_tab_bt_text" />
+                android:text="@string/contact"
+                android:textColor="#ff8b8b8b" />
         </LinearLayout>
 
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
             android:id="@+id/channel4"
-               android:onClick="onNaviCheck"
-            style="@style/main_tab_bt_linear">
+            style="@style/main_tab_bt_linear"
+            android:gravity="center"
+            android:onClick="onNaviCheck"
+            android:orientation="vertical">
 
             <ImageView
-                android:gravity="bottom"
                 android:id="@+id/navi_switcher_item_mine"
                 android:layout_width="50.0dip"
                 android:layout_height="22.0dip"
-                android:src="@drawable/icon04_nomal"
                 android:layout_weight="1.0"
-                android:contentDescription="" />
+                android:contentDescription=""
+                android:gravity="bottom"
+                android:src="@drawable/icon04_nomal" />
 
             <TextView
-                android:textColor="#ff8b8b8b"
                 android:id="@+id/textView4"
-                android:text="@string/mine"
+                style="@style/main_tab_bt_text"
                 android:layout_weight="1.0"
-                style="@style/main_tab_bt_text" />
+                android:text="@string/mine"
+                android:textColor="#ff8b8b8b" />
         </LinearLayout>
     </LinearLayout>
 

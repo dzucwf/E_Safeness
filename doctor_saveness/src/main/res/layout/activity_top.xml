@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45.0dip"
+        android:background="@color/top_bg"
+        android:id="@+id/top">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/btn1_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/top_bt_bg"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:padding="15.0dip"
+                android:scaleType="centerCrop"
+                android:src="@drawable/top_back_home_icon"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/btn1_tv"
+                android:layout_width="50.0dip"
+                android:layout_height="fill_parent"
+                android:background="@drawable/top_bt_bg"
+                android:clickable="true"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="测试"
+                android:textColor="#fffffffe"
+                android:textSize="16.0sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@id/title"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:text="菜单"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/btn2_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/top_bt_bg"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:padding="15.0dip"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/top_add_icon"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tishiTx"
+                    android:layout_width="15.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right|center"
+                    android:text="●"
+                    android:textColor="#ffff0000"
+                    android:textSize="12.0sp"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/btn2_tv"
+                android:layout_width="50.0dip"
+                android:layout_height="fill_parent"
+                android:background="@drawable/top_bt_bg"
+                android:clickable="true"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="保存"
+                android:textColor="#fffffffe"
+                android:textSize="16.0sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

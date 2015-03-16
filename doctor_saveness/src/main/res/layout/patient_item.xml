@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/catalog"
+        style="\@style/MMListCatalog"
+        android:layout_height="wrap_content"
+        android:paddingRight="4.0dip" />
+
+    <LinearLayout
+        android:id="@+id/contactitem_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:background="@drawable/listitem_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="90.0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15.0dip"
+            android:singleLine="true"
+            android:text="张三"
+            android:textSize="16.0sp" />
+
+        <TextView
+            android:id="@+id/sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:singleLine="true"
+            android:text="女" />
+
+        <TextView
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5.0dip" />
+
+        <TextView
+            android:id="@+id/num"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="20.0dip"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="1234567890"
+            android:textColor="#ffff6600" />
+    </LinearLayout>
+</LinearLayout>

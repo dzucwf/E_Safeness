@@ -20,10 +20,18 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    sourceSets {
+        main {
+
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile project(':e_saveness_common')
+    compile files('libs/locSDK_5.01.jar')
 }
