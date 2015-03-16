@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * Patient
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-11 23:03:45.
+* @author wuwenyi1213@163.com on 2015-03-16 09:03:49.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -38,12 +38,12 @@ public String getName() {
 public void setName(String name) {
     this.name = name;
 }
-@Column(name="gender",type=Column.Unknown type,defaultValue = "2") 
- private Unknown type gender;
-public Unknown type getGender() {
+@Column(name="gender",type=Column.TYPE_INTEGER,defaultValue = "2") 
+ private Integer gender;
+public Integer getGender() {
     return gender;
 }
-public void setGender(Unknown type gender) {
+public void setGender(Integer gender) {
     this.gender = gender;
 }
 @Column(name="birthday",type=Column.TYPE_TIMESTAMP) 
