@@ -6,35 +6,27 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
-import com.safeness.e_saveness_common.dao.DBUtils;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.patient.R;
-import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.U_d;
 
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +35,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by Lionnd on 2015/1/29.

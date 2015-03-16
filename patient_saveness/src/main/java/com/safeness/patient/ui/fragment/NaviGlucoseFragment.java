@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.safeness.e_saveness_common.base.AppBaseFragment;
-import com.safeness.e_saveness_common.chart.GenericChart;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.util.DateTimeUtil;

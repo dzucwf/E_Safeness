@@ -1,7 +1,5 @@
 package com.safeness.patient.ui.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +18,7 @@ import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.ui.activity.DrugSettingActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

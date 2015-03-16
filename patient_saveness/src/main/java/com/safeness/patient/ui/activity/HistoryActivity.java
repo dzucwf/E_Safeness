@@ -1,31 +1,13 @@
 package com.safeness.patient.ui.activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
-import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.patient.R;
-import com.safeness.patient.model.Drug;
-import com.safeness.patient.model.U_d;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Lionnd on 2015/2/2.

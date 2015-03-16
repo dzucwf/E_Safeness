@@ -3,8 +3,6 @@ package com.safeness.patient.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,25 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidListener;
 import com.safeness.e_saveness_common.base.AppBaseFragment;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
-import com.safeness.e_saveness_common.dao.QueryResult;
-import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
-import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Food;
-import com.safeness.patient.model.U_d;
 import com.safeness.patient.model.U_f;
-import com.safeness.patient.ui.activity.DrugSettingActivity;
 import com.safeness.patient.ui.activity.HistoryActivity;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
