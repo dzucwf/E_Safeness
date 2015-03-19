@@ -6,44 +6,37 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.safeness.e_saveness_common.base.AppBaseActivity;
-import com.safeness.e_saveness_common.dao.DBUtils;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
+import com.safeness.e_saveness_common.remind.ReminderManager;
 import com.safeness.patient.R;
-import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.U_d;
 
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by Lionnd on 2015/1/29.
@@ -239,6 +232,12 @@ public class DrugSettingActivity extends AppBaseActivity {
                 });
         return builder.create();
     }
+
+    private  void testInsertRemind(Calendar cal){
+        ReminderManager manager  = new ReminderManager(this);
+        manager.saveState("测试1","测试2",cal,"测试3","测试4");
+
+    }
     private TimePickerDialog.OnTimeSetListener mTimeSetListener =
             new TimePickerDialog.OnTimeSetListener()
             {
@@ -256,6 +255,12 @@ public class DrugSettingActivity extends AppBaseActivity {
                     u_d.setCount(-1);
                     u_d.setHintDay("2000-1-1");
                     u_d.setHintTime(strDate);
+                    Calendar c = Calendar.getInstance();
+
+                    c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                    c.set(Calendar.MINUTE,minuteOfHour);
+                    testInsertRemind(c);
+
                     if(u_dDao.insert(u_d)){
                         HashMap<String ,Object> map = new HashMap<String, Object>();
                         SimpleDateFormat ttt = new SimpleDateFormat("HH:mm");

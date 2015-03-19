@@ -14,7 +14,7 @@ import java.util.Date;
 public class DateTimeUtil {
 
 
-
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd kk:mm:ss";
     public static final  String NORMAL_PATTERN ="yyyy-MM-dd HH:mm:ss";
     public static String getNowDate(){
         //SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
