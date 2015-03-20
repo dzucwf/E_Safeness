@@ -134,7 +134,11 @@ public class MainActivity extends AppBaseActivity {
             return;
         }
 
-
+        //登陆之后加入提醒服务，这个要看后期是不是要重复加入的bug
+        Intent it = new Intent();
+        it.setAction("com.safeness.e_saveness_common.remind.OnBootReceiver");
+        it.putExtra("user",PatientApplication.getInstance().getUserName());
+        this.sendBroadcast(it);
 
     }
     @Override

@@ -65,4 +65,14 @@ public class ReminderModel implements Serializable {
     private  String type;
     private  String user;
     private  String date_time;
+
+    public boolean isCanReminde() {
+        return canReminde;
+    }
+
+    public void setCanReminde(boolean canReminde) {
+        this.canReminde = canReminde;
+    }
+
+    private boolean canReminde;
 }
