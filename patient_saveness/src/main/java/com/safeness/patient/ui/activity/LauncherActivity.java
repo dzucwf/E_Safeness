@@ -30,18 +30,21 @@ public class LauncherActivity extends Activity {
 
         setContentView(R.layout.activity_launcher);
 
+        UpdateManager updateTester = new UpdateManager(this);
+
+        updateTester.checkUpdate();
 
 
 
-/*
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                Intent mainIntent = new Intent(LauncherActivity.this, MainActivity.class);
-                LauncherActivity.this.startActivity(mainIntent);
-                LauncherActivity.this.finish();
-            }
-        }, LOAD_DISPLAY_TIME);
-*/
+
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
+//                Intent mainIntent = new Intent(LauncherActivity.this, MainActivity.class);
+//                LauncherActivity.this.startActivity(mainIntent);
+//                LauncherActivity.this.finish();
+//            }
+//        }, LOAD_DISPLAY_TIME);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -72,12 +75,10 @@ public class LauncherActivity extends Activity {
                 }
 
 
-            }
+          }
         }).start();
 
-        UpdateManager updateTester = new UpdateManager(this);
 
-        updateTester.checkUpdate();
 
     }
 

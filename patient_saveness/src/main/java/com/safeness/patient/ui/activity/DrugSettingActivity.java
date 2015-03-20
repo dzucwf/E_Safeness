@@ -23,12 +23,14 @@ import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
+import com.safeness.e_saveness_common.remind.ReminderManager;
 import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.U_d;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -230,6 +232,12 @@ public class DrugSettingActivity extends AppBaseActivity {
                 });
         return builder.create();
     }
+
+    private  void testInsertRemind(Calendar cal){
+        ReminderManager manager  = new ReminderManager(this);
+        manager.saveState("测试1","测试2",cal,"测试3","测试4");
+
+    }
     private TimePickerDialog.OnTimeSetListener mTimeSetListener =
             new TimePickerDialog.OnTimeSetListener()
             {
@@ -247,6 +255,12 @@ public class DrugSettingActivity extends AppBaseActivity {
                     u_d.setCount(-1);
                     u_d.setHintDay("2000-1-1");
                     u_d.setHintTime(strDate);
+                    Calendar c = Calendar.getInstance();
+
+                    c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                    c.set(Calendar.MINUTE,minuteOfHour);
+                    testInsertRemind(c);
+
                     if(u_dDao.insert(u_d)){
                         HashMap<String ,Object> map = new HashMap<String, Object>();
                         SimpleDateFormat ttt = new SimpleDateFormat("HH:mm");

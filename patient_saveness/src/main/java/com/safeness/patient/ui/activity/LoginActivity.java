@@ -58,14 +58,10 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
 
     private static final int LOGIN_RQ = 21;
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "pp1:pp1", "pp2:pp2"
-    };
+
     private static final int LOGIN_ERROR_RQ = 22;
+
+    private static final int LOGIN_IM=23;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -122,17 +118,29 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             switch (msg.what) {
                 case LOGIN_RQ:
 
-                    //登陆判断成功
-                    Intent it = new Intent();
-                    it.setClass(mContext, MainActivity.class);
-                    LoginActivity.this.startActivity(it);
+
                     //登陆完服务器后再次登陆聊天服务器
                     attemptLoginIM();
-                    finish();
+
                     break;
                 case LOGIN_ERROR_RQ:
                     String messageStr = msg.getData().getString("message");
                     Toast.makeText(mContext, messageStr, Toast.LENGTH_LONG).show();
+                    break;
+                case LOGIN_IM:
+                    if (isSuccess) {
+                        //登陆判断成功
+                        Intent it = new Intent();
+                        it.setClass(mContext, MainActivity.class);
+                        LoginActivity.this.startActivity(it);
+                        finish();
+                        Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "登录聊天服务器失败", Toast.LENGTH_LONG).show();
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+                    }
                     break;
             }
             super.handleMessage(msg);
@@ -156,7 +164,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    login();
+                    //login();
                     return true;
                 }
                 return false;
@@ -429,10 +437,11 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
      * @param currentUsername
      * @param currentPassword
      */
-    private boolean loginIM(final String currentUsername, final String currentPassword) {
+    private void loginIM(final String currentUsername, final String currentPassword) {
 
 
-        PatientApplication.currentUserNick = "pp1";
+        //puchao
+        PatientApplication.currentUserNick = currentUsername;
 
 
         isSuccess = false;
@@ -451,11 +460,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                 // 登陆成功，保存用户名密码
                 PatientApplication.getInstance().setUserName(currentUsername);
                 PatientApplication.getInstance().setPassword(currentPassword);
-                runOnUiThread(new Runnable() {
-                    public void run() {
 
-                    }
-                });
                 try {
                     // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
                     // ** manually load all local groups and
@@ -498,6 +503,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     // 获取群聊列表(群聊里只有groupid和groupname等简单信息，不包含members),sdk会把群组存入到内存和db中
                     EMGroupManager.getInstance().getGroupsFromServer();
                     isSuccess = true;
+                    hander.sendEmptyMessage(LOGIN_IM);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -510,6 +516,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                         }
                     });
                     isSuccess = false;
+                    hander.sendEmptyMessage(LOGIN_IM);
                 }
                 //更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
                 boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(PatientApplication.currentUserNick.trim());
@@ -535,11 +542,12 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                         Toast.makeText(getApplicationContext(), "登录消息失败: " + message, Toast.LENGTH_SHORT).show();
                     }
                 });
+                hander.sendEmptyMessage(LOGIN_IM);
             }
         });
 
 
-        return isSuccess;
+
 
 
     }
@@ -586,14 +594,14 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
 
-            boolean getLogin = loginIM(mEmail, mPassword);
+
+           loginIM(mEmail, mPassword);
 
 
-            // TODO: register the new account here.
-            return getLogin;
+
+            return isSuccess;
         }
 
         @Override
@@ -601,13 +609,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
 
-            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-            }
         }
 
         @Override
