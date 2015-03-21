@@ -41,7 +41,7 @@ public class ReminderManager {
 
 	}
 
-    public void saveState(String title,String body,Calendar mCalendar,String user,String type) {
+    public void saveState(String title,String body,Calendar mCalendar,String user,String type,boolean canRemind) {
 
         mDbHelper.open();
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
@@ -54,7 +54,7 @@ public class ReminderManager {
                 mRowId = id;
             }
         } else {
-            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type);
+            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind);
         }
 
        setReminder(mRowId, mCalendar);
@@ -68,6 +68,17 @@ public class ReminderManager {
         PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, 0);
         //mAlarmManager.set(AlarmManager.RTC_WAKEUP, when.getTimeInMillis(), pi);
         mAlarmManager.cancel(pi);
+        mDbHelper.open();
+        mDbHelper.updateReminderCanOrEnable(id,false);
+        mDbHelper.close();
+    }
+
+    public void reSetReminder(long id,Calendar mCalendar){
+
+        setReminder(mRowId, mCalendar);
+        mDbHelper.open();
+        mDbHelper.updateReminderCanOrEnable(id,true);
+        mDbHelper.close();
     }
 
     public void deleteReminder(long id ){
@@ -108,12 +119,15 @@ public class ReminderManager {
             String type =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TYPE));
             String user =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_USER));
             String remindTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
+
+            int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_CAN_REMIND));
             model.setRowId(rowID);
             model.setTitle(title);
             model.setBody(body);
             model.setType(type);
             model.setUser(user);
             model.setDate_time(remindTime);
+            model.setCanReminde(canReminder==1?true:false);
             list.add(model);
 
         }

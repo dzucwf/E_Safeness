@@ -235,7 +235,7 @@ public class DrugSettingActivity extends AppBaseActivity {
 
     private  void testInsertRemind(Calendar cal){
         ReminderManager manager  = new ReminderManager(this);
-        manager.saveState("测试1","测试2",cal,"测试3","测试4");
+        manager.saveState("测试1","测试2",cal,"测试3","测试4",true);
 
     }
     private TimePickerDialog.OnTimeSetListener mTimeSetListener =
