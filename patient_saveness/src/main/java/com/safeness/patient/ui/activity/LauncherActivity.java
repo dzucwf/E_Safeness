@@ -44,7 +44,7 @@ public class LauncherActivity extends Activity {
 //                LauncherActivity.this.finish();
 //            }
 //        }, LOAD_DISPLAY_TIME);
-
+/*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -78,10 +78,10 @@ public class LauncherActivity extends Activity {
           }
         }).start();
 
-
+*/
 
     }
-
+/*
     private void initSqlDataBG(IBaseDao<BloodGlucose> bloodGlucoseDao){
         BloodGlucose bg = new BloodGlucose();
 
@@ -3471,5 +3471,5 @@ public class LauncherActivity extends Activity {
 
 
     }
-
+*/
 }

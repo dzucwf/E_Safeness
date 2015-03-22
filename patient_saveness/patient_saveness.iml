@@ -91,6 +91,7 @@
     <orderEntry type="library" exported="" name="hirondelle-date4j-1.5.1" level="project" />
     <orderEntry type="module" module-name="caldroid" exported="" />
     <orderEntry type="module" module-name="e_saveness_common" exported="" />
+    <orderEntry type="module" module-name="doctor_saveness" />
   </component>
 </module>
 

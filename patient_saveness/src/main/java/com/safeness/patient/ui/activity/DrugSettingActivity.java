@@ -250,7 +250,7 @@ public class DrugSettingActivity extends AppBaseActivity {
                     String strDate = timeFormat.format(date);
                     Log.v("v",strDate);
                     U_d u_d = new U_d();
-                    u_d.setU_sid(1);
+                    u_d.setU_sid("1");
                     u_d.setD_id(_id);
                     u_d.setCount(-1);
                     u_d.setHintDay("2000-1-1");

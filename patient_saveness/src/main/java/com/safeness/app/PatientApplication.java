@@ -36,6 +36,8 @@ public class PatientApplication extends Application {
 	public static String currentUserNick = "";
 	public static DemoHXSDKHelper hxSDKHelper = new DemoHXSDKHelper();
 
+    public static String userID = "";
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -88,6 +90,25 @@ public class PatientApplication extends Application {
 	public void setContactList(Map<String, User> contactList) {
 	    hxSDKHelper.setContactList(contactList);
 	}
+
+    /**
+     * 获取当前登陆用户ID
+     *
+     * @return
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * 设置当前登陆用户ID
+     *
+     * @return
+     */
+    public String setUserID(String value) {
+        return userID = value;
+    }
+
 
 	/**
 	 * 获取当前登陆用户名

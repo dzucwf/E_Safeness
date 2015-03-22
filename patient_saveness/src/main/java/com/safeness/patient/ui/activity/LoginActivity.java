@@ -36,6 +36,8 @@ import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
+import com.safeness.e_saveness_common.dao.DaoFactory;
+import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.model.User;
 import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
@@ -273,7 +275,28 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
                 if (jsobject.getString("code").equals("USER_LOGIN_SUCCESS")) {
 
+                    //ADD BY LIONND 2015-03-21
+                    PatientApplication app = (PatientApplication) getApplication();
+                    app.setUserID(jsobject.getJSONArray("data").getJSONObject(0).getString("uid"));
 
+                    com.safeness.patient.model.User user = new com.safeness.patient.model.User();
+                    //uid":"3dc5b4f90e574957be448b64e1c110e3","birthday":"2015-01-12","weight":"160","job":"司机","photo":null,"doctor":"董华健",
+                    // "parents_tel":null,"height":"181","email":null,"name":"李四","age":"30","gender":"男","hospital":"青岛糖尿病专科医院","mobile":"13189756854"
+                    user.setServer_id(jsobject.getJSONArray("data").getJSONObject(0).getString("uid"));
+                    user.setBirthday(jsobject.getJSONArray("data").getJSONObject(0).getString("birthday"));
+                    user.setWeight(jsobject.getJSONArray("data").getJSONObject(0).getInt("weight"));
+                    user.setJob(jsobject.getJSONArray("data").getJSONObject(0).getString("job"));
+                    user.setDoctor(jsobject.getJSONArray("data").getJSONObject(0).getString("doctor"));
+                    user.setParents_tel(jsobject.getJSONArray("data").getJSONObject(0).getString("parents_tel"));
+                    user.setHeight(jsobject.getJSONArray("data").getJSONObject(0).getInt("height"));
+                    user.setMail(jsobject.getJSONArray("data").getJSONObject(0).getString("email"));
+                    user.setUsername(jsobject.getJSONArray("data").getJSONObject(0).getString("name"));
+                    user.setGender(jsobject.getJSONArray("data").getJSONObject(0).getString("gender"));
+                    user.setHospital(jsobject.getJSONArray("data").getJSONObject(0).getString("hospital"));
+                    user.setTel(jsobject.getJSONArray("data").getJSONObject(0).getString("mobile"));
+
+                    IBaseDao<com.safeness.patient.model.User> userDao= DaoFactory.createGenericDao(this, com.safeness.patient.model.User.class);
+                    userDao.insertOrUpdate(user,"server_id", "username","tel");
                     msg.what = LOGIN_RQ;
 
 

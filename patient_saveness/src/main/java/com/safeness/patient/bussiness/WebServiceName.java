@@ -7,4 +7,9 @@ public class WebServiceName {
 
     public static final String login = "login";
     public static final String prescription = "prescription";
+    public static final int GETPRESCRIPTION_ID = 901;
+
+    public static final String foodplan = "foodplan";
+    public static final int GETFOOD_RQ = 101;
+
 }
