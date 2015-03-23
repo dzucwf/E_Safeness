@@ -119,11 +119,12 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
             switch (msg.what) {
                 case LOGIN_RQ:
-
-
+                    Intent it = new Intent();
+                    it.setClass(mContext, MainActivity.class);
+                    LoginActivity.this.startActivity(it);
                     //登陆完服务器后再次登陆聊天服务器
                     attemptLoginIM();
-
+                    finish();
                     break;
                 case LOGIN_ERROR_RQ:
                     String messageStr = msg.getData().getString("message");
@@ -132,10 +133,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                 case LOGIN_IM:
                     if (isSuccess) {
                         //登陆判断成功
-                        Intent it = new Intent();
-                        it.setClass(mContext, MainActivity.class);
-                        LoginActivity.this.startActivity(it);
-                        finish();
+
                         Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
 
                     } else {

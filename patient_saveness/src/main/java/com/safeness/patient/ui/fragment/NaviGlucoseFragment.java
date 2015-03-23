@@ -3,6 +3,9 @@ package com.safeness.patient.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,24 +20,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseFragment;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
+import com.safeness.e_saveness_common.net.SourceJsonHandler;
+import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
+import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.BloodGlucose;
 import com.safeness.patient.ui.activity.GlucoseInputActivity;
 import com.safeness.patient.ui.activity.MoreActivity;
 import com.safeness.patient.ui.view.GlucoseInputView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //血糖
 public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.OnPageChangeListener {
@@ -50,14 +60,18 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
     ImageView btn_set;
 
+    private Context mContext;
+
     private int selectTime = 0;
 
+    private static final int FILL_GLUCOSE = 21 ;
+    private static final int FILL_GLUCOSE_ERROR = 22;
 
     //界面中的录入血糖圆圈
     ArrayList<View> glucoseViewList;
 
     //从数据库中查出的血糖值
-    List<BloodGlucose> sourceValueList;
+    //List<BloodGlucose> sourceValueList;
     Calendar selected_calendar = Calendar.getInstance();
 
 
@@ -68,8 +82,8 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     private void getViews(View view) {
 
 
+        mContext = getActivity();
         chartWebView = (WebView) getActivity().findViewById(R.id.glucoseChart);
-
         chartWebView.getSettings().setJavaScriptEnabled(true);
         chartWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         chartWebView.getSettings().setDefaultTextEncodingName("utf-8");
@@ -85,7 +99,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             public void onPageFinished(WebView view, String url)
             {
                 super.onPageFinished(view, url);
-                fillChartData();
+                queryGlucoseFromServer();
             }
         });
 
@@ -118,7 +132,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
                         yearKey_final = Long.parseLong(yearKey_final + "" + 1);
                         it.putExtra("afterOrBefore", 1);
                     }
-                    it.putExtra("server_id", yearKey_final);
+                    it.putExtra("server_id", yearKey_final+"");
                     it.putExtra("takeTag", selectTime);
                     it.putExtra("inputTime", DateTimeUtil.getSelectedDate(selected_calendar, DateTimeUtil.NORMAL_PATTERN));
                     getActivity().startActivity(it);
@@ -199,8 +213,8 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             selected_calendar = DateTimeUtil.getSelectCalendar(date, DateTimeUtil.NORMAL_PATTERN);
             setCalText(selected_calendar);
 
-            fillChartData();
-            loadCurrentTimeValue();
+            queryGlucoseFromServer();
+
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -214,23 +228,113 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     public void onResume() {
 
         super.onResume();
-        fillChartData();
-       loadCurrentTimeValue();
+        queryGlucoseFromServer();
 
 
+
+    }
+
+    private Handler hander = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case FILL_GLUCOSE:
+
+
+                    break;
+                case FILL_GLUCOSE_ERROR:
+                    String messageStr = msg.getData().getString("message");
+                    Toast.makeText(mContext, messageStr, Toast.LENGTH_LONG).show();
+                    break;
+
+            }
+            super.handleMessage(msg);
+            dissProgressDialog();
+        }
+    };
+
+    @Override
+    public void onSuccess(Object obj, int reqCode) {
+
+        if (reqCode == FILL_GLUCOSE) {
+            JSONObject jsobject = (JSONObject) obj;
+            Message msg = new Message();
+            Bundle b = new Bundle();
+            try {
+                b.putString("message", jsobject.getString("message"));
+                msg.setData(b);
+
+                if (jsobject.getString("code").equals("BG_GETLIST_SUCCESS")) {
+
+
+                    JSONArray data = jsobject.getJSONArray("data");
+
+                    for (int i = 0; i <data.length() ; i++) {
+                        JSONObject jsobjectModel =  data.getJSONObject(i);
+                        double value = jsobjectModel.getDouble("value");
+                        String takeDate = jsobjectModel.getString("takeDate");
+                        int takeTag =jsobjectModel.getInt("takeTag");
+                        int afterOrBefore = jsobjectModel.getInt("afterOrBefore");
+                        String serverID = jsobjectModel.getString("serverID");
+                        BloodGlucose bloodGlucose = new BloodGlucose();
+
+                    }
+                    msg.what = FILL_GLUCOSE;
+
+
+                } else {
+                    msg.what = FILL_GLUCOSE_ERROR;
+                }
+                hander.sendMessage(msg);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        super.onSuccess(obj, reqCode);
+    }
+
+    @Override
+    public void onFail(int errorCode, int reqCode) {
+        super.onFail(errorCode, reqCode);
+    }
+
+    private void queryGlucoseFromServer(){
+        //查询当天的血糖曲线
+        String queryStartTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 00:00:00");
+        String queryEndTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 23:59:59");
+        IBaseDao<BloodGlucose> daoFactory = DaoFactory.createGenericDao(getActivity(), BloodGlucose.class);
+        String userName = PatientApplication.getInstance().getUserName();
+        List<BloodGlucose> dataBaseList = daoFactory.queryByCondition("user_id = ? and takeDate between ? and ? order by takeDate", new String[]{userName,queryStartTime, queryEndTime});
+
+        //先查询本地数据库，如果本地没有数据就查询服务器并把服务器的数据放到本地
+        if(dataBaseList == null || dataBaseList.size()==0 ){
+            String url = Constant.getServier() + WebServiceName.getGlucosseList;
+            Map<String, String> parameter = new HashMap<String, String>();
+
+
+            parameter.put("uName", userName);
+            parameter.put("startdate", queryStartTime);
+            parameter.put("enddate", queryEndTime);
+
+            this.request(parameter, url, FILL_GLUCOSE, this, new SourceJsonHandler());
+        }else{
+            fillChartData(dataBaseList);
+            loadCurrentTimeValue(dataBaseList);
+        }
     }
 
     /**
      * 加载完成后初始化图表数据
      */
-    private void fillChartData() {
+    private void fillChartData(List<BloodGlucose> sourceValueList ) {
         try {
 
-            //查询当天的血糖曲线
-            String queryStartTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 00:00:00");
-            String queryEndTime = DateTimeUtil.getSelectedDate(selected_calendar, "yyyy-MM-dd 23:59:59");
-            IBaseDao<BloodGlucose> daoFactory = DaoFactory.createGenericDao(getActivity(), BloodGlucose.class);
-            sourceValueList = daoFactory.queryByCondition("takeDate between ? and ? order by takeDate", new String[]{queryStartTime, queryEndTime});
+
             if (sourceValueList != null && sourceValueList.size() > 0) {
                 final String[] xAxis = new String[sourceValueList.size()];
                 final double[] series = new double[sourceValueList.size()];
@@ -318,7 +422,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
     public void onPageSelected(int index) {
 
         setGlucoseTxt(index);
-        loadCurrentTimeValue();
+       // loadCurrentTimeValue();
         int cnt = mImageIndex.getChildCount();
         for (int i = 0; i < cnt; i++) {
             mImageIndex.getChildAt(i).setSelected(i == index ? true : false);
@@ -331,7 +435,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
      * 读取当前选择圆圈的血糖值
      */
 
-    private void loadCurrentTimeValue() {
+    private void loadCurrentTimeValue(List<BloodGlucose> sourceValueList) {
 
         GlucoseInputView inputView = (GlucoseInputView) glucoseViewList.get(selectTime);
 

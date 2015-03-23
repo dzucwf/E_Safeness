@@ -1,5 +1,7 @@
 package com.safeness.e_saveness_common.util;
 
+import android.text.TextUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,6 +44,9 @@ public class DateTimeUtil {
      */
     public static String getSelectedDate(Calendar calendar,String pattern){
 
+        if(TextUtils.isEmpty(pattern)){
+            pattern = NORMAL_PATTERN;
+        }
         SimpleDateFormat   formatter   =   new   SimpleDateFormat(pattern);
         Date   curDate   =   calendar.getTime();
         String   str   =   formatter.format(curDate);

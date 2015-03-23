@@ -16,8 +16,8 @@ public class BloodGlucose {
 
     @Column(name = "_id", type = Column.TYPE_INTEGER, isPrimaryKey = true, isUnique = true)
     private Integer _id;
-    @Column(name = "server_id", type = Column.TYPE_INTEGER, isNull = false)
-    private Long server_id;
+    @Column(name = "server_id", type = Column.TYPE_STRING, isNull = false)
+    private String server_id;
     @Column(name = "bloodGlucose", type = Column.TYPE_FLOAT, isNull = false)
     private float bloodGlucose;
     @Column(name = "takeTag", type = Column.TYPE_INTEGER, isNull = false)
@@ -32,6 +32,17 @@ public class BloodGlucose {
     private String update_datetime;
     @Column(name = "memo", type = Column.TYPE_STRING)
     private String memo;
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    @Column(name = "user_id", type = Column.TYPE_STRING,isNull = false )
+    private String user_id;
 
     public String getMemo() {
         return memo;
@@ -54,12 +65,13 @@ public class BloodGlucose {
      * @param takeDate     录入实际时间
      * @return 对象
      */
-    public BloodGlucose(Long server_id, float bloodGlucose, Integer takeTag, String takeDate,int life_status) {
+    public BloodGlucose(String server_id, float bloodGlucose, Integer takeTag, String takeDate,int life_status,String user_id) {
         this.server_id = server_id;
         this.bloodGlucose = bloodGlucose;
         this.takeTag = takeTag;
         this.takeDate = takeDate;
         this.life_status = life_status;
+        this.user_id = user_id;
     }
 
     public Integer get_id() {
@@ -70,11 +82,11 @@ public class BloodGlucose {
         this._id = _id;
     }
 
-    public Long getServer_id() {
+    public String getServer_id() {
         return server_id;
     }
 
-    public void setServer_id(Long server_id) {
+    public void setServer_id(String server_id) {
         this.server_id = server_id;
     }
 

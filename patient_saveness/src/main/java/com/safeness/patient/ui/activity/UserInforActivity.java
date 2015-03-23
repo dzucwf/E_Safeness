@@ -36,33 +36,9 @@ public class UserInforActivity extends AppBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_infor);
 
-        app = (PatientApplication) this.getApplication();
-        User user = new User();
-        IBaseDao<User> userDao = DaoFactory.createGenericDao(this, User.class);
-        List<QueryResult> userinfor = userDao.execQuerySQL("select * from user where server_id=?", app.getUserID());
 
-        if (userinfor.size() > 0) {
 
-            CharSequence aaa= userinfor.get(0).getStringProperty("username");
-            txv_userinfor_title.setText(aaa);
-            txb_userinfor_name.setText(userinfor.get(0).getStringProperty("username"));
-            try{
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date now = new Date();
-                long days = (now.getTime() - sdf.parse(userinfor.get(0).getStringProperty("birthday")).getTime()) / (1000 * 60 * 60 * 24);//得到总天数 years=days/365;
-                txb_userinfor_age.setText(String.valueOf(days/365));
-            }
-            catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            txb_userinfor_height.setText(userinfor.get(0).getStringProperty("height"));
-            txb_userinfor_weight.setText(userinfor.get(0).getStringProperty("weight"));
-            txb_userinfor_mail.setText(userinfor.get(0).getStringProperty("mail"));
-            txb_userinfor_tel.setText(userinfor.get(0).getStringProperty("tel"));
-        }
     }
 
     @Override
@@ -81,6 +57,33 @@ public class UserInforActivity extends AppBaseActivity {
 
     @Override
     protected void initializedData() {
+        app = (PatientApplication) this.getApplication();
+        User user = new User();
+        IBaseDao<User> userDao = DaoFactory.createGenericDao(this, User.class);
+        List<QueryResult> userinfor = userDao.execQuerySQL("select * from user where server_id=?", app.getUserID());
+
+        if (userinfor.size() > 0) {
+
+            CharSequence aaa= userinfor.get(0).getStringProperty("username");
+            txv_userinfor_title.setText(aaa);
+            txb_userinfor_name.setText(userinfor.get(0).getStringProperty("username"));
+
+            try{
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date now = new Date();
+                long days = (now.getTime() - sdf.parse(userinfor.get(0).getStringProperty("birthday")).getTime()) / (1000 * 60 * 60 * 24);//得到总天数 years=days/365;
+                txb_userinfor_age.setText(String.valueOf(days/365));
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            txb_userinfor_height.setText(userinfor.get(0).getStringProperty("height"));
+            txb_userinfor_weight.setText(userinfor.get(0).getStringProperty("weight"));
+            txb_userinfor_mail.setText(userinfor.get(0).getStringProperty("mail"));
+            txb_userinfor_tel.setText(userinfor.get(0).getStringProperty("tel"));
+
+        }
 
     }
 
