@@ -7,19 +7,19 @@ import com.safeness.e_saveness_common.dao.Table.Column;
  * Food
  * Project name: com.safeness.patient
  *
- * @author wuwenyi1213@163.com on 2015-03-22 11:03:48.
+ * @author wuwenyi1213@163.com on 2015-03-26 10:03:26.
  * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
  */
 
 @Table(name = "food")
 public class Food {
 
-    @Column(name="_id",type=Column.TYPE_INTEGER,isPrimaryKey=true,isUnique = true)
-    private Integer _id;
-    public Integer get_id() {
+    @Column(name="_id",type=Column.TYPE_STRING,isNull = false,isUnique = true)
+    private String _id;
+    public String get_id() {
         return _id;
     }
-    public void set_id(Integer _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
     @Column(name="foodname",type=Column.TYPE_STRING,isNull = false)
@@ -38,7 +38,7 @@ public class Food {
     public void setCalorie(double calorie) {
         this.calorie = calorie;
     }
-    @Column(name="sugar",type=Column.TYPE_DOUBLE,isNull = false)
+    @Column(name="sugar",type=Column.TYPE_DOUBLE)
     private double sugar;
     public double getSugar() {
         return sugar;
@@ -85,16 +85,16 @@ public class Food {
     /**
      *根据所有不允许为null的列，初始化对象
      *
+     * @param _id 参数解释
      * @param foodname 参数解释
      * @param calorie 参数解释
-     * @param sugar 参数解释
      *
      *  @return 对象
      */
-    public Food(String foodname,double calorie,double sugar) {
+    public Food(String _id,String foodname,double calorie) {
+        this._id = _id;
         this.foodname = foodname;
         this.calorie = calorie;
-        this.sugar = sugar;
     }
 
 

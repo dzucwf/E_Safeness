@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseFragment;
@@ -57,6 +58,8 @@ public class NaviFoodFragment extends AppBaseFragment {
     private ImageView btn_food_nav_item;
     private LinearLayout btn_eated;
     private ImageView btn_eated_status;
+    private TextView btn_food_nav_sync;
+
 
     private  final  int OPEN_CALENDAR_RQ=11;
     private  final int SET_DATE_RESULT = 12;
@@ -72,6 +75,8 @@ public class NaviFoodFragment extends AppBaseFragment {
 
     private Handler handler=null;
     PatientApplication app;
+
+    private boolean hasSyncData = false;
     //
     @Override
     protected int getLayoutId() {
@@ -171,6 +176,13 @@ public class NaviFoodFragment extends AppBaseFragment {
             }
         });
 
+        btn_food_nav_sync.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 getList();
+             }
+         });
+
 
         btn_eated.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +231,8 @@ public class NaviFoodFragment extends AppBaseFragment {
         btn_food_nav_item = (ImageView)getActivity().findViewById(R.id.btn_food_nav_item);
         btn_eated = (LinearLayout)getActivity().findViewById(R.id.food_ll_bottomBar);
         btn_eated_status = (ImageView)getActivity().findViewById(R.id.food_ll_bottomBar_status);
+
+        btn_food_nav_sync = (TextView)getActivity().findViewById(R.id.txv_food_nav_sync);
     }
 
     private String getDateBg(Date date){
@@ -270,15 +284,13 @@ public class NaviFoodFragment extends AppBaseFragment {
     /**
      * 获取处方id
      *
-     * @param username
-     * @param date
      */
-    private void getList(String username, Date date) {
+    private void getList() {
         String url = Constant.getServier() + WebServiceName.prescription;
         Map<String, String> parameter = new HashMap<String, String>();
-        parameter.put("uName", "18363667172"/*username*/);//app.getUserName());
+        parameter.put("uName", app.getUserName());
         java.text.SimpleDateFormat format = new  java.text.SimpleDateFormat("yyyy-MM-dd");
-        parameter.put("date", format.format(date));
+        parameter.put("date", format.format(selectDate));
 
         this.request(parameter, url, WebServiceName.GETPRESCRIPTION_ID, this, new SourceJsonHandler());
     }
@@ -299,8 +311,9 @@ public class NaviFoodFragment extends AppBaseFragment {
             u_fList = u_fdDao.queryByCondition("u_sid=? and suggestDate between ? and ? and type=?", "1", getDateBg(selectDate),getDateEd(selectDate),String.valueOf(cutTab));
         }
 */
-        if (u_fList.isEmpty()){
-            getList(app.getUserName(), selectDate);
+        if (u_fList.isEmpty() && hasSyncData == false){
+            getList();
+            hasSyncData = true;
         }
         else{
             for(int i =0; i < u_fList.size(); i++) {
@@ -407,8 +420,6 @@ public class NaviFoodFragment extends AppBaseFragment {
                     if (jsobject.getString("code").equals("FOOD_GETLIST_SUCCESS")) {
 
                         insertFood(jsobject.getJSONArray("data").getJSONObject(0).getJSONArray("food"));
-
-                        List<QueryResult> localFoodList = getLocalFoodList();
                         IBaseDao<U_f> u_fDao = DaoFactory.createGenericDao(getActivity(), U_f.class);
 
                         String uid = app.getUserID();
@@ -436,24 +447,17 @@ public class NaviFoodFragment extends AppBaseFragment {
                                 int f_type = o.getInt("type");
                                 JSONArray foodDetail = o.getJSONArray("foodDetail");
                                 for (int j=0; j<foodDetail.length(); j++){
-                                    String f_name = foodDetail.getJSONObject(j).getString("name");
-                                    String f_desc = foodDetail.getJSONObject(j).getString("scqty") + foodDetail.getJSONObject(j).getString("scunit");
-                                    for (int k = 0; k < localFoodList.size(); k++) {
-                                        String foodname = localFoodList.get(k).getStringProperty("foodname");
-                                        String desc = localFoodList.get(k).getStringProperty("desc");
-
-                                        if (f_name.equals(foodname) && f_desc.equals(desc)){
-                                            U_f u_f = new U_f();
-                                            u_f.setU_sid(uid);	u_f.setF_id(localFoodList.get(k).getIntProperty("_id"));	u_f.setSuggestDate(tempDate_Str);	u_f.setType(f_type);
-                                            batchU_F.add(u_f);
-                                        }
-                                    }
+                                    String f_id = foodDetail.getJSONObject(j).getString("ids");
+                                    U_f u_f = new U_f();
+                                    u_f.setU_sid(uid);	u_f.setF_id(f_id);	u_f.setSuggestDate(tempDate_Str);	u_f.setType(f_type);
+                                    batchU_F.add(u_f);
                                 }
                             }
                         }
                         u_fDao.batchInsert(getInsertList(batchU_F,sdf.format(date_bg),sdf.format(date_ed)));
 
-                        this.dissProgressDialog();msg.what = WebServiceName.GETFOOD_RQ;
+                        this.dissProgressDialog();
+                        msg.what = WebServiceName.GETFOOD_RQ;
                         handler.sendMessage(msg);
 
 
@@ -464,6 +468,7 @@ public class NaviFoodFragment extends AppBaseFragment {
                     }
                     //hander.sendMessage(msg);
 
+                    Toast.makeText(getActivity(), jsobject.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {
@@ -530,34 +535,35 @@ public class NaviFoodFragment extends AppBaseFragment {
         ArrayList<String[]> foodList = new ArrayList<String[]>();
 
         foodDao = DaoFactory.createGenericDao(getActivity(), Food.class);
-        List<QueryResult> foodList_local = foodDao.execQuerySQL("select distinct foodname, desc from food");
+        List<QueryResult> foodList_local = foodDao.execQuerySQL("select _id from food");
 
         //取得不重复的食品名称（网络数据）
         for (int i = 0; i < foodList_web.length(); ++i) {
             JSONObject o = (JSONObject) foodList_web.get(i);
             JSONArray foodDetail = o.getJSONArray("foodDetail");
             for (int j=0; j<foodDetail.length(); j++){
-                String f_name = foodDetail.getJSONObject(j).getString("name");
-                String f_desc = foodDetail.getJSONObject(j).getString("scqty") + foodDetail.getJSONObject(j).getString("scunit");
+                String f_ids = foodDetail.getJSONObject(j).getString("ids");
 
                 boolean hasExistFood = false;
                 for (int k = 0; k < foodList.size(); k++) {
-                    if (foodList.get(k)[0].equals(f_name) && foodList.get(k)[1].equals(f_desc)){
+                    if (foodList.get(k)[3].equals(f_ids)){
                         hasExistFood = true;
                         break;
                     }
                 }
                 if (hasExistFood == false){
-                    foodList.add(new String[]{f_name, f_desc});
+                    String f_name = foodDetail.getJSONObject(j).getString("name");
+                    String f_desc = foodDetail.getJSONObject(j).getString("scqty") + foodDetail.getJSONObject(j).getString("scunit");
+                    String f_rl = foodDetail.getJSONObject(j).getString("rl");
+                    foodList.add(new String[]{f_name, f_desc, f_rl, f_ids});
                 }
             }
         }
         for (int i = 0; i < foodList_local.size(); i++) {
-            String foodname = foodList_local.get(i).getStringProperty("foodname");
-            String desc = foodList_local.get(i).getStringProperty("desc");
+            String f_id = foodList_local.get(i).getStringProperty("_id");
 
             for (int j = 0; j < foodList.size(); j++) {
-                if (foodList.get(j)[0].equals(foodname) && foodList.get(j)[1].equals(desc)){
+                if (foodList.get(j)[3].equals(f_id)){
                     foodList.remove(j);
                 }
             }
@@ -566,17 +572,15 @@ public class NaviFoodFragment extends AppBaseFragment {
         List<Food> batchList =  new ArrayList<Food>();
         for (int j = 0; j < foodList.size(); j++) {
             Food food = new Food();
-            food.setFoodname(foodList.get(j)[0]);	food.setDesc(foodList.get(j)[1]);	food.setCalorie(0); food.setSugar(0);
+            food.setFoodname(foodList.get(j)[0]);
+            food.setDesc(foodList.get(j)[1]);
+            food.setCalorie(2);
+            food.set_id(foodList.get(j)[3]);
             batchList.add(food);
         }
         if (!batchList.isEmpty()){
             foodDao.batchInsert(batchList);}
 
-    }
-
-    private List<QueryResult> getLocalFoodList(){
-        foodDao = DaoFactory.createGenericDao(getActivity(), Food.class);
-        return foodDao.execQuerySQL("select distinct _id, foodname, desc from food");
     }
 
     private List<U_f> getInsertList(List<U_f> list, String bgDate, String edDate){
@@ -587,8 +591,10 @@ public class NaviFoodFragment extends AppBaseFragment {
         for (int i = 0; i < u_FList_local.size(); i++) {
             String suggestDate = u_FList_local.get(i).getStringProperty("suggestDate");
             String type = u_FList_local.get(i).getStringProperty("type");
+            String f_id = u_FList_local.get(i).getStringProperty("f_id");
          for (int j = 0; j < reList.size(); j++) {
-                if(reList.get(j).getType().toString().equals(type) && reList.get(j).getSuggestDate().equals(suggestDate)){
+                if(reList.get(j).getType().toString().equals(type) && reList.get(j).getSuggestDate().equals(suggestDate) &&
+                        reList.get(j).getF_id().toString().equals(f_id)  ){
                     reList.remove(j);
                     break;
                 }

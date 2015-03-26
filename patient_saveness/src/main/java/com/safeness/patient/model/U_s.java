@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * U_s
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-20 21:03:44.
+* @author wuwenyi1213@163.com on 2015-03-26 10:03:27.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -30,12 +30,12 @@ public String getU_sid() {
 public void setU_sid(String u_sid) {
     this.u_sid = u_sid;
 }
-@Column(name="s_id",type=Column.TYPE_INTEGER,isNull = false) 
- private Integer s_id;
-public Integer getS_id() {
+@Column(name="s_id",type=Column.TYPE_STRING,isNull = false) 
+ private String s_id;
+public String getS_id() {
     return s_id;
 }
-public void setS_id(Integer s_id) {
+public void setS_id(String s_id) {
     this.s_id = s_id;
 }
 @Column(name="count",type=Column.TYPE_DOUBLE,isNull = false) 
@@ -109,7 +109,7 @@ public void setUpdate_datetime(String update_datetime) {
     *
     *  @return 对象
     */
-    public U_s(String u_sid,Integer s_id,double count,double calorie,String finishedDate) {
+    public U_s(String u_sid,String s_id,double count,double calorie,String finishedDate) {
        this.u_sid = u_sid;
        this.s_id = s_id;
        this.count = count;

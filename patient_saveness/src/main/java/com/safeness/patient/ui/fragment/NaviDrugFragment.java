@@ -18,7 +18,11 @@ import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.ui.activity.DrugSettingActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +35,15 @@ public class NaviDrugFragment extends AppBaseFragment {
 
 
     private ListView listView;
+    private  TextView txv_dateText;
+    private TextView btn_drug_nav_sync;
     IBaseDao<Drug> drugDao;
 
     private ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
     private MyAdapter adapter = null;
+
+    private Date selectDate = Calendar.getInstance().getTime();
+
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
@@ -79,6 +88,9 @@ public class NaviDrugFragment extends AppBaseFragment {
         listView = (ListView)getActivity().findViewById(R.id.listView);
         //listView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1,getData()));
 
+        txv_dateText = (TextView)getActivity().findViewById(R.id.txv_drug_nav_date_text);
+        btn_drug_nav_sync = (TextView)getActivity().findViewById(R.id.txv_drug_nav_sync);
+
         mData= new ArrayList<Map<String,Object>>();
 
         drugDao = DaoFactory.createGenericDao(getActivity(), Drug.class);
@@ -117,6 +129,14 @@ public class NaviDrugFragment extends AppBaseFragment {
             }
 
         });
+
+        btn_drug_nav_sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //getList();
+            }
+        });
+
 
     }
 
@@ -159,22 +179,54 @@ public class NaviDrugFragment extends AppBaseFragment {
 
 
     }
+    private String getDateBg(Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        return df.format(date);
+    }
+    private String getDateBg(Date date, boolean isshort){
+        if (isshort){
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            return df.format(date);
+        }
+        else{
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+            return df.format(date);
+        }
+
+    }
+    private String getDateEd(Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        return df.format(date);
+    }
+
+    /**
+     * 从日历控件返回后，改变当前的日期,并加载当前数据
+     *
+     * @param date
+     */
+    public void setSelectedDate(Date date) {
+        try {
+            selectDate = date;
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            //saveCalendar = DateTimeUtil.getSelectCalendar(df.format(date), DateTimeUtil.NORMAL_PATTERN);
+
+            txv_dateText.setText(df.format(date));
+
+            adapter = new MyAdapter(getActivity(),mData,R.layout.drug_listitem,
+                    new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
+            listView.setAdapter(adapter);
+            //setCalText(selected_calendar);
+
+            //fillChartData();
+            //loadCurrentTimeValue();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private List<String> getData(){
 
         List<String> data = new ArrayList<String>();
-
-        data.add("测试数据1");
-        data.add("测试数据2");
-        data.add("测试数据3");
-        data.add("测试数据4");
-        data.add("测试数据1");
-        data.add("测试数据2");
-        data.add("测试数据3");
-        data.add("测试数据4");
-        data.add("测试数据1");
-        data.add("测试数据2");
-        data.add("测试数据3");
-        data.add("测试数据4");
 
         return data;
     }

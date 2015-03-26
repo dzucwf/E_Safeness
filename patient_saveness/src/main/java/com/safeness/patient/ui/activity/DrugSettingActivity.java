@@ -64,16 +64,16 @@ public class DrugSettingActivity extends AppBaseActivity {
 
     private MyAdapter adapter;
 
-    private Integer _id = -1;
+    private String _id = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         /*取出Intent中附加的数据*/
         Intent intent =getIntent();
-        _id = intent.getIntExtra("drug_id", -1);
+        _id = intent.getStringExtra("drug_id");
 
-        if (_id > 0){
+        if (_id == null){
             drugDao = DaoFactory.createGenericDao(this, Drug.class);
             drugList = drugDao.queryByCondition("_id=?",_id.toString());
 

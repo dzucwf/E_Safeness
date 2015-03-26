@@ -293,9 +293,8 @@ public class MainActivity extends AppBaseActivity {
 
         @Override
         public void onChangeMonth(int month, int year) {
-            String text = "month: " + month + " year: " + year;
-            Toast.makeText(getApplicationContext(), text,
-                    Toast.LENGTH_SHORT).show();
+            //String text = "month: " + month + " year: " + year;
+            //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -319,7 +318,7 @@ public class MainActivity extends AppBaseActivity {
      * @param view
      */
     public void openCalendar(View view){
-        Toast.makeText(this,"打开日历",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"打开日历",Toast.LENGTH_LONG).show();
         dialogCaldroidFragment.show(getSupportFragmentManager(),
                 dialogTag);
 
