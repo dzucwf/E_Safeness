@@ -289,7 +289,7 @@ public class MainActivity extends AppBaseActivity {
                     break;
                 case CB_INDEX_SPORT:
                     NaviSportsFragment sportsFragment = (NaviSportsFragment)switchAdapter.getItem(CB_INDEX_SPORT);
-                    //sportsFragment.setSelectedDate(date);
+                    sportsFragment.setSelectedDate(date);
                     break;
                 case R.id.navi_switcher_item_doctor:
                     break;

@@ -101,7 +101,8 @@ public class NaviDrugFragment extends AppBaseFragment {
                     case WebServiceName.GETDRUG_RQ:
 
                         Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
-                        adapter.mItemList = getListDataLocal();
+                        adapter = new MyAdapter(getActivity(),getListDataLocal(),R.layout.drug_listitem,
+                                new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
                         adapter.notifyDataSetChanged();
                         break;
                     case WebServiceName.GETPRESCRIPTION_ID:
@@ -208,6 +209,7 @@ public class NaviDrugFragment extends AppBaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Map<String ,Object> map = mItemList.get(position);
+
             View view = super.getView(position, convertView, parent);
             ImageView imageview = (ImageView)view.findViewById(R.id.drug_listview_item_imgAlert);
             TextView tv = (TextView)view.findViewById(R.id.drug_listview_item_title);
@@ -215,6 +217,8 @@ public class NaviDrugFragment extends AppBaseFragment {
 
             tv.setText(map.get("title").toString());
             return view;
+
+
         }
 
 

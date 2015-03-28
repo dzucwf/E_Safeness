@@ -7,7 +7,7 @@ import com.safeness.e_saveness_common.dao.Table.Column;
 * Sports
 * Project name: com.safeness.patient
 * 
-* @author wuwenyi1213@163.com on 2015-03-26 10:03:26.
+* @author wuwenyi1213@163.com on 2015-03-28 22:03:08.
 * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
 */
 
@@ -37,14 +37,6 @@ public double getCalorie() {
 }
 public void setCalorie(double calorie) {
     this.calorie = calorie;
-}
-@Column(name="suggestTime",type=Column.TYPE_INTEGER,isNull = false) 
- private Integer suggestTime;
-public Integer getSuggestTime() {
-    return suggestTime;
-}
-public void setSuggestTime(Integer suggestTime) {
-    this.suggestTime = suggestTime;
 }
 @Column(name="desc1",type=Column.TYPE_STRING) 
  private String desc1;
@@ -128,15 +120,13 @@ public void setUpdate_datetime(String update_datetime) {
     * @param _id 参数解释
     * @param sportsName 参数解释
     * @param calorie 参数解释
-    * @param suggestTime 参数解释
     *
     *  @return 对象
     */
-    public Sports(String _id,String sportsName,double calorie,Integer suggestTime) {
+    public Sports(String _id,String sportsName,double calorie) {
        this._id = _id;
        this.sportsName = sportsName;
        this.calorie = calorie;
-       this.suggestTime = suggestTime;
     }
 
 	

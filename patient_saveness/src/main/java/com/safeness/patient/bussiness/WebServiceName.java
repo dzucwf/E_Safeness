@@ -17,4 +17,7 @@ public class WebServiceName {
     public static final String drugplan = "prescription/detail";
     public static final int GETDRUG_RQ = 201;
 
+    public static final String sportsplan = "sportplan";
+    public static final int GETSPORTS_RQ = 301;
+
 }
