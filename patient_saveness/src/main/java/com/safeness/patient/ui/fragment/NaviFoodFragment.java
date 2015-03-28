@@ -94,6 +94,7 @@ public class NaviFoodFragment extends AppBaseFragment {
                 switch (msg.what) {
                     case WebServiceName.GETFOOD_RQ:
 
+                        Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
 
                         adapter = new MyAdapter(getActivity(),getLocalData(),R.layout.food_listitem,
                                 new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
@@ -468,7 +469,6 @@ public class NaviFoodFragment extends AppBaseFragment {
                     }
                     //hander.sendMessage(msg);
 
-                    Toast.makeText(getActivity(), jsobject.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {
@@ -488,7 +488,7 @@ public class NaviFoodFragment extends AppBaseFragment {
                         String url = Constant.getServier() + WebServiceName.foodplan;
                         Map<String, String> parameter = new HashMap<String, String>();
                         PatientApplication app = (PatientApplication) this.getActivity().getApplication();
-                        parameter.put("uName", "18363667172"/*app.getUserName()*/);
+                        parameter.put("uName", app.getUserName());
                         parameter.put("did", Pid);
                         this.request(parameter, url, WebServiceName.GETFOOD_RQ, this, new SourceJsonHandler());
 
@@ -502,6 +502,9 @@ public class NaviFoodFragment extends AppBaseFragment {
                     e.printStackTrace();
                 }
 
+                break;
+            default:
+                this.dissProgressDialog();
                 break;
         }
     }

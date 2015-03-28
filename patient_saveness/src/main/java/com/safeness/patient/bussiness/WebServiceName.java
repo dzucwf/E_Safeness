@@ -14,4 +14,7 @@ public class WebServiceName {
     public static final String foodplan = "foodplan";
     public static final int GETFOOD_RQ = 101;
 
+    public static final String drugplan = "prescription/detail";
+    public static final int GETDRUG_RQ = 201;
+
 }

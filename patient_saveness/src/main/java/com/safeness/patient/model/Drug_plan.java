@@ -4,15 +4,15 @@ import com.safeness.e_saveness_common.dao.Table;
 import com.safeness.e_saveness_common.dao.Table.Column;
 
 /**
- * U_d
+ * Drug_plan
  * Project name: com.safeness.patient
  *
- * @author wuwenyi1213@163.com on 2015-03-27 22:03:18.
+ * @author wuwenyi1213@163.com on 2015-03-27 20:03:50.
  * Copyright (c) 2015年 wuwenyi1213@163.com. All rights reserved.
  */
 
-@Table(name = "u_d")
-public class U_d {
+@Table(name = "drug_plan")
+public class Drug_plan {
 
     @Column(name="_id",type=Column.TYPE_INTEGER,isPrimaryKey=true,isUnique = true)
     private Integer _id;
@@ -30,53 +30,45 @@ public class U_d {
     public void setU_sid(String u_sid) {
         this.u_sid = u_sid;
     }
-    @Column(name="d_id",type=Column.TYPE_STRING,isNull = false)
-    private String d_id;
-    public String getD_id() {
-        return d_id;
+    @Column(name="F_sid",type=Column.TYPE_STRING,isNull = false)
+    private String F_sid;
+    public String getF_sid() {
+        return F_sid;
     }
-    public void setD_id(String d_id) {
-        this.d_id = d_id;
+    public void setF_sid(String F_sid) {
+        this.F_sid = F_sid;
     }
-    @Column(name="count",type=Column.TYPE_DOUBLE,isNull = false)
-    private double count;
-    public double getCount() {
-        return count;
+    @Column(name="startdate",type=Column.TYPE_TIMESTAMP,isNull = false)
+    private String startdate;
+    public String getStartdate() {
+        return startdate;
     }
-    public void setCount(double count) {
-        this.count = count;
+    public void setStartdate(String startdate) {
+        this.startdate = startdate;
     }
-    @Column(name="hintDay",type=Column.TYPE_STRING,isNull = false)
-    private String hintDay;
-    public String getHintDay() {
-        return hintDay;
+    @Column(name="enddate",type=Column.TYPE_TIMESTAMP,isNull = false)
+    private String enddate;
+    public String getEnddate() {
+        return enddate;
     }
-    public void setHintDay(String hintDay) {
-        this.hintDay = hintDay;
+    public void setEnddate(String enddate) {
+        this.enddate = enddate;
     }
-    @Column(name="hintTime",type=Column.TYPE_TIMESTAMP,isNull = false)
-    private String hintTime;
-    public String getHintTime() {
-        return hintTime;
+    @Column(name="everytime",type=Column.TYPE_INTEGER,isNull = false)
+    private Integer everytime;
+    public Integer getEverytime() {
+        return everytime;
     }
-    public void setHintTime(String hintTime) {
-        this.hintTime = hintTime;
+    public void setEverytime(Integer everytime) {
+        this.everytime = everytime;
     }
-    @Column(name="hintIndex",type=Column.TYPE_INTEGER,isNull = false)
-    private Integer hintIndex;
-    public Integer getHintIndex() {
-        return hintIndex;
+    @Column(name="medtime",type=Column.TYPE_INTEGER,isNull = false)
+    private Integer medtime;
+    public Integer getMedtime() {
+        return medtime;
     }
-    public void setHintIndex(Integer hintIndex) {
-        this.hintIndex = hintIndex;
-    }
-    @Column(name="desc",type=Column.TYPE_STRING)
-    private String desc;
-    public String getDesc() {
-        return desc;
-    }
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setMedtime(Integer medtime) {
+        this.medtime = medtime;
     }
     @Column(name="life_status",type=Column.TYPE_INTEGER,isNull = false,defaultValue = "1")
     private Integer life_status;
@@ -104,27 +96,27 @@ public class U_d {
     }
 
 
-    public U_d() {}
+    public Drug_plan() {}
 
     /**
      *根据所有不允许为null的列，初始化对象
      *
      * @param u_sid 参数解释
-     * @param d_id 参数解释
-     * @param count 参数解释
-     * @param hintDay 参数解释
-     * @param hintTime 参数解释
-     * @param hintIndex 参数解释
+     * @param F_sid 参数解释
+     * @param startdate 参数解释
+     * @param enddate 参数解释
+     * @param everytime 参数解释
+     * @param medtime 参数解释
      *
      *  @return 对象
      */
-    public U_d(String u_sid,String d_id,double count,String hintDay,String hintTime,Integer hintIndex) {
+    public Drug_plan(String u_sid,String F_sid,String startdate,String enddate,Integer everytime,Integer medtime) {
         this.u_sid = u_sid;
-        this.d_id = d_id;
-        this.count = count;
-        this.hintDay = hintDay;
-        this.hintTime = hintTime;
-        this.hintIndex = hintIndex;
+        this.F_sid = F_sid;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.everytime = everytime;
+        this.medtime = medtime;
     }
 
 

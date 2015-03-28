@@ -122,7 +122,8 @@
         android:background="@drawable/copd_flat_heading_background"
         android:layout_below="@+id/img_drugsetting_cell_bg3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:clickable="false" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -140,7 +141,7 @@
         android:text="添加提醒"
         android:id="@+id/textView12"
         android:textSize="20dp"
-        android:textColor="#ff39a7ff"
+        android:textColor="#ffe2e2e2"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/img_drugsetting_cell_bg3"
         android:layout_alignLeft="@+id/txv_drugsetting_cell_remind"
@@ -208,7 +209,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:textSize="13sp"
-        android:minWidth="60dp"/>
+        android:minWidth="60dp"
+        android:enabled="true" />
 
     <ImageView
         android:layout_width="60dp"

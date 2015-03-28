@@ -52,8 +52,10 @@ import com.safeness.im.domain.InviteMessage;
 import com.safeness.im.utils.CommonUtils;
 import com.safeness.patient.R;
 import com.safeness.patient.adapter.BtmNaviSwitchAdapter;
+import com.safeness.patient.ui.fragment.NaviDrugFragment;
 import com.safeness.patient.ui.fragment.NaviFoodFragment;
 import com.safeness.patient.ui.fragment.NaviGlucoseFragment;
+import com.safeness.patient.ui.fragment.NaviSportsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -277,13 +279,17 @@ public class MainActivity extends AppBaseActivity {
                     NaviFoodFragment foodFragment = (NaviFoodFragment)switchAdapter.getItem(CB_INDEX_FOOD);
                     foodFragment.setSelectedDate(date);
                     break;
-                case R.id.navi_switcher_item_drug:
+                case CB_INDEX_DRUG:
+                    NaviDrugFragment drugFragment = (NaviDrugFragment)switchAdapter.getItem(CB_INDEX_DRUG);
+                    drugFragment.setSelectedDate(date);
                     break;
                 case CB_INDEX_GLUCOSE:
                     NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
                     glucoseFragment.setSelectedDate(dateStr);
                     break;
-                case R.id.navi_switcher_item_sports:
+                case CB_INDEX_SPORT:
+                    NaviSportsFragment sportsFragment = (NaviSportsFragment)switchAdapter.getItem(CB_INDEX_SPORT);
+                    //sportsFragment.setSelectedDate(date);
                     break;
                 case R.id.navi_switcher_item_doctor:
                     break;

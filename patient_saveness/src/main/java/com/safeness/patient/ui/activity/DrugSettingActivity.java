@@ -19,6 +19,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
@@ -26,8 +27,11 @@ import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.e_saveness_common.remind.ReminderManager;
 import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
+import com.safeness.patient.model.Drug_plan;
 import com.safeness.patient.model.U_d;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,8 +50,10 @@ public class DrugSettingActivity extends AppBaseActivity {
     private ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
     private  IBaseDao<Drug> drugDao;
     private  IBaseDao<U_d> u_dDao;
+    private  IBaseDao<Drug_plan> drug_planDao;
     private  List<Drug> drugList;
     private List<U_d> u_dList;
+    private List<Drug_plan> drug_planList;
 
     private Button btn_delete;
     private TextView txb_desc;
@@ -65,6 +71,8 @@ public class DrugSettingActivity extends AppBaseActivity {
     private MyAdapter adapter;
 
     private String _id = null;
+    private Date selectDate = null;
+    PatientApplication app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,10 +80,20 @@ public class DrugSettingActivity extends AppBaseActivity {
         /*取出Intent中附加的数据*/
         Intent intent =getIntent();
         _id = intent.getStringExtra("drug_id");
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            selectDate =df.parse(intent.getStringExtra("select_date").toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (_id != null){
 
-        if (_id == null){
+            app = (PatientApplication)this.getApplication();
             drugDao = DaoFactory.createGenericDao(this, Drug.class);
-            drugList = drugDao.queryByCondition("_id=?",_id.toString());
+            drug_planDao = DaoFactory.createGenericDao(this, Drug_plan.class);
+            u_dDao = DaoFactory.createGenericDao(this, U_d.class);
+
+            drugList = drugDao.queryByCondition("_id=?",_id);
 
             if (drugList.size() >0){
                 txb_name.setText(drugList.get(0).getDrugName());
@@ -83,17 +101,30 @@ public class DrugSettingActivity extends AppBaseActivity {
                 txb_remind.setText(drugList.get(0).getLife_status() > 0 ? "提醒(已开启)" : "提醒(已关闭)");
                 img_cell_switch.setBackgroundResource(drugList.get(0).getLife_status() > 0 ?R.drawable.switch_on : R.drawable.switch_off);
 
-                u_dDao = DaoFactory.createGenericDao(this, U_d.class);
-                u_dList = u_dDao.queryByCondition("u_sid=? and d_id=?","1",_id.toString());
+
+                drug_planList = drug_planDao.queryByCondition("u_sid=? and f_sid=? and [startdate] <= ? and [enddate] >= ?",app.getUserID(),_id,df.format(selectDate),df.format(selectDate));
+                u_dList = u_dDao.queryByCondition("u_sid=? and d_id=? and [hintDay] = ?",app.getUserID(),_id,df.format(selectDate));
                 mData= new ArrayList<Map<String,Object>>();
-                for(int i =0; i < u_dList.size(); i++) {
+                int everyTime = drug_planList.get(0).getMedtime();
+                int count = drug_planList.get(0).getEverytime();
+                for(int i =0; i < everyTime; i++) {
                     Map<String,Object> item = new HashMap<String,Object>();
-                    item.put("title", u_dList.get(i).getHintTime());
-                    item.put("status", u_dList.get(i).getLife_status());
-                    item.put("_id", u_dList.get(i).get_id());
+                    item.put("title", getTimeInterval(everyTime,i));
+                    item.put("status", 1);
+                    item.put("_id", null);
+                    item.put("index", i);
+                    item.put("count", count);
+                    if (u_dList != null)
+                    {
+                        for (int j = 0; j < u_dList.size(); j++) {
+                            if (u_dList.get(j).getHintIndex() == i)
+                            item.put("status", u_dList.get(j).getLife_status());
+                            item.put("_id", u_dList.get(j).get_id());
+                        }
+                    }
                     mData.add(item);
                 }
-                Collections.sort(mData, new SortByID());
+                //Collections.sort(mData, new SortByID());
                 adapter = new MyAdapter(this,mData,R.layout.drug_setting_listitem,
                         new String[]{"title","status"},new int[]{R.id.drug_setting_remind_list_label_time,R.id.drug_setting_remind_list_image_status});
                 lst_remind_list.setAdapter(adapter);
@@ -104,8 +135,13 @@ public class DrugSettingActivity extends AppBaseActivity {
                         Map<String, Object> map = (Map<String, Object>) DrugSettingActivity.this.adapter
                                 .getItem(position);
                         U_d u_d = new U_d();
+                        u_d.setU_sid(app.getUserID());
+                        u_d.setD_id(_id);
+                        u_d.setHintDay(df.format(selectDate));
+                        u_d.setHintTime(map.get("title").toString());
+                        u_d.setHintIndex(Integer.parseInt(map.get("index").toString()));
                         u_d.setLife_status(Integer.parseInt(map.get("status").toString()) > 0 ? -1 : 1);
-                        if(u_dDao.update(u_d, "_id=?", map.get("_id").toString())){
+                        if(u_dDao.insertOrUpdate(u_d, "u_sid","d_id","hintDay","hintIndex")){
                             mData.get(position).put("status", Integer.parseInt(map.get("status").toString()) > 0 ? -1 : 1);
                             adapter.mItemList = mData;
                             adapter.notifyDataSetChanged();
@@ -135,14 +171,14 @@ public class DrugSettingActivity extends AppBaseActivity {
                 img_cell_addRemind.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(R.id.drug_setting_remind_list_label_time);
+                        //showDialog(R.id.drug_setting_remind_list_label_time);
                     }
                 });
 
                 btn_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        buildDialog(DrugSettingActivity.this).show();
+                        //buildDialog(DrugSettingActivity.this).show();
                     }
                 });
                 switchVisible();
@@ -336,5 +372,60 @@ public class DrugSettingActivity extends AppBaseActivity {
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return dt.parse(strDate);
 
+    }
+
+    private String getTimeInterval(int medtime, int index){
+        String reStr = "";
+        int hourInterval = getMyInt(getMyInt(medtime,60),60);
+        switch (hourInterval){
+            case 1:
+                reStr = "12:00";
+                break;
+            case 2:
+                switch (index){
+                    case 1:
+                        reStr = "9:00";
+                        break;
+                    case 2:
+                        reStr = "17:00";
+                        break;
+                }
+                break;
+            case 3:
+                switch (index){
+                    case 1:
+                        reStr = "8:00";
+                        break;
+                    case 2:
+                        reStr = "12:00";
+                        break;
+                    case 3:
+                        reStr = "18:00";
+                        break;
+                }
+                break;
+            case 4:
+                switch (index){
+                    case 1:
+                        reStr = "8:00";
+                        break;
+                    case 2:
+                        reStr = "12:00";
+                        break;
+                    case 3:
+                        reStr = "16:00";
+                    case 4:
+                        reStr = "20:00";
+                        break;
+                }
+                break;
+            default:
+                reStr =String.valueOf(getMyInt(14,hourInterval)*index+6)+":00" ;
+                break;
+        }
+        return reStr;
+    }
+    private int getMyInt(int a,int b) {
+        return(((double)a/(double)b)>(a/b)?a/b+1:a/b);
     }
 }
