@@ -237,7 +237,7 @@ public class UpdateManager {
                         dialog.dismiss();
                         //登陆账号
                         if(isCloseActivity){
-                            //CheckAccount.getSipProfile(mContext);
+                            goToNext();
                         }
 
 
@@ -283,7 +283,7 @@ public class UpdateManager {
 
         try {
 
-            URL url = new URL(Constant.getServier() + "/updateinfo.txt");// mHashMap.get("url"));
+            URL url = new URL(Constant.getUpdateUrl() + "/updateinfo.txt");// mHashMap.get("url"));
             // 创建连接
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(2000);
@@ -326,7 +326,7 @@ public class UpdateManager {
             try {
 
 
-                URL url = new URL(Constant.getServier() + strApk);
+                URL url = new URL(Constant.getUpdateUrl() + strApk);
                 // 创建连接
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.connect();
@@ -402,10 +402,10 @@ public class UpdateManager {
 
     // 服务器地址
 
-    private String strApk = "/RCS.apk";
+    private String strApk = "/patient_saveness-release.apk";
 
     String strFile = "tmp.apk";
-    String packageName = "com.inspur";
+    String packageName = "com.safeness.patient";
 
     // -----------读取版本文件-----------
     private int getVersionFile() {
@@ -415,7 +415,7 @@ public class UpdateManager {
         int serviceCode = 0;
         try {
 
-            URL url = new URL(Constant.getServier() + "/versions");// mHashMap.get("url"));
+            URL url = new URL(Constant.getUpdateUrl() + "/versions.json");// mHashMap.get("url"));
             // 创建连接
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5000);
@@ -433,9 +433,9 @@ public class UpdateManager {
 
             String result = EncodingUtils.getString(buffer, "UTF-8");
             JSONObject object = new JSONObject(result);
-            serviceCode = object.getInt("version");
+            serviceCode = object.getInt("verCode");
 
-            versionName = object.getString("versionName");
+            versionName = object.getString("verName");
             mustDownLoad = object.getBoolean("mustDownload");
 
 

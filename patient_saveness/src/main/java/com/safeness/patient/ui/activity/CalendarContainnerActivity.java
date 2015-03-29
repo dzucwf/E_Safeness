@@ -177,7 +177,6 @@ public class CalendarContainnerActivity extends AppBaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // TODO Auto-generated method stub
         super.onSaveInstanceState(outState);
 
         if (caldroidFragment != null) {
