@@ -18,32 +18,14 @@
             android:background="@drawable/nav_bar" />
 
         <ImageView
-            android:layout_width="160dp"
+            android:layout_width="60dp"
             android:layout_height="54dp"
             android:scaleType="centerInside"
+            android:id="@+id/btn_sports_setting_back"
+            android:src="@drawable/backbutton"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/navbar_btn_date_select"
-            android:onClick="openCalendar"
-            android:id="@+id/btn_sports_nav_date" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2015-01-01"
-            android:id="@+id/txv_sports_nav_date_text"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginBottom="18dp"
-            android:layout_alignLeft="@+id/btn_sports_nav_date"
-            android:layout_alignRight="@+id/btn_sports_nav_date"
-            android:layout_alignTop="@+id/btn_sports_nav_date"
-            android:layout_alignBottom="@+id/btn_sports_nav_date"
-            android:textSize="14sp"
-            android:gravity="center_horizontal|center_vertical"
-            />
+            android:layout_alignParentStart="true" />
 
         <ImageView
             android:layout_width="60dp"
@@ -87,11 +69,9 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="太极拳"
                         android:id="@+id/txv_sports_name"
                         android:textColor="#888888"
                         android:textSize="32sp"
-
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="6dp"
                         android:gravity="center_vertical|left" />
@@ -101,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:text="太极拳技击法皆遵循阴阳之理，以“引化合发”为主要技击过程。技击中，由听劲感知对方来力大小及方向，“顺其势而改其路”，将来力引化掉，再借力发力。
 太极拳的八种劲：掤（用于化解或合力发人），捋（用于借力向后引力），挤（对下盘的外掤劲），按（对上盘的外掤劲，或作反关节拿法），采(顺力合住对方来力，或作拿法)，挒（以侧掤之劲破坏对方平衡），肘（以肘尖击人），靠（以肩膀前后寸劲击人）.太极拳是一种技击术。其特点：“以柔克刚，以静待动，以圆化直，以小胜大，以弱胜强”。[9] "
-                        android:id="@+id/textView2"
+                        android:id="@+id/txv_sports_desc"
                         android:textColor="#b1b1b1"
                         android:gravity="center_vertical|left"
                         android:textSize="10sp"

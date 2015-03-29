@@ -85,7 +85,7 @@ public class NaviSportsFragment extends AppBaseFragment {
                         Toast.makeText(getActivity(), msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
                         adapter = new SportsAdapter(getActivity(),getListDataLocal(),R.layout.sports_listitem,
                                 new String[]{"title","desc","calorie","_id"},new int[]{R.id.sports_list_item_title,R.id.sports_list_item_desc,R.id.sports_list_item_calorie});
-                        adapter.notifyDataSetChanged();
+                        listView.setAdapter(adapter);
                         break;
                     case WebServiceName.GETPRESCRIPTION_ID:
                         Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
@@ -114,7 +114,7 @@ public class NaviSportsFragment extends AppBaseFragment {
 
     //初始化下层切换
     private void getViews() {
-        listView = (ListView)getActivity().findViewById(R.id.listView);
+        listView = (ListView)getActivity().findViewById(R.id.sports_listView);
         txv_dateText = (TextView)getActivity().findViewById(R.id.txv_sports_nav_date_text);
         btn_sports_nav_sync = (TextView)getActivity().findViewById(R.id.txv_sports_nav_sync);
 
@@ -190,7 +190,7 @@ public class NaviSportsFragment extends AppBaseFragment {
             TextView tv_calorie = (TextView)view.findViewById(R.id.sports_list_item_calorie);
             ImageView imageview = (ImageView)view.findViewById(R.id.sports_list_item_status);
 
-            imageview.setVisibility(Integer.parseInt(map.get("status").toString())>0 ? View.VISIBLE : View.INVISIBLE);
+            //imageview.setVisibility(Integer.parseInt(map.get("status").toString())>0 ? View.VISIBLE : View.INVISIBLE);
             tv_title.setText(map.get("title").toString());
             tv_desc.setText(map.get("desc").toString());
             tv_calorie.setText(map.get("calorie").toString() +"卡路里");
@@ -314,6 +314,12 @@ public class NaviSportsFragment extends AppBaseFragment {
             sports.set_id(o.getString("ids"));
             sports.setSportsName(o.getString("sportsName"));
             sports.setCalorie(o.getString("calori").length() <= 0 ? -1 : o.getDouble("calori"));
+            sports.setDesc1(
+                    "注意事项: " + o.getString("attention")+ "\n" +
+                            "不适合并发症: " + o.getString("complications") + "\n" +
+                            "理想效果: " + o.getString("effect")+ "\n" +
+                            "不适合用药: " + o.getString("drug")+ "\n" +
+                            "运动强度: " + o.getString("type"));
             batchList.add(sports);
         }
         if (!batchList.isEmpty()){

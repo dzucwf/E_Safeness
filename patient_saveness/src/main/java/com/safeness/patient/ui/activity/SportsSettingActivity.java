@@ -1,42 +1,111 @@
 package com.safeness.patient.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.safeness.app.PatientApplication;
+import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.e_saveness_common.base.AppBaseFragment;
+import com.safeness.e_saveness_common.dao.DaoFactory;
+import com.safeness.e_saveness_common.dao.IBaseDao;
+import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.patient.R;
 
 import com.safeness.e_saveness_common.chart.GenericChart;
+import com.safeness.patient.model.Sports;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 //运动
-public class SportsSettingActivity extends AppBaseFragment {
+public class SportsSettingActivity extends AppBaseActivity {
 
     private TextView txv_timer;       //分
     private TextView btn_timer;       //秒
     private TextView btn_finish;           //开始按钮
+    private ImageView btn_back;
     private boolean isPaused = true;
     private String timeUsed;
     private int timeUsedInsec;
 
+    private TextView txv_sports_name;
+    private TextView txv_sports_desc;
+
     private WebView myWebView;
     private WebView web_cal;
 
+    private String _id = null;
+    private Date selectDate = null;
+    PatientApplication app;
+
+    private IBaseDao<Sports> sportsDao;
+    private Sports sports = new Sports();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /*取出Intent中附加的数据*/
+        Intent intent =getIntent();
+        _id = intent.getStringExtra("sports_id");
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            selectDate =df.parse(intent.getStringExtra("select_date").toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SportsSettingActivity.this.finish();
+            }
+        });
+
+        if (_id != null){
+            sportsDao = DaoFactory.createGenericDao(this, Sports.class);
+            List<QueryResult> sportsList = sportsDao.execQuerySQL(
+                    "select * from sports where [_id] = ?", _id);
+
+            if (sportsList != null && sportsList.size() > 0){
+                sports.setSportsName(sportsList.get(0).getStringProperty("sportsName"));
+                sports.setDesc1(sportsList.get(0).getStringProperty("desc1"));
+                sports.setCalorie(sportsList.get(0).getStringProperty("calorie").length() <= 0 ? -1 : sportsList.get(0).getDoubleProperty("calorie"));
+                sports.set_id(_id);
+
+            }
+            txv_sports_name.setText(sports.getSportsName());
+            txv_sports_desc.setText(sports.getDesc1());
+        }
+
+
+
+    }
+
     @Override
     protected int getLayoutId() {
-        return R.layout.navi_hp_sports;
-
+        return R.layout.sports_setting;
     }
 
 
@@ -100,11 +169,16 @@ public class SportsSettingActivity extends AppBaseFragment {
     }
     //初始化下层切换
     private void getViews() {
-        txv_timer = (TextView)getActivity().findViewById(R.id.txv_sports_Timer);
 
-        btn_timer = (TextView)getActivity().findViewById(R.id.btn_sports_timer);
-        btn_finish = (TextView)getActivity().findViewById(R.id.btn_sports_finish);
+        txv_sports_name = (TextView)this.findViewById(R.id.txv_sports_name);
 
+        txv_sports_desc = (TextView)this.findViewById(R.id.txv_sports_desc);
+        txv_timer = (TextView)this.findViewById(R.id.txv_sports_Timer);
+
+        btn_timer = (TextView)this.findViewById(R.id.btn_sports_timer);
+        btn_finish = (TextView)this.findViewById(R.id.btn_sports_finish);
+
+        btn_back  = (ImageView)this.findViewById(R.id.btn_sports_setting_back);
         btn_timer.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -126,8 +200,8 @@ public class SportsSettingActivity extends AppBaseFragment {
             public void onClick(View v) {
             }
         });
-        myWebView = (WebView)getActivity().findViewById(R.id.web_sports_chart);
-        web_cal = (WebView)getActivity().findViewById(R.id.web_sports_cal);
+        myWebView = (WebView)this.findViewById(R.id.web_sports_chart);
+        web_cal = (WebView)this.findViewById(R.id.web_sports_cal);
 
         web_cal.getSettings().setJavaScriptEnabled(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
@@ -154,7 +228,7 @@ public class SportsSettingActivity extends AppBaseFragment {
                     // 首先最外层是{}，是创建一个对象
                     JSONArray ca = new JSONArray();
                     ca.put(30).put(70);
-                    web_cal.loadUrl("javascript:update('"+ca.toString()+"','170','卡路里kCal');");
+                    web_cal.loadUrl("javascript:update('"+ca.toString()+"','"+sports.getCalorie()+"','卡路里kCal');");
                 }
                 catch (Exception ex) {
                     // 键为null或使用json不支持的数字格式(NaN, infinities)
