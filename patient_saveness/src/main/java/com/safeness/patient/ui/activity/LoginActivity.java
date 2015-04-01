@@ -55,6 +55,7 @@ import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
+ * 台式机
  */
 public class LoginActivity extends AppBaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
