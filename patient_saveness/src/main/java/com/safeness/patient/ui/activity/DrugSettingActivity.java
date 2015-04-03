@@ -109,11 +109,11 @@ public class DrugSettingActivity extends AppBaseActivity {
                 drug_planList = drug_planDao.queryByCondition("u_sid=? and f_sid=? and [startdate] <= ? and [enddate] >= ?",app.getUserID(),_id,df.format(selectDate),df.format(selectDate));
                 u_dList = u_dDao.queryByCondition("u_sid=? and d_id=? and [hintDay] = ?",app.getUserID(),_id,df.format(selectDate));
                 mData= new ArrayList<Map<String,Object>>();
-                int everyTime = drug_planList.get(0).getMedtime();
+                int medtime = drug_planList.get(0).getMedtime();
                 int count = drug_planList.get(0).getEverytime();
-                for(int i =0; i < everyTime; i++) {
+                for(int i =0; i < count; i++) {
                     Map<String,Object> item = new HashMap<String,Object>();
-                    item.put("title", getTimeInterval(everyTime,i));
+                    item.put("title", getTimeInterval(count,i));
                     item.put("status", 1);
                     item.put("_id", null);
                     item.put("index", i);
@@ -388,10 +388,10 @@ public class DrugSettingActivity extends AppBaseActivity {
 
     }
 
-    private String getTimeInterval(int medtime, int index){
+    private String getTimeInterval(int everyTime, int index){
         String reStr = "";
-        int hourInterval = getMyInt(getMyInt(medtime,60),60);
-        switch (hourInterval){
+        //int hourInterval = getMyInt(getMyInt(getMyInt(medtime,60),60),22-6);
+        switch (everyTime){
             case 1:
                 reStr = "12:00";
                 break;
@@ -434,7 +434,7 @@ public class DrugSettingActivity extends AppBaseActivity {
                 }
                 break;
             default:
-                reStr =String.valueOf(getMyInt(14,hourInterval)*index+6)+":00" ;
+                reStr =String.valueOf(getMyInt(22-6,everyTime)*index+6)+":00" ;
                 break;
         }
         return reStr;
