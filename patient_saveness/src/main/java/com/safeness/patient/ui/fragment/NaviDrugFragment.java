@@ -1,6 +1,9 @@
 package com.safeness.patient.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +29,8 @@ import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Drug_plan;
 import com.safeness.patient.model.U_d;
 import com.safeness.patient.model.U_f;
+import com.safeness.patient.remind.ReminderManager;
+import com.safeness.patient.remind.ReminderModel;
 import com.safeness.patient.ui.activity.DrugSettingActivity;
 
 import java.text.DateFormat;
@@ -271,6 +276,7 @@ public class NaviDrugFragment extends AppBaseFragment {
 
                         insertDrug(jsobject.getJSONArray("data"));
                         insertDrug_plan(jsobject.getJSONArray("data"));
+                        insertAlertData(jsobject.getJSONArray("data"));
                         this.dissProgressDialog();
                         msg.what = WebServiceName.GETDRUG_RQ;
                         handler.sendMessage(msg);
@@ -314,6 +320,24 @@ public class NaviDrugFragment extends AppBaseFragment {
             default:
                 this.dissProgressDialog();
                 break;
+        }
+    }
+
+    //TODO:这个是作为测试的，最后要删除
+    ReminderManager manager;
+    private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
+        //TODO:这个是作为测试的，最后要删除
+        //manager.saveState("xuetang1","xuetang2",calendarInput,"xuetang3","xuetang4",true);
+        for (int i = 0; i < webList.length(); ++i) {
+            JSONObject o = (JSONObject) webList.get(i);
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateBg = df.parse(o.getString("startdate"));
+            Date dateEd = df.parse(o.getString("enddate"));
+            int everyTime = o.getInt("everytime");
+            for (int j = 0; j < everyTime; j++) {
+
+            }
         }
     }
 
@@ -374,5 +398,67 @@ public class NaviDrugFragment extends AppBaseFragment {
         }
 
         return remData;
+    }
+
+    private static  final String ActionSTR = "com.safeness.patient.receiver.PatientRemindReceiver";
+    private BroadcastReceiver systemReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Log.d("safeness","received");
+            if(intent.getAction().equals(ActionSTR)){
+                ReminderModel data = (ReminderModel)intent.getSerializableExtra("reminder");
+                showDialog(data);
+            }
+        }
+    };
+
+
+    private void showDialog(final ReminderModel model){
+
+        if(model != null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setIcon(R.drawable.ic_launcher);
+            builder.setTitle(model.getTitle());
+            builder.setMessage(model.getBody());
+            //	第一个按钮
+            builder.setPositiveButton("不在提醒", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    manager.cancelReminder(model.getRowId());
+                }
+            });
+            //	中间的按钮
+            builder.setNeutralButton("过5秒后提醒", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.SECOND,5);
+                    manager.setTempReminder(model.getRowId(),c);
+                }
+            });
+            //	第三个按钮
+            builder.setNegativeButton("知道了", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            });
+
+
+            //	Diglog的显示
+            builder.create().show();
+        }
+
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(systemReceiver);
     }
 }
