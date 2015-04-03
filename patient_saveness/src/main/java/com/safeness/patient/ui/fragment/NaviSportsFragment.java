@@ -277,7 +277,7 @@ public class NaviSportsFragment extends AppBaseFragment {
                         Map<String, String> parameter = new HashMap<String, String>();
                         PatientApplication app = (PatientApplication) this.getActivity().getApplication();
                         parameter.put("uName", app.getUserName());
-                        parameter.put("did", "63b2a73dc4fe44b5b7e9770a692a6cbc"/*Pid*/);
+                        parameter.put("did", Pid);
                         this.request(parameter, url, WebServiceName.GETSPORTS_RQ, this, new SourceJsonHandler());
 
                     } else {
