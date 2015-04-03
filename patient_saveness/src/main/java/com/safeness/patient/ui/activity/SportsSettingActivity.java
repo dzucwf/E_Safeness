@@ -1,5 +1,8 @@
 package com.safeness.patient.ui.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import com.safeness.patient.R;
 
 import com.safeness.e_saveness_common.chart.GenericChart;
 import com.safeness.patient.model.Sports;
+import com.safeness.patient.model.U_s;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +64,7 @@ public class SportsSettingActivity extends AppBaseActivity {
     PatientApplication app;
 
     private IBaseDao<Sports> sportsDao;
+    private IBaseDao<U_s> u_sDao;
     private Sports sports = new Sports();
 
     @Override
@@ -85,7 +90,9 @@ public class SportsSettingActivity extends AppBaseActivity {
         });
 
         if (_id != null){
+            app = (PatientApplication) this.getApplication();
             sportsDao = DaoFactory.createGenericDao(this, Sports.class);
+            u_sDao = DaoFactory.createGenericDao(this, U_s.class);
             List<QueryResult> sportsList = sportsDao.execQuerySQL(
                     "select * from sports where [_id] = ?", _id);
 
@@ -202,6 +209,55 @@ public class SportsSettingActivity extends AppBaseActivity {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                U_s u_s = new U_s();
+                u_s.setU_sid(app.getUserID());
+                u_s.setS_id(_id);
+                u_s.setCalorie(-1);
+                u_s.setCount(-1);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                u_s.setFinishedDate(df.format(new Date().getTime()));
+                u_s.setUpdate_datetime(df.format(new Date().getTime()));
+                u_s.setLife_status(2);
+                if(u_sDao.insertOrUpdate(u_s, "u_sid","s_id")){
+                    Dialog alertDialog = new AlertDialog.Builder(SportsSettingActivity.this).
+                            setTitle("您的运动数据已保存成功").
+                            setIcon(R.drawable.ic_launcher).
+                            setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // TODO Auto-generated method stub
+                                }
+                            }).
+                            create();
+                    alertDialog.show();
+                }
+            }
+        });
+        btn_forget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                U_s u_s = new U_s();
+                u_s.setU_sid(app.getUserID());
+                u_s.setS_id(_id);
+                u_s.setCalorie(-1);
+                u_s.setCount(-1);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                u_s.setFinishedDate(df.format(new Date().getTime()));
+                u_s.setUpdate_datetime(df.format(new Date().getTime()));
+                u_s.setLife_status(3);
+                if(u_sDao.insertOrUpdate(u_s, "u_sid","s_id")){
+                    Dialog alertDialog = new AlertDialog.Builder(SportsSettingActivity.this).
+                            setTitle("您的运动数据已保存成功").
+                            setIcon(R.drawable.ic_launcher).
+                            setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // TODO Auto-generated method stub
+                                }
+                            }).
+                            create();
+                    alertDialog.show();
+                }
             }
         });
         myWebView = (WebView)this.findViewById(R.id.web_sports_chart);
