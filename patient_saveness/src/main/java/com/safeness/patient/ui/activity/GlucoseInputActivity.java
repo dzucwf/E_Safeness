@@ -327,7 +327,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         parameter.put("bloodGlucose", value+"");
 
         parameter.put("takeTag", takeTag+"");
-        parameter.put("AfterOrBefore", afterOrBefore+"");
+        parameter.put("afterOrBefore", afterOrBefore+"");
         this.request(parameter, url, INPUT_GLUCOSE, this, new SourceJsonHandler());
     }
 
@@ -337,6 +337,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         @Override
         public void handleMessage(Message msg) {
 
+            String errorMsg = "";
             switch (msg.what) {
                 case INPUT_GLUCOSE:
 
@@ -345,11 +346,24 @@ public class GlucoseInputActivity extends AppBaseActivity {
                     String messageStr = msg.getData().getString("message");
                     Toast.makeText(mContext, messageStr, Toast.LENGTH_LONG).show();
                     break;
+                case Constant.NETWORK_REQUEST_IOEXCEPTION_CODE:
+                    errorMsg = mContext.getString(R.string.request_error);
+                    break;
+                case Constant.NETWORK_REQUEST_RESULT_PARSE_ERROR:
+                    errorMsg = mContext.getString(R.string.parse_error);
+                    break;
+                case Constant.NETWORK_REQUEST_RETUN_NULL:
+                    errorMsg ="";
+                    break;
 
             }
             //无论数据库成功与失败，都会保存到本地数据中
             save();
             super.handleMessage(msg);
+            if (!"".equals(errorMsg)) {
+                Toast.makeText(mContext, errorMsg,
+                        Toast.LENGTH_SHORT).show();
+            }
             dissProgressDialog();
         }
     };
@@ -390,6 +404,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
     @Override
     public void onFail(int errorCode, int reqCode) {
         super.onFail(errorCode, reqCode);
+        hander.sendEmptyMessage(errorCode);
     }
 
 

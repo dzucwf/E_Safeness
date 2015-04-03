@@ -49,10 +49,15 @@ public class Constant {
 	public static void setServier(String server){
 		SERVER = server;
 		PRE_URL = "http://"+SERVER+":"+PORT+SUFFIX;
-	}
+}
 
     public static String getServier(){
         return PRE_URL;
+    }
+
+    public  static String getUpdateUrl(){
+        //TODO:这个地址是临时的，需要修改端口号
+        return  "http://"+SERVER+":8001/saveness";
     }
 	
 	//public static final String SERVER = "192.168.0.103";

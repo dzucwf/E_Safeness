@@ -55,6 +55,7 @@ import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
+ * 台式机
  */
 public class LoginActivity extends AppBaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -81,41 +82,17 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;/*
-        //Insert An Object
-        IBaseDao<User> userDao = DaoFactory.createGenericDao(mContext, User.class);
+        mContext = this;
 
-        try{
-            userDao.insert(new User(1,"AAAA"));
-        }
-        catch (Exception ex){
-            Log.v("E", ex.getMessage());
-        }
-
-
-        //Insert Object List
-        List<User> insertUserList = new ArrayList<User>();
-        for(int i = 0; i<10;++i){
-            insertUserList.add(new User(i+10, "BBB"+i));
-        }
-        userDao.batchInsert(insertUserList);
-
-        List<User> userList = userDao.queryByCondition("username=?", "AAAA");
-
-        //InsertOrUpdate
-        userDao.insertOrUpdate(new User(1, "AAAA"), "username"); //update where user_name='AAAA'
-        userDao.insertOrUpdate(new User(1, "CCCC"), "username"); //insert CCCC
-
-        for (User user : userList) {
-            Log.i("asdf",user.getUsername() + ";");
-        }
-*/
     }
 
     private Handler hander = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
+
+
+            String errorMsg = "";
 
             switch (msg.what) {
                 case LOGIN_RQ:
@@ -138,12 +115,24 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
                     } else {
                         Toast.makeText(getApplicationContext(), "登录聊天服务器失败", Toast.LENGTH_LONG).show();
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
+
                     }
+                    break;
+                case Constant.NETWORK_REQUEST_IOEXCEPTION_CODE:
+                    errorMsg = mContext.getString(R.string.request_error);
+                    break;
+                case Constant.NETWORK_REQUEST_RESULT_PARSE_ERROR:
+                    errorMsg = mContext.getString(R.string.parse_error);
+                    break;
+                case Constant.NETWORK_REQUEST_RETUN_NULL:
+                    errorMsg ="";
                     break;
             }
             super.handleMessage(msg);
+            if (!"".equals(errorMsg)) {
+                Toast.makeText(mContext, errorMsg,
+                        Toast.LENGTH_SHORT).show();
+            }
             dissProgressDialog();
         }
     };
@@ -314,6 +303,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     @Override
     public void onFail(int errorCode, int reqCode) {
         super.onFail(errorCode, reqCode);
+        hander.sendEmptyMessage(errorCode);
     }
 
     /**
@@ -337,13 +327,12 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        //return email.contains("@");
-        //puchao
+
         return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
+
         return password.length() > 1;
     }
 
