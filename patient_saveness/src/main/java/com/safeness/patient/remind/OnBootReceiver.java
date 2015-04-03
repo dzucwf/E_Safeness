@@ -1,4 +1,4 @@
-package com.safeness.e_saveness_common.remind;
+package com.safeness.patient.remind;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

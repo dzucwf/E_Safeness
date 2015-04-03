@@ -91,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@drawable/copd_flat_heading_background"
+                android:visibility="gone"
                 android:gravity="center"
                     android:id="@+id/linearLayout2">
                 <ImageView
