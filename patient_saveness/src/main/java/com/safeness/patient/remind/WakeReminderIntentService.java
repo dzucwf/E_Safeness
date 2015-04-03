@@ -1,4 +1,4 @@
-package com.safeness.e_saveness_common.remind;
+package com.safeness.patient.remind;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -32,7 +32,8 @@ abstract void doReminderWork(Intent intent);
 	@Override
 	final protected void onHandleIntent(Intent intent) {
 		try {
-			doReminderWork(intent);
+
+            doReminderWork(intent);
 		}
 		finally {
 			getLock(this).release();

@@ -562,7 +562,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                 runOnUiThread(new Runnable() {
                     public void run() {
 
-                        Toast.makeText(getApplicationContext(), "登录消息失败: " + message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "登录聊天服务器失败: " + message, Toast.LENGTH_SHORT).show();
                     }
                 });
                 hander.sendEmptyMessage(LOGIN_IM);

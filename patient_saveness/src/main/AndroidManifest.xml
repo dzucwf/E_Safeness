@@ -3,6 +3,7 @@
     package="com.safeness.patient" >
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.DEVICE_POWER" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -21,7 +22,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <application
         android:name="com.safeness.app.PatientApplication"
@@ -105,7 +106,7 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
 
-        <receiver android:name="com.safeness.e_saveness_common.remind.OnBootReceiver" >
+        <receiver android:name=".remind.OnBootReceiver" >
             <intent-filter>
                 <action android:name="com.safeness.e_saveness_common.remind.OnBootReceiver" />
             </intent-filter>
@@ -116,9 +117,9 @@
                 <action android:name="com.safeness.patient.receiver.PatientRemindReceiver" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.safeness.e_saveness_common.remind.OnAlarmReceiver" />
+        <receiver android:name=".remind.OnAlarmReceiver" />
 
-        <service android:name="com.safeness.e_saveness_common.remind.ReminderService" />
+        <service android:name=".remind.ReminderService" />
 
 
     </application>

@@ -1,4 +1,4 @@
-package com.safeness.e_saveness_common.remind;
+package com.safeness.patient.remind;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,26 +24,29 @@ public class ReminderService extends WakeReminderIntentService {
         Intent notificationIntent = new Intent();
         notificationIntent.setClassName(this,"com.safeness.patient.ui.activity.MainActivity");
         notificationIntent.putExtra(RemindersDbAdapter.KEY_ROWID, rowId);
-
+        int id = (int)((long)rowId);
         PendingIntent pi = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        Notification note=new Notification(android.R.drawable.stat_sys_warning,this. getString(com.safeness.e_saveness_common.R.string.notify_new_task_message), System.currentTimeMillis());
-        note.setLatestEventInfo(this, this.getString(com.safeness.e_saveness_common.R.string.notify_new_task_title), this.getString(com.safeness.e_saveness_common.R.string.notify_new_task_message), pi);
+        ReminderManager manager = new ReminderManager(this);
+         ReminderModel model =  manager.getReminderByID(rowId);
+        Notification note=new Notification(android.R.drawable.stat_sys_warning,model.getTitle(), System.currentTimeMillis());
+        note.setLatestEventInfo(this, model.getTitle(), model.getBody(), pi);
         note.defaults |= Notification.DEFAULT_SOUND;
         note.flags |= Notification.FLAG_AUTO_CANCEL;
 
         // An issue could occur if user ever enters over 2,147,483,647 tasks. (Max int value).
         // I highly doubt this will ever happen. But is good to note.
-        int id = (int)((long)rowId);
+
         mgr.notify(id, note);
 
+        Intent it = new Intent("com.safeness.patient.receiver.PatientRemindReceiver");
 
-        //以下代码不起作用
-//        intent.setAction("com.safeness.patient.receiver.PatientRemindReceiver");
-//        this.sendBroadcast(intent);
+        it.putExtra("reminder",model);
+        this.sendBroadcast(it);
 
 
 		
 		
 	}
+
+
 }

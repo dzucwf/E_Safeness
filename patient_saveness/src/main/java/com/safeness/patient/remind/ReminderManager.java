@@ -1,4 +1,4 @@
-package com.safeness.e_saveness_common.remind;
+package com.safeness.patient.remind;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -41,7 +41,16 @@ public class ReminderManager {
 
 	}
 
-    public void saveState(String title,String body,Calendar mCalendar,String user,String type,boolean canRemind) {
+    public void setTempReminder(Long taskId,Calendar when){
+        Intent i = new Intent(mContext, OnAlarmReceiver.class);
+        i.setAction(taskId+"");
+        i.putExtra(RemindersDbAdapter.KEY_ROWID, (long)taskId);
+
+        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, when.getTimeInMillis(), pi);
+    }
+
+    public long  saveState(String title,String body,Calendar mCalendar,String user,String type,boolean canRemind) {
 
         mDbHelper.open();
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
@@ -59,6 +68,7 @@ public class ReminderManager {
 
        setReminder(mRowId, mCalendar);
         mDbHelper.close();
+        return mRowId;
     }
 
     public void cancelReminder(long id){
@@ -109,28 +119,51 @@ public class ReminderManager {
         return returnList;
     }
 
+    public ReminderModel getReminderByID(long id){
+        ReminderModel model = null;
+        mDbHelper.open();
+        Cursor remindersCursor = mDbHelper.fetchReminder(id);
+        remindersCursor.moveToFirst();
+
+       model = getReminderByCursor(remindersCursor);
+
+        mDbHelper.close();
+        return model;
+    }
+
 
     private  void fillList(List<ReminderModel> list,Cursor remindersCursor){
         while (remindersCursor.moveToNext()){
-            ReminderModel model = new ReminderModel();
-            int rowID =remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_ROWID));
-            String title =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TITLE));
-            String body =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_BODY));
-            String type =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TYPE));
-            String user =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_USER));
-            String remindTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
+            ReminderModel model = getReminderByCursor(remindersCursor);
 
-            int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_CAN_REMIND));
-            model.setRowId(rowID);
-            model.setTitle(title);
-            model.setBody(body);
-            model.setType(type);
-            model.setUser(user);
-            model.setDate_time(remindTime);
-            model.setCanReminde(canReminder==1?true:false);
             list.add(model);
 
         }
+    }
+
+    /**
+     * 根据游标查询数据
+     * @param remindersCursor
+     * @return
+     */
+    private ReminderModel getReminderByCursor(Cursor remindersCursor){
+        ReminderModel model = new ReminderModel();
+        long rowID =remindersCursor.getLong(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_ROWID));
+        String title =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TITLE));
+        String body =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_BODY));
+        String type =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TYPE));
+        String user =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_USER));
+        String remindTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
+
+        int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_CAN_REMIND));
+        model.setRowId(rowID);
+        model.setTitle(title);
+        model.setBody(body);
+        model.setType(type);
+        model.setUser(user);
+        model.setDate_time(remindTime);
+        model.setCanReminde(canReminder==1?true:false);
+        return model;
     }
 
 

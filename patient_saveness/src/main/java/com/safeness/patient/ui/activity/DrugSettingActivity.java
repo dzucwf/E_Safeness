@@ -3,9 +3,11 @@ package com.safeness.patient.ui.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -18,17 +20,19 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
 import com.safeness.e_saveness_common.dao.DaoFactory;
 import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
-import com.safeness.e_saveness_common.remind.ReminderManager;
 import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Drug_plan;
 import com.safeness.patient.model.U_d;
+import com.safeness.patient.remind.ReminderManager;
+import com.safeness.patient.remind.ReminderModel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -171,14 +175,15 @@ public class DrugSettingActivity extends AppBaseActivity {
                 img_cell_addRemind.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //showDialog(R.id.drug_setting_remind_list_label_time);
+                        //puchao
+                        showDialog(R.id.drug_setting_remind_list_label_time);
                     }
                 });
 
                 btn_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //buildDialog(DrugSettingActivity.this).show();
+                        buildDialog(DrugSettingActivity.this).show();
                     }
                 });
                 switchVisible();
@@ -207,11 +212,20 @@ public class DrugSettingActivity extends AppBaseActivity {
     @Override
     protected void setupView() {
         getViews();
+        IntentFilter filter_dynamic = new IntentFilter();
+        filter_dynamic.addAction(ActionSTR);
+        this.registerReceiver(systemReceiver,filter_dynamic);
     }
 
     @Override
     protected void initializedData() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(systemReceiver);
     }
 
     //初始化下层切换
@@ -427,5 +441,66 @@ public class DrugSettingActivity extends AppBaseActivity {
     }
     private int getMyInt(int a,int b) {
         return(((double)a/(double)b)>(a/b)?a/b+1:a/b);
+    }
+
+    private static  final String ActionSTR = "com.safeness.patient.receiver.PatientRemindReceiver";
+    private BroadcastReceiver systemReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if(intent.getAction().equals(ActionSTR)){
+                ReminderModel data = (ReminderModel)intent.getSerializableExtra("reminder");
+                showDialog(data);
+            }
+        }
+    };
+
+    private void showDialog(ReminderModel model){
+
+        if(model != null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setIcon(R.drawable.ic_launcher);
+            builder.setTitle(model.getTitle());
+            builder.setMessage(model.getBody());
+            //	第一个按钮
+            builder.setPositiveButton("不在提醒", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    // TODO Auto-generated method stub
+                    //	提示信息
+                    Toast toast = Toast.makeText(getApplicationContext(), "你选择了覆盖", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            //	中间的按钮
+            builder.setNeutralButton("过5分钟后提醒", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    // TODO Auto-generated method stub
+                    //	提示信息
+                    Toast toast = Toast.makeText(getApplicationContext(), "你选择了跳过", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            //	第三个按钮
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    // TODO Auto-generated method stub
+                    //	提示信息
+                    Toast toast = Toast.makeText(getApplicationContext(), "你选择了取消", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            //	Diglog的显示
+            builder.create().show();
+        }
+
     }
 }

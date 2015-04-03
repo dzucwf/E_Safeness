@@ -48,6 +48,7 @@ public class DateTimeUtil {
             pattern = NORMAL_PATTERN;
         }
         SimpleDateFormat   formatter   =   new   SimpleDateFormat(pattern);
+
         Date   curDate   =   calendar.getTime();
         String   str   =   formatter.format(curDate);
         return str;

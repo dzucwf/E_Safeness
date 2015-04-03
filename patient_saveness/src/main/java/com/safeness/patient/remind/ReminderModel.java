@@ -1,4 +1,4 @@
-package com.safeness.e_saveness_common.remind;
+package com.safeness.patient.remind;
 
 import java.io.Serializable;
 
@@ -9,15 +9,15 @@ import java.io.Serializable;
  */
 public class ReminderModel implements Serializable {
 
-    private  int rowId;
+    private  long rowId;
 
     private String title;
 
-    public int getRowId() {
+    public long getRowId() {
         return rowId;
     }
 
-    public void setRowId(int rowId) {
+    public void setRowId(long rowId) {
         this.rowId = rowId;
     }
 
