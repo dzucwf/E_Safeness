@@ -1,5 +1,6 @@
 package com.safeness.patient.ui.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +32,10 @@ public class UserInforActivity extends AppBaseActivity {
     private EditText txb_userinfor_weight;
     private EditText txb_userinfor_mail;
     private EditText txb_userinfor_tel;
+    private TextView btn_gender_f;
+    private TextView btn_gender_m;
+
+    private String gender = "男";
 
     PatientApplication app;
     @Override
@@ -47,6 +52,10 @@ public class UserInforActivity extends AppBaseActivity {
     }
 
     public void back(View view){
+
+        User user = new User();
+        //user.setUsername(txb_userinfor_name.getText());
+
         this.finish();
     }
 
@@ -58,7 +67,6 @@ public class UserInforActivity extends AppBaseActivity {
     @Override
     protected void initializedData() {
         app = (PatientApplication) this.getApplication();
-        User user = new User();
         IBaseDao<User> userDao = DaoFactory.createGenericDao(this, User.class);
         List<QueryResult> userinfor = userDao.execQuerySQL("select * from user where server_id=?", app.getUserID());
 
@@ -80,9 +88,21 @@ public class UserInforActivity extends AppBaseActivity {
 
             txb_userinfor_height.setText(userinfor.get(0).getStringProperty("height"));
             txb_userinfor_weight.setText(userinfor.get(0).getStringProperty("weight"));
-            txb_userinfor_mail.setText(userinfor.get(0).getStringProperty("mail"));
-            txb_userinfor_tel.setText(userinfor.get(0).getStringProperty("tel"));
+            txb_userinfor_mail.setText(userinfor.get(0).getStringProperty("mail").equals("null") ? null : userinfor.get(0).getStringProperty("mail"));
+            txb_userinfor_tel.setText(userinfor.get(0).getStringProperty("tel").equals("null") ? null : userinfor.get(0).getStringProperty("tel"));
 
+            if (userinfor.get(0).getStringProperty("gender").equals("女")){
+                btn_gender_f.setBackgroundColor(Color.parseColor("#ff4a4a"));
+                btn_gender_m.setBackgroundColor(Color.parseColor("#e2e2e2"));
+                btn_gender_f.setTextColor(Color.parseColor("#ffffff"));
+                gender = "女";
+            }
+            else{
+                btn_gender_f.setBackgroundColor(Color.parseColor("#e2e2e2"));
+                btn_gender_m.setBackgroundColor(Color.parseColor("#60b3ed"));
+                btn_gender_m.setTextColor(Color.parseColor("#ffffff"));
+                gender = "男";
+            }
         }
 
     }
@@ -96,5 +116,27 @@ public class UserInforActivity extends AppBaseActivity {
         txb_userinfor_weight = (EditText)this.findViewById(R.id.txb_userinfor_weight);
         txb_userinfor_mail = (EditText)this.findViewById(R.id.txb_userinfor_mail);
         txb_userinfor_tel = (EditText)this.findViewById(R.id.txb_userinfor_tel);
+
+        btn_gender_f = (TextView)this.findViewById(R.id.btn_userinfor_gender_f);
+        btn_gender_m = (TextView)this.findViewById(R.id.btn_userinfor_gender_m);
+
+        btn_gender_f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_gender_f.setBackgroundColor(Color.parseColor("#ff4a4a"));
+                btn_gender_m.setBackgroundColor(Color.parseColor("#e2e2e2"));
+                btn_gender_f.setTextColor(Color.parseColor("#ffffff"));
+                gender = "女";
+            }
+        });
+        btn_gender_m.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_gender_f.setBackgroundColor(Color.parseColor("#e2e2e2"));
+                btn_gender_m.setBackgroundColor(Color.parseColor("#60b3ed"));
+                btn_gender_m.setTextColor(Color.parseColor("#ffffff"));
+                gender = "男";
+            }
+        });
     }
 }

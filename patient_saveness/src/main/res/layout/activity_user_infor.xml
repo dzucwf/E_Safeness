@@ -125,23 +125,23 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"
-                    android:background="#60b3ed"
                     android:text="男"
+                    android:background="#e2e2e2"
                     android:gravity="center"
-                    android:textColor="#ffffffff"
+                    android:textColor="#999"
                     android:layout_marginLeft="20dp"
-                    android:id="@+id/textView11" />
+                    android:id="@+id/btn_userinfor_gender_m"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"
-                    android:background="#ffee8361"
                     android:text="女"
                     android:gravity="center_vertical|center_horizontal"
-                    android:textColor="#ffffffff"
+                    android:background="#e2e2e2"
+                    android:textColor="#999"
                     android:layout_marginRight="20dp"
-                    android:id="@+id/textView21" />
+                    android:id="@+id/btn_userinfor_gender_f"/>
 
             </LinearLayout>
 
