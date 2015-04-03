@@ -27,6 +27,11 @@ public class DateTimeUtil {
     }
 
     public static  Calendar getSelectCalendar(String dateStr,String pattern ) throws ParseException {
+
+        if(TextUtils.isEmpty(pattern)){
+            pattern = NORMAL_PATTERN;
+        }
+
         SimpleDateFormat   formatter   =   new   SimpleDateFormat(pattern);
 
         Date date = formatter.parse(dateStr);

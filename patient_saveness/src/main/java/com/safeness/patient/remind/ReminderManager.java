@@ -50,46 +50,34 @@ public class ReminderManager {
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, when.getTimeInMillis(), pi);
     }
 
-    public long saveState(String title,String body,Calendar mCalendar,String user,String type,boolean canRemind,Calendar StartCal,Calendar endCal){
+    public long saveState(String title,String body,String mCalendar,String user,String type,boolean canRemind,Calendar StartCal,Calendar endCal){
         mDbHelper.open();
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
-        String reminderDateTime = dateTimeFormat.format(mCalendar.getTime());
+        String[] timeStr = mCalendar.split(":");
+        if(timeStr != null && timeStr.length>1){
+            StartCal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(timeStr[0]));
+            StartCal.set(Calendar.MINUTE,Integer.parseInt(timeStr[1]));
+        }
 
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
+        String reminderDateTime = dateTimeFormat.format(StartCal.getTime());
+
+        String endDateTime = dateTimeFormat.format(endCal.getTime());
         if (mRowId == null) {
 
-            long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type);
+            long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type,endDateTime);
             if (id > 0) {
                 mRowId = id;
             }
         } else {
-            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind);
+            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind,endDateTime);
         }
 
-        setReminder(mRowId, mCalendar);
+        setReminder(mRowId, StartCal);
         mDbHelper.close();
         return mRowId;
     }
 
-    public long  saveState(String title,String body,Calendar mCalendar,String user,String type,boolean canRemind) {
 
-        mDbHelper.open();
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
-        String reminderDateTime = dateTimeFormat.format(mCalendar.getTime());
-
-        if (mRowId == null) {
-
-            long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type);
-            if (id > 0) {
-                mRowId = id;
-            }
-        } else {
-            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind);
-        }
-
-       setReminder(mRowId, mCalendar);
-        mDbHelper.close();
-        return mRowId;
-    }
 
     public void cancelReminder(long id){
 

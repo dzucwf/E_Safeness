@@ -31,7 +31,6 @@ import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Drug_plan;
 import com.safeness.patient.model.U_d;
-import com.safeness.patient.remind.ReminderManager;
 import com.safeness.patient.remind.ReminderModel;
 
 import java.text.DateFormat;
@@ -283,11 +282,7 @@ public class DrugSettingActivity extends AppBaseActivity {
         return builder.create();
     }
 
-    private  void testInsertRemind(Calendar cal){
-        ReminderManager manager  = new ReminderManager(this);
-        manager.saveState("测试1","测试2",cal,"测试3","测试4",true);
 
-    }
     private TimePickerDialog.OnTimeSetListener mTimeSetListener =
             new TimePickerDialog.OnTimeSetListener()
             {
@@ -309,7 +304,6 @@ public class DrugSettingActivity extends AppBaseActivity {
 
                     c.set(Calendar.HOUR_OF_DAY,hourOfDay);
                     c.set(Calendar.MINUTE,minuteOfHour);
-                    testInsertRemind(c);
 
                     if(u_dDao.insert(u_d)){
                         HashMap<String ,Object> map = new HashMap<String, Object>();

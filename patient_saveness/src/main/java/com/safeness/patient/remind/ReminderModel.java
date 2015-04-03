@@ -66,6 +66,16 @@ public class ReminderModel implements Serializable {
     private  String user;
     private  String date_time;
 
+    public String getEnd_date_time() {
+        return end_date_time;
+    }
+
+    public void setEnd_date_time(String end_date_time) {
+        this.end_date_time = end_date_time;
+    }
+
+    private  String end_date_time;
+
     public boolean isCanReminde() {
         return canReminde;
     }

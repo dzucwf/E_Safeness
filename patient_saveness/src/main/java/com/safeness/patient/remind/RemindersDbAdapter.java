@@ -23,11 +23,12 @@ public class RemindersDbAdapter {
     //
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "reminders";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
     public static final String KEY_DATE_TIME = "reminder_date_time";
+    public static final String KEY_END_DATE_TIME = "end_date_time";
     public static final String KEY_ROWID = "_id";
     public static final String KEY_TYPE = "type";
     public static final String KEY_USER = "user_id";
@@ -48,6 +49,7 @@ public class RemindersDbAdapter {
                     + KEY_TYPE + " text not null, "
                     + KEY_USER + " text not null, "
                     + KEY_CAN_REMIND + " integer DEFAULT 1,"
+                    + KEY_END_DATE_TIME + "text not null,"
                     + KEY_DATE_TIME + " text not null);";
 
 
@@ -115,14 +117,14 @@ public class RemindersDbAdapter {
      * @param reminderDateTime the date and time the reminder should remind the user
      * @return rowId or -1 if failed
      */
-    public long createReminder(String title, String body, String reminderDateTime,String user,String type) {
+    public long createReminder(String title, String body, String reminderDateTime,String user,String type,String endDateTime) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
         initialValues.put(KEY_DATE_TIME, reminderDateTime);
         initialValues.put(KEY_USER, user);
         initialValues.put(KEY_TYPE, type);
-
+        initialValues.put(KEY_END_DATE_TIME, endDateTime);
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
 
@@ -145,7 +147,7 @@ public class RemindersDbAdapter {
     public Cursor fetchAllReminders() {
 
         return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
-                KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND}, null, null, null, null, null);
+                KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, null, null, null, null, null);
     }
 
 
@@ -159,7 +161,7 @@ public class RemindersDbAdapter {
         Cursor mCursor =
 
                 mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND}, KEY_USER + "=" + user, null,
+                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, KEY_USER + "=" + user, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -178,7 +180,7 @@ public class RemindersDbAdapter {
         Cursor mCursor =
 
                 mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND}, KEY_USER + "=" + user+"and"+KEY_TYPE
+                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, KEY_USER + "=" + user+"and"+KEY_TYPE
                                 +"="+type, null,
                         null, null, null, null);
         if (mCursor != null) {
@@ -200,7 +202,7 @@ public class RemindersDbAdapter {
         Cursor mCursor =
 
                 mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND}, KEY_ROWID + "=" + rowId, null,
+                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -220,7 +222,7 @@ public class RemindersDbAdapter {
      * @param reminderDateTime value to set the reminder time.
      * @return true if the reminder was successfully updated, false otherwise
      */
-    public boolean updateReminder(long rowId, String title, String body, String reminderDateTime,String user,String type,boolean canRemind) {
+    public boolean updateReminder(long rowId, String title, String body, String reminderDateTime,String user,String type,boolean canRemind,String end_date_time) {
         ContentValues args = new ContentValues();
         args.put(KEY_TITLE, title);
         args.put(KEY_BODY, body);
@@ -228,7 +230,7 @@ public class RemindersDbAdapter {
         args.put(KEY_USER, user);
         args.put(KEY_TYPE, type);
         args.put(KEY_CAN_REMIND, canRemind==true?1:0);
-
+        args.put(KEY_END_DATE_TIME, end_date_time);
         return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
 

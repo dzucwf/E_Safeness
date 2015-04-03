@@ -6,6 +6,11 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
+import com.safeness.e_saveness_common.util.DateTimeUtil;
+
+import java.text.ParseException;
+import java.util.Calendar;
+
 public class ReminderService extends WakeReminderIntentService {
 
 	public ReminderService() {
@@ -27,21 +32,32 @@ public class ReminderService extends WakeReminderIntentService {
         int id = (int)((long)rowId);
         PendingIntent pi = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
         ReminderManager manager = new ReminderManager(this);
-         ReminderModel model =  manager.getReminderByID(rowId);
-        Notification note=new Notification(android.R.drawable.stat_sys_warning,model.getTitle(), System.currentTimeMillis());
-        note.setLatestEventInfo(this, model.getTitle(), model.getBody(), pi);
-        note.defaults |= Notification.DEFAULT_SOUND;
-        note.flags |= Notification.FLAG_AUTO_CANCEL;
+        ReminderModel model =  manager.getReminderByID(rowId);
 
-        // An issue could occur if user ever enters over 2,147,483,647 tasks. (Max int value).
-        // I highly doubt this will ever happen. But is good to note.
 
-        mgr.notify(id, note);
+        try {
+            Calendar now = Calendar.getInstance();
+            Calendar endDate = DateTimeUtil.getSelectCalendar(model.getEnd_date_time(), "");
+            if(now.compareTo(endDate)==1){
+                Notification note=new Notification(android.R.drawable.stat_sys_warning,model.getTitle(), System.currentTimeMillis());
+                note.setLatestEventInfo(this, model.getTitle(), model.getBody(), pi);
+                note.defaults |= Notification.DEFAULT_SOUND;
+                note.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        Intent it = new Intent("com.safeness.patient.receiver.PatientRemindReceiver");
+                // An issue could occur if user ever enters over 2,147,483,647 tasks. (Max int value).
+                // I highly doubt this will ever happen. But is good to note.
 
-        it.putExtra("reminder",model);
-        this.sendBroadcast(it);
+                mgr.notify(id, note);
+
+                Intent it = new Intent("com.safeness.patient.receiver.PatientRemindReceiver");
+
+                it.putExtra("reminder",model);
+                this.sendBroadcast(it);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
 
 		

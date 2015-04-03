@@ -126,8 +126,9 @@ public class GlucoseInputActivity extends AppBaseActivity {
         getGlucose_time_Text();
         clearValue();
         glucoseUtil = new GlucoseUtil(this);
-        IntentFilter intentFilter = new IntentFilter(ActionSTR);
 
+        //TODO要删除
+        IntentFilter intentFilter = new IntentFilter(ActionSTR);
         this.registerReceiver(systemReceiver,intentFilter);
         manager = new ReminderManager(this);
 
@@ -347,8 +348,8 @@ public class GlucoseInputActivity extends AppBaseActivity {
      */
     public void save(){
 
-        //TODO:这个是作为测试的，最后要删除
-        manager.saveState("xuetang1","xuetang2",calendarInput,"xuetang3","xuetang4",true);
+
+
         IBaseDao<BloodGlucose>  daoFactory= DaoFactory.createGenericDao(mContext, BloodGlucose.class);
         float value = 0.0f;
         if(!TextUtils.isEmpty(glucose_value_et.getText())){
@@ -369,8 +370,8 @@ public class GlucoseInputActivity extends AppBaseActivity {
         BloodGlucose bloodGlucose = new BloodGlucose(server_id,value,takeTag,updateOrInsertTime,afterOrBefore,user_id);
         //根据server_id来生成数据
         daoFactory.insertOrUpdate(bloodGlucose,"server_id");
-        //TODO:这里要放开
-        //finish();
+
+        finish();
     }
 
     /*
