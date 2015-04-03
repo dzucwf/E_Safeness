@@ -31,6 +31,7 @@ import com.safeness.patient.R;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Drug_plan;
 import com.safeness.patient.model.U_d;
+import com.safeness.patient.remind.ReminderManager;
 import com.safeness.patient.remind.ReminderModel;
 
 import java.text.DateFormat;
@@ -60,7 +61,7 @@ public class DrugSettingActivity extends AppBaseActivity {
 
     private Button btn_delete;
     private TextView txb_desc;
-    private Button btn_finish;
+    //private Button btn_finish;
     private TextView txb_name;
     private ListView lst_remind_list;
     private TextView txb_remind;
@@ -175,7 +176,7 @@ public class DrugSettingActivity extends AppBaseActivity {
                     @Override
                     public void onClick(View v) {
                         //puchao
-                        showDialog(R.id.drug_setting_remind_list_label_time);
+                        //showDialog(R.id.drug_setting_remind_list_label_time);
                     }
                 });
 
@@ -200,7 +201,7 @@ public class DrugSettingActivity extends AppBaseActivity {
 
         imageView.setVisibility(drugList.get(0).getLife_status() > 0 ? View.VISIBLE: View.INVISIBLE);
         lst_remind_list.setVisibility(drugList.get(0).getLife_status() > 0 ? View.VISIBLE: View.INVISIBLE);
-        btn_finish.setVisibility(drugList.get(0).getLife_status() > 0 ? View.VISIBLE: View.INVISIBLE);
+        //btn_finish.setVisibility(drugList.get(0).getLife_status() > 0 ? View.VISIBLE: View.INVISIBLE);
 
     }
     @Override
@@ -212,8 +213,6 @@ public class DrugSettingActivity extends AppBaseActivity {
     protected void setupView() {
         getViews();
         IntentFilter filter_dynamic = new IntentFilter();
-        filter_dynamic.addAction(ActionSTR);
-        this.registerReceiver(systemReceiver,filter_dynamic);
     }
 
     @Override
@@ -224,14 +223,13 @@ public class DrugSettingActivity extends AppBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.unregisterReceiver(systemReceiver);
     }
 
     //初始化下层切换
     private void getViews() {
         txb_desc = (TextView)findViewById(R.id.txb_drug_setting_desc);
         txb_desc.setMovementMethod(ScrollingMovementMethod.getInstance());
-        btn_finish = (Button)findViewById(R.id.btn_drug_setting_finish);
+        //btn_finish = (Button)findViewById(R.id.btn_drug_setting_finish);
         txb_name = (TextView)findViewById(R.id.txb_drug_setting_name);
         txb_remind = (TextView)findViewById(R.id.txv_drugsetting_cell_remind);
         lst_remind_list = (ListView)findViewById(R.id.drug_setting_remind_list);
@@ -281,7 +279,6 @@ public class DrugSettingActivity extends AppBaseActivity {
                 });
         return builder.create();
     }
-
 
     private TimePickerDialog.OnTimeSetListener mTimeSetListener =
             new TimePickerDialog.OnTimeSetListener()
@@ -392,7 +389,7 @@ public class DrugSettingActivity extends AppBaseActivity {
             case 2:
                 switch (index){
                     case 1:
-                        reStr = "9:00";
+                        reStr = "09:00";
                         break;
                     case 2:
                         reStr = "17:00";
@@ -402,7 +399,7 @@ public class DrugSettingActivity extends AppBaseActivity {
             case 3:
                 switch (index){
                     case 1:
-                        reStr = "8:00";
+                        reStr = "08:00";
                         break;
                     case 2:
                         reStr = "12:00";
@@ -415,7 +412,7 @@ public class DrugSettingActivity extends AppBaseActivity {
             case 4:
                 switch (index){
                     case 1:
-                        reStr = "8:00";
+                        reStr = "08:00";
                         break;
                     case 2:
                         reStr = "12:00";
@@ -429,6 +426,7 @@ public class DrugSettingActivity extends AppBaseActivity {
                 break;
             default:
                 reStr =String.valueOf(getMyInt(22-6,everyTime)*index+6)+":00" ;
+                if (reStr.length()<5){reStr = "0" + reStr;}
                 break;
         }
         return reStr;
@@ -437,64 +435,4 @@ public class DrugSettingActivity extends AppBaseActivity {
         return(((double)a/(double)b)>(a/b)?a/b+1:a/b);
     }
 
-    private static  final String ActionSTR = "com.safeness.patient.receiver.PatientRemindReceiver";
-    private BroadcastReceiver systemReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if(intent.getAction().equals(ActionSTR)){
-                ReminderModel data = (ReminderModel)intent.getSerializableExtra("reminder");
-                showDialog(data);
-            }
-        }
-    };
-
-    private void showDialog(ReminderModel model){
-
-        if(model != null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setIcon(R.drawable.ic_launcher);
-            builder.setTitle(model.getTitle());
-            builder.setMessage(model.getBody());
-            //	第一个按钮
-            builder.setPositiveButton("不在提醒", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    // TODO Auto-generated method stub
-                    //	提示信息
-                    Toast toast = Toast.makeText(getApplicationContext(), "你选择了覆盖", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            //	中间的按钮
-            builder.setNeutralButton("过5分钟后提醒", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    // TODO Auto-generated method stub
-                    //	提示信息
-                    Toast toast = Toast.makeText(getApplicationContext(), "你选择了跳过", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            //	第三个按钮
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    // TODO Auto-generated method stub
-                    //	提示信息
-                    Toast toast = Toast.makeText(getApplicationContext(), "你选择了取消", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-            //	Diglog的显示
-            builder.create().show();
-        }
-
-    }
 }

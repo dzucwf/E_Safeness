@@ -23,6 +23,7 @@ import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
+import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.Drug;
@@ -331,12 +332,10 @@ public class NaviDrugFragment extends AppBaseFragment {
         for (int i = 0; i < webList.length(); ++i) {
             JSONObject o = (JSONObject) webList.get(i);
 
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date dateBg = df.parse(o.getString("startdate"));
-            Date dateEd = df.parse(o.getString("enddate"));
             int everyTime = o.getInt("everytime");
             for (int j = 0; j < everyTime; j++) {
-
+                manager.saveState("吃药时间到了",o.getString("name"),"23:36"/*getTimeInterval(everyTime,j)*/,app.getUserID(),"drug",true,
+                        DateTimeUtil.getSelectCalendar(o.getString("startdate"),""),DateTimeUtil.getSelectCalendar(o.getString("enddate"),""));
             }
         }
     }
@@ -460,5 +459,61 @@ public class NaviDrugFragment extends AppBaseFragment {
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(systemReceiver);
+    }
+
+    private String getTimeInterval(int everyTime, int index){
+        String reStr = "";
+        //int hourInterval = getMyInt(getMyInt(getMyInt(medtime,60),60),22-6);
+        switch (everyTime){
+            case 1:
+                reStr = "12:00";
+                break;
+            case 2:
+                switch (index){
+                    case 1:
+                        reStr = "09:00";
+                        break;
+                    case 2:
+                        reStr = "17:00";
+                        break;
+                }
+                break;
+            case 3:
+                switch (index){
+                    case 1:
+                        reStr = "08:00";
+                        break;
+                    case 2:
+                        reStr = "12:00";
+                        break;
+                    case 3:
+                        reStr = "18:00";
+                        break;
+                }
+                break;
+            case 4:
+                switch (index){
+                    case 1:
+                        reStr = "08:00";
+                        break;
+                    case 2:
+                        reStr = "12:00";
+                        break;
+                    case 3:
+                        reStr = "16:00";
+                    case 4:
+                        reStr = "20:00";
+                        break;
+                }
+                break;
+            default:
+                reStr =String.valueOf(getMyInt(22-6,everyTime)*index+6)+":00" ;
+                if (reStr.length()<5){reStr = "0" + reStr;}
+                break;
+        }
+        return reStr;
+    }
+    private int getMyInt(int a,int b) {
+        return(((double)a/(double)b)>(a/b)?a/b+1:a/b);
     }
 }
