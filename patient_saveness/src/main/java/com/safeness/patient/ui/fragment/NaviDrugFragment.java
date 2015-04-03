@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,9 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseFragment;
@@ -23,16 +27,17 @@ import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
-import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.Drug;
 import com.safeness.patient.model.Drug_plan;
-import com.safeness.patient.model.U_d;
-import com.safeness.patient.model.U_f;
 import com.safeness.patient.remind.ReminderManager;
 import com.safeness.patient.remind.ReminderModel;
 import com.safeness.patient.ui.activity.DrugSettingActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -43,14 +48,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 //用药
 public class NaviDrugFragment extends AppBaseFragment {
@@ -75,6 +72,10 @@ public class NaviDrugFragment extends AppBaseFragment {
         super.onActivityCreated(savedInstanceState);
 
     }
+
+
+
+
 
     @Override
     public void onStart() {
@@ -134,7 +135,10 @@ public class NaviDrugFragment extends AppBaseFragment {
 
     @Override
     protected void setupView() {
+        manager = new ReminderManager(getActivity());
         getViews();
+        IntentFilter intentFilter = new IntentFilter(ActionSTR);
+        getActivity().registerReceiver(systemReceiver, intentFilter);
 
     }
 
@@ -182,7 +186,7 @@ public class NaviDrugFragment extends AppBaseFragment {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         txv_dateText.setText(df.format(Calendar.getInstance().getTime()));
-
+        manager = new ReminderManager(this.getActivity());
     }
 
     private class MyAdapter extends SimpleAdapter{
@@ -334,15 +338,17 @@ public class NaviDrugFragment extends AppBaseFragment {
     //TODO:这个是作为测试的，最后要删除
     ReminderManager manager;
     private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
+
         //TODO:这个是作为测试的，最后要删除
         //manager.saveState("xuetang1","xuetang2",calendarInput,"xuetang3","xuetang4",true);
         for (int i = 0; i < webList.length(); ++i) {
             JSONObject o = (JSONObject) webList.get(i);
-
+            Calendar end = Calendar.getInstance();
+            end.add(Calendar.DATE,5);
             int everyTime = o.getInt("everytime");
             for (int j = 0; j < everyTime; j++) {
-                manager.saveState("吃药时间到了",o.getString("name"),"23:36"/*getTimeInterval(everyTime,j)*/,app.getUserID(),"drug",true,
-                        DateTimeUtil.getSelectCalendar(o.getString("startdate"),""),DateTimeUtil.getSelectCalendar(o.getString("enddate"),""));
+                manager.saveState("吃药时间到了",o.getString("name"),"01:13"/*getTimeInterval(everyTime,j)*/,app.getUserID(),"drug",true,
+                        Calendar.getInstance(), end);
             }
         }
     }

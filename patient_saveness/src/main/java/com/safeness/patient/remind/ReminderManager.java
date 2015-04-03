@@ -64,12 +64,12 @@ public class ReminderManager {
         String endDateTime = dateTimeFormat.format(endCal.getTime());
         if (mRowId == null) {
 
-            long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type,endDateTime);
+            long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type,reminderDateTime,endDateTime);
             if (id > 0) {
                 mRowId = id;
             }
         } else {
-            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind,endDateTime);
+            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind,reminderDateTime,endDateTime);
         }
 
         setReminder(mRowId, StartCal);
@@ -162,14 +162,15 @@ public class ReminderManager {
         String type =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TYPE));
         String user =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_USER));
         String remindTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
-
-        int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_CAN_REMIND));
+        String endTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
+        int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_END_DATE_TIME));
         model.setRowId(rowID);
         model.setTitle(title);
         model.setBody(body);
         model.setType(type);
         model.setUser(user);
         model.setDate_time(remindTime);
+        model.setEnd_date_time(endTime);
         model.setCanReminde(canReminder==1?true:false);
         return model;
     }

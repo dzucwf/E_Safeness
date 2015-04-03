@@ -23,7 +23,7 @@ public class RemindersDbAdapter {
     //
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "reminders";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
@@ -49,7 +49,7 @@ public class RemindersDbAdapter {
                     + KEY_TYPE + " text not null, "
                     + KEY_USER + " text not null, "
                     + KEY_CAN_REMIND + " integer DEFAULT 1,"
-                    + KEY_END_DATE_TIME + "text not null,"
+                    + KEY_END_DATE_TIME + " text not null, "
                     + KEY_DATE_TIME + " text not null);";
 
 
@@ -117,7 +117,7 @@ public class RemindersDbAdapter {
      * @param reminderDateTime the date and time the reminder should remind the user
      * @return rowId or -1 if failed
      */
-    public long createReminder(String title, String body, String reminderDateTime,String user,String type,String endDateTime) {
+    public long createReminder(String title, String body, String reminderDateTime,String user,String type,String startTime,String endDateTime) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
@@ -222,7 +222,7 @@ public class RemindersDbAdapter {
      * @param reminderDateTime value to set the reminder time.
      * @return true if the reminder was successfully updated, false otherwise
      */
-    public boolean updateReminder(long rowId, String title, String body, String reminderDateTime,String user,String type,boolean canRemind,String end_date_time) {
+    public boolean updateReminder(long rowId, String title, String body, String reminderDateTime,String user,String type,boolean canRemind,String startTime,String end_date_time) {
         ContentValues args = new ContentValues();
         args.put(KEY_TITLE, title);
         args.put(KEY_BODY, body);

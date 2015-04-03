@@ -37,8 +37,11 @@ public class ReminderService extends WakeReminderIntentService {
 
         try {
             Calendar now = Calendar.getInstance();
+            if(model.getEnd_date_time() == null){
+                model.setEnd_date_time(DateTimeUtil.getNowDate());
+            }
             Calendar endDate = DateTimeUtil.getSelectCalendar(model.getEnd_date_time(), "");
-            if(now.compareTo(endDate)==1){
+            if(now.compareTo(endDate)<0){
                 Notification note=new Notification(android.R.drawable.stat_sys_warning,model.getTitle(), System.currentTimeMillis());
                 note.setLatestEventInfo(this, model.getTitle(), model.getBody(), pi);
                 note.defaults |= Notification.DEFAULT_SOUND;

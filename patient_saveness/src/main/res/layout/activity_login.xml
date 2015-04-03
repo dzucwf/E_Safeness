@@ -37,7 +37,7 @@
                 android:background="@drawable/txb_username"
                 android:paddingLeft="40dp"
                 android:layout_marginBottom="24dp"
-                android:text="18365947856" />
+                android:text="18363667172" />
 
             <EditText android:id="@+id/password" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_password"
