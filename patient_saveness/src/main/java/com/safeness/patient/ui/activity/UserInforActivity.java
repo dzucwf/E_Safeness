@@ -2,6 +2,7 @@ package com.safeness.patient.ui.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,9 +15,6 @@ import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.patient.R;
 import com.safeness.patient.model.User;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,20 +50,31 @@ public class UserInforActivity extends AppBaseActivity {
     }
 
     public void back(View view){
-
+        app = (PatientApplication) this.getApplication();
         User user = new User();
-        //user.setUsername(txb_userinfor_name.getText());
+        user.setUsername(txb_userinfor_name.getText().toString());
+        user.setServer_id(app.getUserID());
+        if(!TextUtils.isEmpty(txb_userinfor_height.getText())) {
+            user.setHeight(Double.parseDouble(txb_userinfor_height.getText().toString()));
+        }
+        if(!TextUtils.isEmpty(txb_userinfor_weight.getText())) {
+            user.setWeight(Double.parseDouble(txb_userinfor_weight.getText().toString()));
+        }
 
+        user.setMail(txb_userinfor_mail.getText().toString());
+        user.setTel(txb_userinfor_tel.getText().toString());
+        user.setGender(gender);
+        if(!TextUtils.isEmpty(txb_userinfor_age.getText())){
+            user.setAge(Integer.parseInt(txb_userinfor_age.getText().toString()));
+        }
+
+        IBaseDao<User> userDao = DaoFactory.createGenericDao(this, User.class);
+        userDao.update(user,"server_id=?",app.getUserID());
         this.finish();
     }
 
     @Override
-    protected void setupView() {
-        getViews();
-    }
-
-    @Override
-    protected void initializedData() {
+    protected void onResume() {
         app = (PatientApplication) this.getApplication();
         IBaseDao<User> userDao = DaoFactory.createGenericDao(this, User.class);
         List<QueryResult> userinfor = userDao.execQuerySQL("select * from user where server_id=?", app.getUserID());
@@ -77,12 +86,12 @@ public class UserInforActivity extends AppBaseActivity {
             txb_userinfor_name.setText(userinfor.get(0).getStringProperty("username"));
 
             try{
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date now = new Date();
-                long days = (now.getTime() - sdf.parse(userinfor.get(0).getStringProperty("birthday")).getTime()) / (1000 * 60 * 60 * 24);//得到总天数 years=days/365;
-                txb_userinfor_age.setText(String.valueOf(days/365));
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                Date now = new Date();
+//                long days = (now.getTime() - sdf.parse(userinfor.get(0).getStringProperty("birthday")).getTime()) / (1000 * 60 * 60 * 24);//得到总天数 years=days/365;
+                txb_userinfor_age.setText(userinfor.get(0).getIntProperty("age"));
             }
-            catch (ParseException e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -104,6 +113,17 @@ public class UserInforActivity extends AppBaseActivity {
                 gender = "男";
             }
         }
+        super.onResume();
+    }
+
+    @Override
+    protected void setupView() {
+        getViews();
+    }
+
+    @Override
+    protected void initializedData() {
+
 
     }
 

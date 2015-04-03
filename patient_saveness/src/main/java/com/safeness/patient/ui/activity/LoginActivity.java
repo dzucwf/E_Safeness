@@ -284,17 +284,17 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     // "parents_tel":null,"height":"181","email":null,"name":"李四","age":"30","gender":"男","hospital":"青岛糖尿病专科医院","mobile":"13189756854"
                     user.setServer_id(jsobject.getJSONArray("data").getJSONObject(0).getString("uid"));
                     user.setBirthday(jsobject.getJSONArray("data").getJSONObject(0).getString("birthday"));
-                    user.setWeight(jsobject.getJSONArray("data").getJSONObject(0).getInt("weight"));
+                    user.setWeight(jsobject.getJSONArray("data").getJSONObject(0).getDouble("weight"));
                     user.setJob(jsobject.getJSONArray("data").getJSONObject(0).getString("job"));
                     user.setDoctor(jsobject.getJSONArray("data").getJSONObject(0).getString("doctor"));
                     user.setParents_tel(jsobject.getJSONArray("data").getJSONObject(0).getString("parents_tel"));
-                    user.setHeight(jsobject.getJSONArray("data").getJSONObject(0).getInt("height"));
+                    user.setHeight(jsobject.getJSONArray("data").getJSONObject(0).getDouble("height"));
                     user.setMail(jsobject.getJSONArray("data").getJSONObject(0).getString("email"));
                     user.setUsername(jsobject.getJSONArray("data").getJSONObject(0).getString("name"));
                     user.setGender(jsobject.getJSONArray("data").getJSONObject(0).getString("gender"));
                     user.setHospital(jsobject.getJSONArray("data").getJSONObject(0).getString("hospital"));
                     user.setTel(jsobject.getJSONArray("data").getJSONObject(0).getString("mobile"));
-
+                    user.setAge(jsobject.getJSONArray("data").getJSONObject(0).getInt("age"));
                     IBaseDao<com.safeness.patient.model.User> userDao= DaoFactory.createGenericDao(this, com.safeness.patient.model.User.class);
                     userDao.insertOrUpdate(user,"server_id", "username","tel");
                     msg.what = LOGIN_RQ;

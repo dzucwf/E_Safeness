@@ -159,6 +159,16 @@ public class User {
         this.update_datetime = update_datetime;
     }
 
+    @Column(name="age",type=Column.TYPE_INTEGER)
+    private Integer age;
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
     public User() {}
 

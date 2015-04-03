@@ -130,6 +130,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
         this.registerReceiver(systemReceiver,intentFilter);
         manager = new ReminderManager(this);
+
     }
 
 
@@ -328,6 +329,11 @@ public class GlucoseInputActivity extends AppBaseActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        this.unregisterReceiver(systemReceiver);
+        super.onDestroy();
+    }
 
     public void cancel(View view){
 

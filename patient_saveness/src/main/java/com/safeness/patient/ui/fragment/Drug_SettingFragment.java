@@ -2,14 +2,9 @@ package com.safeness.patient.ui.fragment;
 
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.safeness.e_saveness_common.base.AppBaseFragment;
 import com.safeness.patient.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Lionnd on 2015/1/28.
@@ -36,6 +31,8 @@ public class Drug_SettingFragment extends AppBaseFragment {
     protected void initializedData() {
 
     }
+
+
 
     private void getViews() {/*
         listView = (ListView)getActivity().findViewById(R.id.drug_setting_remind_list);
