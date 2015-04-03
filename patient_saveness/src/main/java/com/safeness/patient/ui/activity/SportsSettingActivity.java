@@ -40,8 +40,9 @@ import java.util.Map;
 //运动
 public class SportsSettingActivity extends AppBaseActivity {
 
-    private TextView txv_timer;       //分
-    private TextView btn_timer;       //秒
+    //private TextView txv_timer;       //分
+    //private TextView btn_timer;       //秒
+    private TextView btn_forget;           //忘记按钮
     private TextView btn_finish;           //开始按钮
     private ImageView btn_back;
     private boolean isPaused = true;
@@ -108,7 +109,7 @@ public class SportsSettingActivity extends AppBaseActivity {
         return R.layout.sports_setting;
     }
 
-
+/*
     private Handler uiHandle = new Handler(){
         public void handleMessage(android.os.Message msg) {
             switch(msg.what){
@@ -123,6 +124,7 @@ public class SportsSettingActivity extends AppBaseActivity {
             }
         }
     };
+
     private void updateClockUI(){
         txv_timer.setText(getHour() + ":" + getMin() + ":" + getSec());
     }
@@ -157,7 +159,7 @@ public class SportsSettingActivity extends AppBaseActivity {
         super.onStart();
         isPaused = true;
     }
-
+*/
     @Override
     protected void setupView() {
         getViews();
@@ -173,12 +175,14 @@ public class SportsSettingActivity extends AppBaseActivity {
         txv_sports_name = (TextView)this.findViewById(R.id.txv_sports_name);
 
         txv_sports_desc = (TextView)this.findViewById(R.id.txv_sports_desc);
-        txv_timer = (TextView)this.findViewById(R.id.txv_sports_Timer);
+        //txv_timer = (TextView)this.findViewById(R.id.txv_sports_Timer);
 
-        btn_timer = (TextView)this.findViewById(R.id.btn_sports_timer);
+        //btn_timer = (TextView)this.findViewById(R.id.btn_sports_timer);
+        btn_forget = (TextView)this.findViewById(R.id.btn_sports_forget);
         btn_finish = (TextView)this.findViewById(R.id.btn_sports_finish);
 
         btn_back  = (ImageView)this.findViewById(R.id.btn_sports_setting_back);
+        /*
         btn_timer.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -194,7 +198,7 @@ public class SportsSettingActivity extends AppBaseActivity {
                 isPaused = !isPaused;
             }
         });
-
+*/
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

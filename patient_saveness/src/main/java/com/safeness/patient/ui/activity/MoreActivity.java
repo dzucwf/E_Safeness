@@ -26,6 +26,14 @@ public class MoreActivity extends Activity  {
                 MoreActivity.this.startActivity(it1);
             }
         });
+
+        findViewById(R.id.more_btn_user_logoff).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it1 = new Intent(MoreActivity.this, LoginActivity.class);
+                MoreActivity.this.startActivity(it1);
+            }
+        });
     }
     public void back(View view){
         this.finish();

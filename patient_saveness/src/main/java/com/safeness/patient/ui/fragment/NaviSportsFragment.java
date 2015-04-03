@@ -72,9 +72,8 @@ public class NaviSportsFragment extends AppBaseFragment {
         super.onStart();
 
         if (adapter != null){
-            adapter = new SportsAdapter(getActivity(),getListDataLocal(),R.layout.sports_listitem,
-                    new String[]{"title","desc","calorie","_id"},new int[]{R.id.sports_list_item_title,R.id.sports_list_item_desc,R.id.sports_list_item_calorie});
-            listView.setAdapter(adapter);
+            adapter.mItemList = getListDataLocal();
+            adapter.notifyDataSetChanged();
         }
 
         handler = new Handler() {
@@ -83,8 +82,7 @@ public class NaviSportsFragment extends AppBaseFragment {
                     case WebServiceName.GETSPORTS_RQ:
 
                         Toast.makeText(getActivity(), msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
-                        adapter = new SportsAdapter(getActivity(),getListDataLocal(),R.layout.sports_listitem,
-                                new String[]{"title","desc","calorie","_id"},new int[]{R.id.sports_list_item_title,R.id.sports_list_item_desc,R.id.sports_list_item_calorie});
+                        adapter.mItemList = getListDataLocal();
                         listView.setAdapter(adapter);
                         break;
                     case WebServiceName.GETPRESCRIPTION_ID:
@@ -103,8 +101,8 @@ public class NaviSportsFragment extends AppBaseFragment {
 
     @Override
     protected void setupView() {
-        getViews();
         app = (PatientApplication) getActivity().getApplication();
+        getViews();
     }
 
     @Override
@@ -131,7 +129,6 @@ public class NaviSportsFragment extends AppBaseFragment {
                         .getItem(position);
                 Object _id = map.get("_id");
                 Object title = map.get("title");
-                Log.v("e", "选中的数据项ID是：" + _id + "，名称是：" + title);
 
                 Intent in=new Intent(getActivity(),SportsSettingActivity.class);
                 in.putExtra("sports_id",  _id.toString());
@@ -212,8 +209,7 @@ public class NaviSportsFragment extends AppBaseFragment {
 
             txv_dateText.setText(df.format(date));
 
-            adapter = new SportsAdapter(getActivity(),getListDataLocal(),R.layout.sports_listitem,
-                    new String[]{"title","desc","calorie","_id"},new int[]{R.id.sports_list_item_title,R.id.sports_list_item_desc,R.id.sports_list_item_calorie});
+            adapter.mItemList = getListDataLocal();
             listView.setAdapter(adapter);
 
         } catch (Exception e) {
@@ -353,8 +349,8 @@ public class NaviSportsFragment extends AppBaseFragment {
             sportsDao = DaoFactory.createGenericDao(getActivity(), Sports.class);
         }
         List<QueryResult> sportsList = sportsDao.execQuerySQL(
-                "select sports._id, sportsName, sports.[calorie], sports_plan.type from sports, sports_plan where sports.[_id] = sports_plan.[s_sid] and sports_plan.[startdate] <= ? and sports_plan.[enddate] >= ?",
-                df.format(selectDate),df.format(selectDate));
+                "select sports._id, sportsName, sports.[calorie], sports_plan.type from sports, sports_plan where sports.[_id] = sports_plan.[s_sid] and sports_plan.[startdate] <= ? and sports_plan.[enddate] >= ? and u_sid = ?",
+                df.format(selectDate),df.format(selectDate), app.getUserID());
 
         ArrayList<Map<String,Object>> remData= new ArrayList<Map<String,Object>>();
 

@@ -73,12 +73,11 @@ public class NaviDrugFragment extends AppBaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-
         if (adapter != null){
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             List<QueryResult> drugList = drugDao.execQuerySQL(
-                    "select drug._id, drugName, drug.life_status from drug, drug_plan where drug.[_id] = drug_plan.[F_sid] and drug_plan.[startdate] <= ? and drug_plan.[enddate] >= ?",
-                    df.format(selectDate),df.format(selectDate));
+                    "select drug._id, drugName, drug.life_status from drug, drug_plan where drug.[_id] = drug_plan.[F_sid] and drug_plan.[startdate] <= ? and drug_plan.[enddate] >= ? and u_sid = ?",
+                    df.format(selectDate),df.format(selectDate), app.getUserID());
             if (drugList != null){
                 if (mData.size() == 0){
                     mData = getListDataLocal();
@@ -122,7 +121,7 @@ public class NaviDrugFragment extends AppBaseFragment {
     @Override
     protected void setupView() {
         getViews();
-        app = (PatientApplication) getActivity().getApplication();
+
     }
 
     @Override
@@ -132,16 +131,15 @@ public class NaviDrugFragment extends AppBaseFragment {
 
     //初始化下层切换
     private void getViews() {
+
+        app = (PatientApplication) getActivity().getApplication();
+
         listView = (ListView)getActivity().findViewById(R.id.listView);
         //listView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1,getData()));
 
         txv_dateText = (TextView)getActivity().findViewById(R.id.txv_drug_nav_date_text);
         btn_drug_nav_sync = (TextView)getActivity().findViewById(R.id.txv_drug_nav_sync);
         drugDao = DaoFactory.createGenericDao(getActivity(), Drug.class);
-
-        adapter = new MyAdapter(getActivity(),getListDataLocal(),R.layout.drug_listitem,
-                new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
-        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -150,15 +148,7 @@ public class NaviDrugFragment extends AppBaseFragment {
                         .getItem(position);
                 Object _id = map.get("_id");
                 Object title = map.get("title");
-                //NaviDrugFragment.this.info.setText("选中的数据项ID是：" + _id + "，名称是："+ name);
-                Log.v("e", "选中的数据项ID是：" + _id + "，名称是：" + title);
-/*
-                android.support.v4.app.Fragment drug_settingFr = new Drug_SettingFragment();
 
-                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.add(R.id.navi_view_pager, drug_settingFr);
-                ft.addToBackStack(null);
-                ft.commit();*/
                 Intent in=new Intent(getActivity(),DrugSettingActivity.class);
                 in.putExtra("drug_id",  _id.toString());
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -223,25 +213,7 @@ public class NaviDrugFragment extends AppBaseFragment {
 
 
     }
-    private String getDateBg(Date date){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        return df.format(date);
-    }
-    private String getDateBg(Date date, boolean isshort){
-        if (isshort){
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            return df.format(date);
-        }
-        else{
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-            return df.format(date);
-        }
 
-    }
-    private String getDateEd(Date date){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
-        return df.format(date);
-    }
 
     /**
      * 从日历控件返回后，改变当前的日期,并加载当前数据
@@ -252,17 +224,11 @@ public class NaviDrugFragment extends AppBaseFragment {
         try {
             selectDate = date;
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            //saveCalendar = DateTimeUtil.getSelectCalendar(df.format(date), DateTimeUtil.NORMAL_PATTERN);
-
             txv_dateText.setText(df.format(date));
 
             adapter = new MyAdapter(getActivity(),getListDataLocal(),R.layout.drug_listitem,
                     new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
             listView.setAdapter(adapter);
-            //setCalText(selected_calendar);
-
-            //fillChartData();
-            //loadCurrentTimeValue();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -392,8 +358,8 @@ public class NaviDrugFragment extends AppBaseFragment {
             drugDao = DaoFactory.createGenericDao(getActivity(), Drug.class);
         }
         List<QueryResult> drugList = drugDao.execQuerySQL(
-                "select drug._id, drugName, drug.life_status from drug, drug_plan where drug.[_id] = drug_plan.[F_sid] and drug_plan.[startdate] <= ? and drug_plan.[enddate] >= ?",
-                df.format(selectDate),df.format(selectDate));
+                "select drug._id, drugName, drug.life_status from drug, drug_plan where drug.[_id] = drug_plan.[F_sid] and drug_plan.[startdate] <= ? and drug_plan.[enddate] >= ? and u_sid = ?",
+                df.format(selectDate),df.format(selectDate), app.getUserID());
 
         ArrayList<Map<String,Object>> remData= new ArrayList<Map<String,Object>>();
 

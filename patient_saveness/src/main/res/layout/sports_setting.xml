@@ -104,11 +104,11 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:background="@drawable/sports_bg"
                 android:gravity="center_vertical">
 
-
+<!--
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                     android:textColor="#ff2d8aed"
                     android:gravity="center_vertical|center_horizontal"
                     android:textSize="60sp" />
-
+-->
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
@@ -135,7 +135,7 @@
                     android:layout_alignParentStart="true"
                     android:id="@+id/linearLayout">
 
-
+<!--
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -143,6 +143,18 @@
                         android:background="#ffee8361"
                         android:text="开始计时"
                         android:id="@+id/btn_sports_timer"
+                        android:gravity="center"
+                        android:textColor="#ffffffff"
+                        android:layout_marginLeft="30dp"
+                        />
+                        -->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp"
+                        android:background="#ffee8361"
+                        android:text="忘记运动"
+                        android:id="@+id/btn_sports_forget"
                         android:gravity="center"
                         android:textColor="#ffffffff"
                         android:layout_marginLeft="30dp"
@@ -177,7 +189,7 @@
 
                 <WebView
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:id="@+id/web_sports_chart" />
 
             </LinearLayout>
