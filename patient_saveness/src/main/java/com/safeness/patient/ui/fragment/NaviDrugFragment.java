@@ -99,6 +99,11 @@ public class NaviDrugFragment extends AppBaseFragment {
             adapter.mItemList = mData;
             listView.setAdapter(adapter);
         }
+        else{
+            adapter = new MyAdapter(getActivity(),getListDataLocal(),R.layout.drug_listitem,
+                    new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
+            listView.setAdapter(adapter);
+        }
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
@@ -111,6 +116,9 @@ public class NaviDrugFragment extends AppBaseFragment {
                         adapter.notifyDataSetChanged();
                         break;
                     case WebServiceName.GETPRESCRIPTION_ID:
+                        Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
                         Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -232,8 +240,7 @@ public class NaviDrugFragment extends AppBaseFragment {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             txv_dateText.setText(df.format(date));
 
-            adapter = new MyAdapter(getActivity(),getListDataLocal(),R.layout.drug_listitem,
-                    new String[]{"title","imgAlert","_id"},new int[]{R.id.drug_listview_item_title,R.id.drug_listview_item_imgAlert});
+            adapter.mItemList = getListDataLocal();
             listView.setAdapter(adapter);
 
         } catch (Exception e) {
@@ -342,7 +349,14 @@ public class NaviDrugFragment extends AppBaseFragment {
 
     @Override
     public void onFail(int errorCode, int reqCode) {
+
         super.onFail(errorCode, reqCode);
+        this.dissProgressDialog();
+        Message msg = new Message();
+        Bundle b = new Bundle();
+        b.putString("message", "errorCode: " + errorCode + ", reqCode: " + reqCode);
+        msg.setData(b);
+        handler.sendMessage(msg);
     }
 
     private void insertDrug(JSONArray webList) throws JSONException {

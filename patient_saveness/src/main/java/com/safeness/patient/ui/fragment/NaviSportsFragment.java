@@ -88,6 +88,9 @@ public class NaviSportsFragment extends AppBaseFragment {
                     case WebServiceName.GETPRESCRIPTION_ID:
                         Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
                         break;
+                    default:
+                        Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
+                        break;
                 }
                 super.handleMessage(msg);
             }
@@ -300,6 +303,13 @@ public class NaviSportsFragment extends AppBaseFragment {
     @Override
     public void onFail(int errorCode, int reqCode) {
         super.onFail(errorCode, reqCode);
+
+        this.dissProgressDialog();
+        Message msg = new Message();
+        Bundle b = new Bundle();
+        b.putString("message", "errorCode: " + errorCode + ", reqCode: " + reqCode);
+        msg.setData(b);
+        handler.sendMessage(msg);
     }
 
     private void insertSports(JSONArray webList) throws JSONException {

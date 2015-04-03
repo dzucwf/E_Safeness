@@ -100,6 +100,9 @@ public class NaviFoodFragment extends AppBaseFragment {
                                 new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
                         listView.setAdapter(adapter);
                         break;
+                    default:
+                        Toast.makeText(getActivity(),msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
+                        break;
                 }
                 super.handleMessage(msg);
             }
@@ -132,7 +135,7 @@ public class NaviFoodFragment extends AppBaseFragment {
                                     else if (ll_segment_item.getId() ==R.id.food_ll_item_2){cutTab = 2;}
                                     else if (ll_segment_item.getId() ==R.id.food_ll_item_3){cutTab = 3;}
                                     else if (ll_segment_item.getId() ==R.id.food_ll_item_4){cutTab = 4;}
-                                    adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
+                                    adapter = new MyAdapter(getActivity(),getLocalData(),R.layout.food_listitem,
                                             new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
                                     listView.setAdapter(adapter);
                                     //listView.setAdapter(adapter);
@@ -149,7 +152,7 @@ public class NaviFoodFragment extends AppBaseFragment {
         //mData= new ArrayList<Map<String,Object>>();
 
 
-        adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
+        adapter = new MyAdapter(getActivity(),getLocalData(),R.layout.food_listitem,
                 new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
         listView.setAdapter(adapter);
 
@@ -269,7 +272,7 @@ public class NaviFoodFragment extends AppBaseFragment {
 
             txv_dateText.setText(df.format(date));
 
-            adapter = new MyAdapter(getActivity(),getData(),R.layout.food_listitem,
+            adapter = new MyAdapter(getActivity(),getLocalData(),R.layout.food_listitem,
                     new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
             listView.setAdapter(adapter);
             //setCalText(selected_calendar);
@@ -296,46 +299,6 @@ public class NaviFoodFragment extends AppBaseFragment {
         this.request(parameter, url, WebServiceName.GETPRESCRIPTION_ID, this, new SourceJsonHandler());
     }
 
-    private ArrayList<Map<String,Object>> getData(){
-        ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
-
-        foodDao = DaoFactory.createGenericDao(getActivity(), Food.class);
-        u_fdDao = DaoFactory.createGenericDao(getActivity(), U_f.class);
-
-        List<U_f> u_fList = u_fdDao.queryByCondition("u_sid=? and suggestDate between ? and ? and type=?", app.getUserID(), getDateBg(selectDate,true),getDateEd(selectDate),String.valueOf(cutTab));
-        //List<U_f> u_fList = u_fdDao.queryByCondition("u_sid=? and suggestDate between '2015-01-31 00:00:00' and '2015-01-31 23:59:59' and type=?", "1",String.valueOf(cutTab));
-/*
-        if (u_fdDao.queryByCondition("").isEmpty()){//写入测试数据
-            initSqlData(foodDao);
-            initSqlDataUF(u_fdDao);
-
-            u_fList = u_fdDao.queryByCondition("u_sid=? and suggestDate between ? and ? and type=?", "1", getDateBg(selectDate),getDateEd(selectDate),String.valueOf(cutTab));
-        }
-*/
-        if (u_fList.isEmpty() && hasSyncData == false){
-            getList();
-            hasSyncData = true;
-        }
-        else{
-            for(int i =0; i < u_fList.size(); i++) {
-
-                List<Food> tempFList = foodDao.queryByCondition("_id=?",u_fList.get(i).getF_id().toString());
-                if (tempFList.size() > 0){
-                    Food tempF = tempFList.get(0);
-                    Map<String,Object> item = new HashMap<String,Object>();
-                    item.put("title", tempF.getFoodname());
-                    item.put("desc", tempF.getDesc());
-                    item.put("calorie", tempF.getCalorie());
-                    item.put("status", u_fList.get(i).getLife_status());
-                    item.put("_id",u_fList.get(i).get_id());
-                    mData.add(item);
-                }
-            }
-        }
-
-        return mData;
-
-    }
     private ArrayList<Map<String,Object>> getLocalData(){
         ArrayList<Map<String,Object>> mData= new ArrayList<Map<String,Object>>();
 
@@ -512,6 +475,12 @@ public class NaviFoodFragment extends AppBaseFragment {
     @Override
     public void onFail(int errorCode, int reqCode) {
         super.onFail(errorCode, reqCode);
+        Message msg = new Message();
+        Bundle b = new Bundle();
+        b.putString("message", "errorCode: " + errorCode + ", reqCode: " + reqCode);
+        msg.setData(b);
+        handler.sendMessage(msg);
+        this.dissProgressDialog();
     }
 
     private static int getGapCount(Date startDate, Date endDate){
