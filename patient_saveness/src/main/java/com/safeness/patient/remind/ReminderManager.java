@@ -38,7 +38,6 @@ public class ReminderManager {
          mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, when.getTimeInMillis(),INTERVAL, pi);
 
 
-
 	}
 
     public void setTempReminder(Long taskId,Calendar when){
@@ -47,34 +46,47 @@ public class ReminderManager {
         i.putExtra(RemindersDbAdapter.KEY_ROWID, (long)taskId);
 
         PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        mAlarmManager.set(AlarmManager.RTC_WAKEUP, when.getTimeInMillis(), pi);
+
+        if(DateTimeUtil.compareCal(when,Calendar.getInstance())){
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, when.getTimeInMillis(), pi);
+        }else{
+
+        }
+
     }
 
+
+
     public long saveState(String title,String body,String mCalendar,String user,String type,boolean canRemind,Calendar StartCal,Calendar endCal){
-        mDbHelper.open();
-        String[] timeStr = mCalendar.split(":");
-        if(timeStr != null && timeStr.length>1){
-            StartCal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(timeStr[0]));
-            StartCal.set(Calendar.MINUTE,Integer.parseInt(timeStr[1]));
-        }
 
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
-        String reminderDateTime = dateTimeFormat.format(StartCal.getTime());
-
-        String endDateTime = dateTimeFormat.format(endCal.getTime());
-        if (mRowId == null) {
-
-            long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type,reminderDateTime,endDateTime);
-            if (id > 0) {
-                mRowId = id;
+        if(DateTimeUtil.compareCal(endCal,Calendar.getInstance())){
+            mDbHelper.open();
+            String[] timeStr = mCalendar.split(":");
+            if(timeStr != null && timeStr.length>1){
+                StartCal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(timeStr[0]));
+                StartCal.set(Calendar.MINUTE,Integer.parseInt(timeStr[1]));
             }
-        } else {
-            mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind,reminderDateTime,endDateTime);
-        }
 
-        setReminder(mRowId, StartCal);
-        mDbHelper.close();
-        return mRowId;
+            SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
+            String reminderDateTime = dateTimeFormat.format(StartCal.getTime());
+
+            String endDateTime = dateTimeFormat.format(endCal.getTime());
+            if (mRowId == null) {
+
+                long id = mDbHelper.createReminder(title, body, reminderDateTime,user,type,reminderDateTime,endDateTime);
+                if (id > 0) {
+                    mRowId = id;
+                }
+            } else {
+                mDbHelper.updateReminder(mRowId, title, body, reminderDateTime,user,type,canRemind,reminderDateTime,endDateTime);
+            }
+
+            setReminder(mRowId, StartCal);
+            mDbHelper.close();
+            return mRowId;
+        }
+        return 0;
+
     }
 
 

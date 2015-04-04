@@ -233,6 +233,8 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
 
     }
 
+
+
     private Handler hander = new Handler() {
 
         @Override

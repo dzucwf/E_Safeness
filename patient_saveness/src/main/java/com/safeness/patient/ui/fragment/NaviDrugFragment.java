@@ -27,6 +27,7 @@ import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
+import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.Drug;
@@ -335,24 +336,18 @@ public class NaviDrugFragment extends AppBaseFragment {
         }
     }
 
-    //TODO:这个是作为测试的，最后要删除
     ReminderManager manager;
     private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
-
-        //TODO:这个是作为测试的，最后要删除
-        //manager.saveState("xuetang1","xuetang2",calendarInput,"xuetang3","xuetang4",true);
         for (int i = 0; i < webList.length(); ++i) {
             JSONObject o = (JSONObject) webList.get(i);
-            Calendar end = Calendar.getInstance();
-            end.add(Calendar.DATE,5);
+
             int everyTime = o.getInt("everytime");
             for (int j = 0; j < everyTime; j++) {
-                manager.saveState("吃药时间到了",o.getString("name"),"01:49"/*getTimeInterval(everyTime,j)*/,app.getUserID(),"drug",true,
-                        Calendar.getInstance(), end);
+                manager.saveState("吃药时间到了",o.getString("name"),getTimeInterval(everyTime,j),app.getUserID(),"drug",true,
+                        DateTimeUtil.getSelectCalendar(o.getString("startdate"), ""),DateTimeUtil.getSelectCalendar(o.getString("enddate"),""));
             }
         }
     }
-
     @Override
     public void onFail(int errorCode, int reqCode) {
 
@@ -451,12 +446,12 @@ public class NaviDrugFragment extends AppBaseFragment {
                 }
             });
             //	中间的按钮
-            builder.setNeutralButton("过5秒后提醒", new DialogInterface.OnClickListener() {
+            builder.setNeutralButton("过5分钟后提醒", new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     Calendar c = Calendar.getInstance();
-                    c.add(Calendar.SECOND,5);
+                    c.add(Calendar.MINUTE,5);
                     manager.setTempReminder(model.getRowId(),c);
                 }
             });
