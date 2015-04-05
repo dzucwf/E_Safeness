@@ -23,7 +23,7 @@ public class OnBootReceiver extends BroadcastReceiver {
 		RemindersDbAdapter dbHelper = new RemindersDbAdapter(context);
 		dbHelper.open();
 			
-		Cursor cursor = dbHelper.fetchReminderByUser(user);
+ 		Cursor cursor = dbHelper.fetchReminderByUser(user);
 		
 		if(cursor != null) {
 			cursor.moveToFirst(); 

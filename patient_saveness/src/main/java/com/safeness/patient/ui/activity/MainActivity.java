@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -101,6 +102,24 @@ public class MainActivity extends AppBaseActivity {
     private  Calendar saveCalendar = Calendar.getInstance();
 
 
+    //定时发送请求，查看提醒的变化
+
+    Handler handlerReminder=new Handler();
+    private Context mContext;
+
+    //每20分钟执行一次runnable.
+    private static int INTERVAL_REFRESH_REMIND = 1200000;
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            Intent filter = new Intent("com.safeness.e_saveness_common.remind.OnBootReceiver");
+            filter.putExtra("user",PatientApplication.getInstance().getUserName());
+            //发送提醒广播
+            mContext.sendBroadcast(filter);
+            handlerReminder.postDelayed(this, INTERVAL_REFRESH_REMIND);
+        }
+    };
     /*
     * 以下是聊天的变量
     *
@@ -120,6 +139,7 @@ public class MainActivity extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if(savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)){
             // 防止被移除后，没点确定按钮然后按了home键，长期在后台又进app导致的crash
@@ -137,15 +157,19 @@ public class MainActivity extends AppBaseActivity {
         }
 
         //登陆之后加入提醒服务，这个要看后期是不是要重复加入的bug
-        Intent it = new Intent();
-        it.setAction("com.safeness.patient.remind.OnBootReceiver");
-        it.putExtra("user",PatientApplication.getInstance().getUserName());
-        this.sendBroadcast(it);
+        Intent filter = new Intent("com.safeness.e_saveness_common.remind.OnBootReceiver");
+        filter.putExtra("user",PatientApplication.getInstance().getUserName());
+        //发送提醒广播
+        mContext.sendBroadcast(filter);
+
+
+        handlerReminder.postDelayed(runnable, INTERVAL_REFRESH_REMIND);//每20分钟执行一次runnable.
 
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handlerReminder.removeCallbacks(runnable);
         // 注销广播接收者
         try {
             unregisterReceiver(msgReceiver);
