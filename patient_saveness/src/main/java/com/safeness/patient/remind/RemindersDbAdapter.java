@@ -140,6 +140,7 @@ public class RemindersDbAdapter {
      * @return roid
      */
     public long CreateOrUpdateReminder(ReminderModel reminder){
+
        Cursor c =  fetchReminderByUniqueId(reminder.getUnique_id());
         if(c!= null && c.getCount()>0 ){
              if(updateReminderByUniqueId(reminder)){
@@ -255,7 +256,7 @@ public class RemindersDbAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE, COLUMNS, KEY_UNIQUE_ID + "=" + unique_id, null,
+                mDb.query(true, DATABASE_TABLE, COLUMNS, KEY_UNIQUE_ID + "='" + unique_id+"'", null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -307,7 +308,7 @@ public class RemindersDbAdapter {
         args.put(KEY_CAN_REMIND, reminder.isCanReminde()==true?1:0);
         args.put(KEY_END_DATE_TIME, reminder.getEnd_date_time());
         args.put(KEY_REMIND_TIME, reminder.getRemindTime());
-        return mDb.update(DATABASE_TABLE, args, KEY_UNIQUE_ID + "=" + reminder.getUnique_id(), null) > 0;
+        return mDb.update(DATABASE_TABLE, args, KEY_UNIQUE_ID + "='" + reminder.getUnique_id()+"'", null) > 0;
     }
 
 

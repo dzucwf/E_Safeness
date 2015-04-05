@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.util.DateTimeUtil;
@@ -87,21 +88,34 @@ public class ReminderManager {
             //如果提醒最晚时间小于当前时间返回false
             if(now.compareTo(remindEndTime)>0){
                 return false;
+            }else{
+                Calendar compareRemind = Calendar.getInstance();
+                String[] remindTime = model.getRemindTime().split(":");
+                compareRemind.set(Calendar.HOUR_OF_DAY,Integer.parseInt(remindTime[0]));
+                compareRemind.set(Calendar.MINUTE,Integer.parseInt(remindTime[1]));
+                if(now.compareTo(compareRemind)>0) {
+                    return false;
+                }
             }
         }
         return true;
     }
 
-    public void createUniqueId(ReminderModel model,String drugId){
+    private static  final String SPLIT_STR = "_";
+    public void createUniqueId(ReminderModel model,String drugId) throws ParseException {
         StringBuffer sb = new StringBuffer();
-        sb.append("'");
-        sb.append(drugId+"$$");
-        sb.append(model.getDate_time()+"$$");
-        sb.append(model.getEnd_date_time()+"$$");
-        sb.append(model.getRemindTime()+"$$");
-        sb.append(PatientApplication.getInstance().getUserName()+"$$");
-        sb.append(model.getType()+"$$");
-        sb.append("'");
+        //sb.append("'");
+        sb.append(drugId+SPLIT_STR);
+        Calendar start = DateTimeUtil.getSelectCalendar(model.getDate_time(),"");
+        Calendar end = DateTimeUtil.getSelectCalendar(model.getEnd_date_time(),"");
+
+        sb.append(DateTimeUtil.getSelectedDate(start,"yyyyMMdd")+SPLIT_STR);
+        sb.append(DateTimeUtil.getSelectedDate(end, "yyyyMMdd")+SPLIT_STR);
+
+        sb.append(model.getRemindTime().replace(":","_")+SPLIT_STR);
+        sb.append(PatientApplication.getInstance().getUserName()+SPLIT_STR);
+        sb.append(model.getType());
+        //sb.append("'");
         model.setUnique_id(sb.toString());
     }
 
@@ -128,7 +142,7 @@ public class ReminderManager {
         long rowID = mDbHelper.CreateOrUpdateReminder(reminder);
 
         setReminder(reminder);
-        mDbHelper.close();
+       // mDbHelper.close();
         return rowID;
 
 
@@ -178,7 +192,7 @@ public class ReminderManager {
         List<ReminderModel> returnList = new ArrayList<ReminderModel>();
 
         mDbHelper.open();
-        Cursor remindersCursor = mDbHelper.fetchReminderByUserAndType(user,type);
+        Cursor remindersCursor = mDbHelper.fetchReminderByUserAndType(user, type);
         fillList(returnList,remindersCursor);
         mDbHelper.close();
         return returnList;
@@ -228,28 +242,34 @@ public class ReminderManager {
      * @param remindersCursor
      * @return
      */
-     ReminderModel getReminderByCursor(Cursor remindersCursor){
+     ReminderModel getReminderByCursor(Cursor remindersCursor) throws CursorIndexOutOfBoundsException{
         ReminderModel model = new ReminderModel();
-        long rowID =remindersCursor.getLong(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_ROWID));
-        String title =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TITLE));
-        String body =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_BODY));
-        String type =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TYPE));
-        String user =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_USER));
-        String statTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
-        String endTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
-        int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_END_DATE_TIME));
-        String unique_id =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_UNIQUE_ID));
-        String remindTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_REMIND_TIME));
-        model.setRowId(rowID);
-        model.setTitle(title);
-        model.setBody(body);
-        model.setType(type);
-        model.setUser(user);
-        model.setDate_time(statTime);
-        model.setRemindTime(remindTime);
-        model.setEnd_date_time(endTime);
-        model.setUnique_id(unique_id);
-        model.setCanReminde(canReminder==1?true:false);
+        try {
+            long rowID =remindersCursor.getLong(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_ROWID));
+            String title =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TITLE));
+            String body =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_BODY));
+            String type =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_TYPE));
+            String user =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_USER));
+            String statTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME));
+            String endTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_END_DATE_TIME));
+            int canReminder = remindersCursor.getInt(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_CAN_REMIND));
+            String unique_id =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_UNIQUE_ID));
+            String remindTime =remindersCursor.getString(remindersCursor.getColumnIndex(RemindersDbAdapter.KEY_REMIND_TIME));
+            model.setRowId(rowID);
+            model.setTitle(title);
+            model.setBody(body);
+            model.setType(type);
+            model.setUser(user);
+            model.setDate_time(statTime);
+            model.setRemindTime(remindTime);
+            model.setEnd_date_time(endTime);
+            model.setUnique_id(unique_id);
+            model.setCanReminde(canReminder==1?true:false);
+         }catch (CursorIndexOutOfBoundsException ex){
+            ex.printStackTrace();
+         }
+
+
         return model;
     }
 

@@ -27,7 +27,6 @@ import com.safeness.e_saveness_common.dao.IBaseDao;
 import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
-import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.Drug;
@@ -280,6 +279,7 @@ public class NaviDrugFragment extends AppBaseFragment {
         JSONObject jsobject = (JSONObject) obj;
         Message msg = new Message();
         Bundle b = new Bundle();
+        this.dissProgressDialog();
         switch (reqCode){
 
             case WebServiceName.GETDRUG_RQ:
@@ -296,7 +296,7 @@ public class NaviDrugFragment extends AppBaseFragment {
                         handler.sendMessage(msg);
                     } else {
                         // msg.what = LOGIN_ERROR_RQ;
-                        this.dissProgressDialog();
+
                     }
                     //hander.sendMessage(msg);
                 } catch (JSONException e) {
@@ -338,47 +338,47 @@ public class NaviDrugFragment extends AppBaseFragment {
     }
 
     ReminderManager manager;
-    private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
-        for (int i = 0; i < webList.length(); ++i) {
-            JSONObject o = (JSONObject) webList.get(i);
-
-            int everyTime = o.getInt("everytime");
-            ReminderModel reminderData = new ReminderModel();
-            reminderData.setTitle("吃药时间到了");
-            reminderData.setBody(o.getString("name"));
-            reminderData.setRemindTime("15:40");
-            reminderData.setUser(app.getUserName());
-            reminderData.setType("drug");
-            reminderData.setCanReminde(true);
-            reminderData.setDate_time(DateTimeUtil.getSelectedDate(Calendar.getInstance(),""));
-            Calendar end = Calendar.getInstance();
-            end.add(Calendar.DATE,5);
-            reminderData.setEnd_date_time(DateTimeUtil.getSelectedDate(end,""));
-            manager.createUniqueId(reminderData,o.getString("ids"));
-            manager.saveState(reminderData);
-        }
-    }
 //    private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
 //        for (int i = 0; i < webList.length(); ++i) {
 //            JSONObject o = (JSONObject) webList.get(i);
 //
 //            int everyTime = o.getInt("everytime");
-//            for (int j = 0; j < everyTime; j++) {
-//
-//                ReminderModel reminderData = new ReminderModel();
-//                reminderData.setTitle("吃药时间到了");
-//                reminderData.setBody(o.getString("name"));
-//                reminderData.setRemindTime(getTimeInterval(everyTime,j));
-//                reminderData.setUser(app.getUserName());
-//                reminderData.setType("drug");
-//                reminderData.setCanReminde(true);
-//                reminderData.setDate_time(o.getString("startdate"));
-//                reminderData.setEnd_date_time(o.getString("enddate"));
-//                manager.createUniqueId(reminderData,o.getString("ids"));
-//                manager.saveState(reminderData);
-//            }
+//            ReminderModel reminderData = new ReminderModel();
+//            reminderData.setTitle("吃药时间到了");
+//            reminderData.setBody(o.getString("name"));
+//            reminderData.setRemindTime("16:50");
+//            reminderData.setUser(app.getUserName());
+//            reminderData.setType("drug");
+//            reminderData.setCanReminde(true);
+//            reminderData.setDate_time(DateTimeUtil.getSelectedDate(Calendar.getInstance(),""));
+//            Calendar end = Calendar.getInstance();
+//            end.add(Calendar.DATE,5);
+//            reminderData.setEnd_date_time(DateTimeUtil.getSelectedDate(end,""));
+//            manager.createUniqueId(reminderData,o.getString("ids"));
+//            manager.saveState(reminderData);
 //        }
 //    }
+    private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
+        for (int i = 0; i < webList.length(); ++i) {
+            JSONObject o = (JSONObject) webList.get(i);
+
+            int everyTime = o.getInt("everytime");
+            for (int j = 0; j < everyTime; j++) {
+
+                ReminderModel reminderData = new ReminderModel();
+                reminderData.setTitle("吃药时间到了");
+                reminderData.setBody(o.getString("name"));
+                reminderData.setRemindTime(getTimeInterval(everyTime,j));
+                reminderData.setUser(app.getUserName());
+                reminderData.setType("drug");
+                reminderData.setCanReminde(true);
+                reminderData.setDate_time(o.getString("startdate"));
+                reminderData.setEnd_date_time(o.getString("enddate"));
+                manager.createUniqueId(reminderData,o.getString("ids"));
+                manager.saveState(reminderData);
+            }
+        }
+    }
     @Override
     public void onFail(int errorCode, int reqCode) {
 
