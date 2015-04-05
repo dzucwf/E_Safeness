@@ -114,6 +114,10 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     LoginActivity.this.startActivity(it);
                     //登陆完服务器后再次登陆聊天服务器
                     attemptLoginIM();
+                    Intent filter = new Intent("com.safeness.e_saveness_common.remind.OnBootReceiver");
+                    filter.putExtra("user",PatientApplication.getInstance().getUserName());
+                    //发送提醒广播
+                    mContext.sendBroadcast(filter);
                     finish();
                     break;
                 case LOGIN_ERROR_RQ:

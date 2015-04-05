@@ -6,11 +6,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
-import com.safeness.e_saveness_common.util.DateTimeUtil;
-
-import java.text.ParseException;
-import java.util.Calendar;
-
 public class ReminderService extends WakeReminderIntentService {
 
 	public ReminderService() {
@@ -20,7 +15,7 @@ public class ReminderService extends WakeReminderIntentService {
 	@Override
 	void doReminderWork(Intent intent) {
 		Log.d("ReminderService", "Doing work.");
-		Long rowId = intent.getExtras().getLong(RemindersDbAdapter.KEY_ROWID);
+		String uniqueId = intent.getExtras().getString(RemindersDbAdapter.KEY_ROWID);
 
 
        
@@ -28,20 +23,14 @@ public class ReminderService extends WakeReminderIntentService {
 
         Intent notificationIntent = new Intent();
         notificationIntent.setClassName(this,"com.safeness.patient.ui.activity.MainActivity");
-        notificationIntent.putExtra(RemindersDbAdapter.KEY_ROWID, rowId);
-        int id = (int)((long)rowId);
+        notificationIntent.putExtra(RemindersDbAdapter.KEY_ROWID, uniqueId);
+
         PendingIntent pi = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
         ReminderManager manager = new ReminderManager(this);
-        ReminderModel model =  manager.getReminderByID(rowId);
+        ReminderModel model =  manager.getReminderByUniqueId(uniqueId);
 
 
         try {
-            Calendar now = Calendar.getInstance();
-            if(model.getEnd_date_time() == null){
-                model.setEnd_date_time(DateTimeUtil.getNowDate());
-            }
-            Calendar endDate = DateTimeUtil.getSelectCalendar(model.getEnd_date_time(), "");
-           // if(now.compareTo(endDate)<0){
                 Notification note=new Notification(android.R.drawable.stat_sys_warning,model.getTitle(), System.currentTimeMillis());
                 note.setLatestEventInfo(this, model.getTitle(), model.getBody(), pi);
                 note.defaults |= Notification.DEFAULT_SOUND;
@@ -50,14 +39,14 @@ public class ReminderService extends WakeReminderIntentService {
                 // An issue could occur if user ever enters over 2,147,483,647 tasks. (Max int value).
                 // I highly doubt this will ever happen. But is good to note.
 
-                mgr.notify(id, note);
+                mgr.notify((int)model.getRowId(), note);
 
                 Intent it = new Intent("com.safeness.patient.receiver.PatientRemindReceiver");
 
                 it.putExtra("reminder",model);
                 this.sendBroadcast(it);
            // }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

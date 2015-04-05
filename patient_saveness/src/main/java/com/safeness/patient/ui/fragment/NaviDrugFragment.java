@@ -72,6 +72,7 @@ public class NaviDrugFragment extends AppBaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
     }
 
 
@@ -342,12 +343,42 @@ public class NaviDrugFragment extends AppBaseFragment {
             JSONObject o = (JSONObject) webList.get(i);
 
             int everyTime = o.getInt("everytime");
-            for (int j = 0; j < everyTime; j++) {
-                manager.saveState("吃药时间到了",o.getString("name"),getTimeInterval(everyTime,j),app.getUserID(),"drug",true,
-                        DateTimeUtil.getSelectCalendar(o.getString("startdate"), ""),DateTimeUtil.getSelectCalendar(o.getString("enddate"),""));
-            }
+            ReminderModel reminderData = new ReminderModel();
+            reminderData.setTitle("吃药时间到了");
+            reminderData.setBody(o.getString("name"));
+            reminderData.setRemindTime("15:40");
+            reminderData.setUser(app.getUserName());
+            reminderData.setType("drug");
+            reminderData.setCanReminde(true);
+            reminderData.setDate_time(DateTimeUtil.getSelectedDate(Calendar.getInstance(),""));
+            Calendar end = Calendar.getInstance();
+            end.add(Calendar.DATE,5);
+            reminderData.setEnd_date_time(DateTimeUtil.getSelectedDate(end,""));
+            manager.createUniqueId(reminderData,o.getString("ids"));
+            manager.saveState(reminderData);
         }
     }
+//    private void insertAlertData(JSONArray webList) throws JSONException, ParseException {
+//        for (int i = 0; i < webList.length(); ++i) {
+//            JSONObject o = (JSONObject) webList.get(i);
+//
+//            int everyTime = o.getInt("everytime");
+//            for (int j = 0; j < everyTime; j++) {
+//
+//                ReminderModel reminderData = new ReminderModel();
+//                reminderData.setTitle("吃药时间到了");
+//                reminderData.setBody(o.getString("name"));
+//                reminderData.setRemindTime(getTimeInterval(everyTime,j));
+//                reminderData.setUser(app.getUserName());
+//                reminderData.setType("drug");
+//                reminderData.setCanReminde(true);
+//                reminderData.setDate_time(o.getString("startdate"));
+//                reminderData.setEnd_date_time(o.getString("enddate"));
+//                manager.createUniqueId(reminderData,o.getString("ids"));
+//                manager.saveState(reminderData);
+//            }
+//        }
+//    }
     @Override
     public void onFail(int errorCode, int reqCode) {
 
@@ -442,7 +473,7 @@ public class NaviDrugFragment extends AppBaseFragment {
 
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
-                    manager.cancelReminder(model.getRowId());
+                    manager.cancelReminder(model.getUnique_id());
                 }
             });
             //	中间的按钮
@@ -452,7 +483,7 @@ public class NaviDrugFragment extends AppBaseFragment {
                 public void onClick(DialogInterface arg0, int arg1) {
                     Calendar c = Calendar.getInstance();
                     c.add(Calendar.MINUTE,5);
-                    manager.setTempReminder(model.getRowId(),c);
+                    manager.setTempReminder(model.getUnique_id(),c);
                 }
             });
             //	第三个按钮
