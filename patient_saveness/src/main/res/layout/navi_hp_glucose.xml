@@ -42,7 +42,7 @@
                 android:scaleType="centerInside"
                 android:layout_alignParentRight="true"
                 android:background="@null"
-                android:src="@drawable/set_btn"
+                android:src="@drawable/more_myprofile"
                 android:id="@+id/set_btn"
                 ></ImageView>
         </RelativeLayout>

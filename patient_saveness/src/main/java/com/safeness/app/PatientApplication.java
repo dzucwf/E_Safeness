@@ -13,6 +13,7 @@
  */
 package com.safeness.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -21,6 +22,8 @@ import com.safeness.e_saveness_common.model.User;
 import com.safeness.im.widget.DemoHXSDKHelper;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class PatientApplication extends Application {
@@ -37,6 +40,9 @@ public class PatientApplication extends Application {
 	public static DemoHXSDKHelper hxSDKHelper = new DemoHXSDKHelper();
 
     public static String userID = "";
+
+
+
 
 	@Override
 	public void onCreate() {
@@ -153,5 +159,18 @@ public class PatientApplication extends Application {
 	public void logout(final EMCallBack emCallBack) {
 		// 先调用sdk logout，在清理app中自己的数据
 	    hxSDKHelper.logout(emCallBack);
+	}
+
+	private static List<Activity> activities = new LinkedList<Activity>();
+
+	public static void addActivity(Activity activity){
+		activities.add(activity);
+	}
+
+	public static  void exit(){
+		for(Activity activity : activities){
+			activity.finish();
+		}
+		System.exit(0);
 	}
 }

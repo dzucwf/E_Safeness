@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.easemob.EMConnectionListener;
@@ -73,7 +72,6 @@ public class MainActivity extends AppBaseActivity {
 
 
     private static final String TAG = "MainActivity";
-    private LinearLayout mSwitcher;
     private ViewPager mSearchVp;
     private final int CB_INDEX_FOOD = 0;
     private final int CB_INDEX_DRUG = 1;
@@ -164,6 +162,29 @@ public class MainActivity extends AppBaseActivity {
 
 
         handlerReminder.postDelayed(runnable, INTERVAL_REFRESH_REMIND);//每20分钟执行一次runnable.
+        PatientApplication.getInstance().addActivity(this);
+    }
+
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                ExitApp();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+    private long exitTime = 0;
+    private void ExitApp() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+
+            PatientApplication.getInstance().exit();
+        }
 
     }
     @Override
@@ -252,7 +273,6 @@ public class MainActivity extends AppBaseActivity {
     //初始化下层切换
     private void getViews() {
         switchAdapter = new BtmNaviSwitchAdapter(getSupportFragmentManager());
-        mSwitcher = (LinearLayout) findViewById(R.id.navi_switcher);
         mSearchVp = (ViewPager) findViewById(R.id.navi_view_pager);
         mSearchVp.setAdapter(switchAdapter);
         mSearchVp.setOnPageChangeListener(mPageChgListener);
@@ -263,6 +283,8 @@ public class MainActivity extends AppBaseActivity {
         sportbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_sports);
         doctorbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_doctor);
         createCalControl();
+        //血糖作为初始页
+        mSearchVp.setCurrentItem(2);
 
     }
 

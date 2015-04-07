@@ -85,17 +85,21 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
      * 当前Activity.
      * 若要屏蔽Back键盘,注释该行代码即可
      */
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        System.out.println("按下了back键 onBackPressed()");
-    }
+//    @Override
+//    public void onBackPressed() {
+//        //super.onBackPressed();
+//        System.out.println("按下了back键 onBackPressed()");
+//    }
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mContext = this;
+        PatientApplication.getInstance().addActivity(this);
 
     }
 

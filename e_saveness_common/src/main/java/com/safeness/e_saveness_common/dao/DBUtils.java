@@ -32,6 +32,7 @@ public class DBUtils {
         this.dbName = dbName;
         mSQLiteDatabase = mContext.openOrCreateDatabase(this.dbName, Context.MODE_PRIVATE,
                 null);
+
     }
 
     /**
