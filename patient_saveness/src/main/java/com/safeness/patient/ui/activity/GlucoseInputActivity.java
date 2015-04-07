@@ -1,12 +1,7 @@
 package com.safeness.patient.ui.activity;
 
-import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,8 +25,6 @@ import com.safeness.e_saveness_common.util.DateTimeUtil;
 import com.safeness.patient.R;
 import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.BloodGlucose;
-import com.safeness.patient.remind.ReminderManager;
-import com.safeness.patient.remind.ReminderModel;
 import com.safeness.patient.ui.util.GlucoseUtil;
 
 import org.json.JSONException;
@@ -127,10 +120,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
         clearValue();
         glucoseUtil = new GlucoseUtil(this);
 
-        //TODO要删除
-        IntentFilter intentFilter = new IntentFilter(ActionSTR);
-        this.registerReceiver(systemReceiver,intentFilter);
-        manager = new ReminderManager(this);
+
 
     }
 
@@ -161,62 +151,6 @@ public class GlucoseInputActivity extends AppBaseActivity {
         }
     };
 
-    //TODO:这个是作为测试的，最后要删除
-    private static  final String ActionSTR = "com.safeness.patient.receiver.PatientRemindReceiver";
-    private BroadcastReceiver systemReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            Log.d("safeness","received");
-            if(intent.getAction().equals(ActionSTR)){
-                ReminderModel data = (ReminderModel)intent.getSerializableExtra("reminder");
-                showDialog(data);
-            }
-        }
-    };
-
-    private void showDialog(final ReminderModel model){
-
-        if(model != null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setIcon(R.drawable.ic_launcher);
-            builder.setTitle(model.getTitle());
-            builder.setMessage(model.getBody());
-            //	第一个按钮
-            builder.setPositiveButton("不在提醒", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    manager.cancelReminder(model.getRowId());
-                }
-            });
-            //	中间的按钮
-            builder.setNeutralButton("过5秒后提醒", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    Calendar c = Calendar.getInstance();
-                    c.add(Calendar.SECOND,5);
-                   manager.setTempReminder(model.getRowId(),c);
-                }
-            });
-            //	第三个按钮
-            builder.setNegativeButton("知道了", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    arg0.dismiss();
-                }
-            });
-
-
-            //	Diglog的显示
-            builder.create().show();
-        }
-
-    }
 
     /**
      * 弹出日期选择框
@@ -235,7 +169,7 @@ public class GlucoseInputActivity extends AppBaseActivity {
                     calendarInput.set(Calendar.MINUTE,minute);
                     input_time_et.setText(DateTimeUtil.getSelectedDate(calendarInput,DateTimeUtil.NORMAL_PATTERN));
                 }
-                //TODO:有问题
+
             },hour,minute,true);
 
             timePickerDialog.show();
@@ -332,7 +266,6 @@ public class GlucoseInputActivity extends AppBaseActivity {
 
     @Override
     protected void onDestroy() {
-        this.unregisterReceiver(systemReceiver);
         super.onDestroy();
     }
 
@@ -341,8 +274,6 @@ public class GlucoseInputActivity extends AppBaseActivity {
         this.finish();
     }
 
-    //TODO:这个是作为测试的，最后要删除
-    ReminderManager manager;
     /**
      * 存入数据库
      */

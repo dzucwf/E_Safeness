@@ -41,6 +41,20 @@ public class DateTimeUtil {
 
     }
 
+    /**
+     * 如果c1比c2大或相同返回true，否则返回false
+     * @param c1
+     * @param c2
+     * @return
+     */
+    public  static   boolean compareCal(Calendar c1,Calendar c2){
+        if(c1.compareTo(c1)>=0){
+            return true;
+        }else{
+            return  false;
+        }
+    }
+
 
     /**
      * 获取格式化字符串

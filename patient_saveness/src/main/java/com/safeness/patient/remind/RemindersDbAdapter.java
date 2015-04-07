@@ -23,7 +23,7 @@ public class RemindersDbAdapter {
     //
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "reminders";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
@@ -33,6 +33,8 @@ public class RemindersDbAdapter {
     public static final String KEY_TYPE = "type";
     public static final String KEY_USER = "user_id";
     public static final String KEY_CAN_REMIND = "can_remind";
+    public static final String KEY_UNIQUE_ID = "query_id";
+    public static final String KEY_REMIND_TIME = "remind_time";
 
     private static final String TAG = "ReminderDbAdapter";
     private DatabaseHelper mDbHelper;
@@ -50,10 +52,14 @@ public class RemindersDbAdapter {
                     + KEY_USER + " text not null, "
                     + KEY_CAN_REMIND + " integer DEFAULT 1,"
                     + KEY_END_DATE_TIME + " text not null, "
+                    + KEY_REMIND_TIME + " text not null, "
+                    + KEY_UNIQUE_ID + " text UNIQUE, "
                     + KEY_DATE_TIME + " text not null);";
 
 
 
+    private static final  String[] COLUMNS = new String[] {KEY_ROWID,
+            KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME,KEY_UNIQUE_ID,KEY_REMIND_TIME};
     private final Context mCtx;
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -112,21 +118,43 @@ public class RemindersDbAdapter {
      * If the reminder is  successfully created return the new rowId
      * for that reminder, otherwise return a -1 to indicate failure.
      *
-     * @param title the title of the reminder
-     * @param body the body of the reminder
-     * @param reminderDateTime the date and time the reminder should remind the user
+     * @param reminder  reminder
      * @return rowId or -1 if failed
      */
-    public long createReminder(String title, String body, String reminderDateTime,String user,String type,String startTime,String endDateTime) {
+    public long createReminder(ReminderModel reminder) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_TITLE, title);
-        initialValues.put(KEY_BODY, body);
-        initialValues.put(KEY_DATE_TIME, reminderDateTime);
-        initialValues.put(KEY_USER, user);
-        initialValues.put(KEY_TYPE, type);
-        initialValues.put(KEY_END_DATE_TIME, endDateTime);
+        initialValues.put(KEY_TITLE, reminder.getTitle());
+        initialValues.put(KEY_BODY, reminder.getBody());
+        initialValues.put(KEY_DATE_TIME, reminder.getDate_time());
+        initialValues.put(KEY_USER, reminder.getUser());
+        initialValues.put(KEY_TYPE, reminder.getType());
+        initialValues.put(KEY_END_DATE_TIME, reminder.getEnd_date_time());
+        initialValues.put(KEY_UNIQUE_ID, reminder.getUnique_id());
+        initialValues.put(KEY_REMIND_TIME, reminder.getRemindTime());
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
+
+    /**
+     * 增加或删除
+     * @param reminder
+     * @return roid
+     */
+    public long CreateOrUpdateReminder(ReminderModel reminder){
+
+       Cursor c =  fetchReminderByUniqueId(reminder.getUnique_id());
+        if(c!= null && c.getCount()>0 ){
+             if(updateReminderByUniqueId(reminder)){
+                 return  reminder.getRowId();
+             }else{
+                 return -1;
+             }
+        }else{
+            return  createReminder(reminder);
+        }
+
+    }
+
+
 
     /**
      * Delete the reminder with the given rowId
@@ -140,14 +168,23 @@ public class RemindersDbAdapter {
     }
 
     /**
+     * Delete the reminder with the given uniqueid
+     *
+     * @param unique_id id of reminder to delete
+     * @return true if deleted, false otherwise
+     */
+    public boolean deleteReminderByUniqueId(long unique_id) {
+
+        return mDb.delete(DATABASE_TABLE, KEY_UNIQUE_ID + "=" + unique_id, null) > 0;
+    }
+    /**
      * Return a Cursor over the list of all reminders in the database
      *
      * @return Cursor over all reminders
      */
     public Cursor fetchAllReminders() {
 
-        return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
-                KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, null, null, null, null, null);
+        return mDb.query(DATABASE_TABLE, COLUMNS, null, null, null, null, null);
     }
 
 
@@ -160,8 +197,7 @@ public class RemindersDbAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, KEY_USER + "=" + user, null,
+                mDb.query(true, DATABASE_TABLE, COLUMNS, KEY_USER + "=" + user, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -179,8 +215,7 @@ public class RemindersDbAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, KEY_USER + "=" + user+"and"+KEY_TYPE
+                mDb.query(true, DATABASE_TABLE, COLUMNS, KEY_USER + "=" + user+"and"+KEY_TYPE
                                 +"="+type, null,
                         null, null, null, null);
         if (mCursor != null) {
@@ -201,8 +236,27 @@ public class RemindersDbAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY, KEY_DATE_TIME,KEY_USER,KEY_TYPE,KEY_CAN_REMIND,KEY_END_DATE_TIME}, KEY_ROWID + "=" + rowId, null,
+                mDb.query(true, DATABASE_TABLE, COLUMNS, KEY_ROWID + "=" + rowId, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+
+    /**
+     * Return a Cursor positioned at the reminder that matches the given rowId
+     *
+     * @param unique_id id of reminder to retrieve
+     * @return Cursor positioned to matching reminder, if found
+     * @throws SQLException if reminder could not be found/retrieved
+     */
+    public Cursor fetchReminderByUniqueId(String unique_id) throws SQLException {
+
+        Cursor mCursor =
+
+                mDb.query(true, DATABASE_TABLE, COLUMNS, KEY_UNIQUE_ID + "='" + unique_id+"'", null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -216,33 +270,73 @@ public class RemindersDbAdapter {
      * specified using the rowId, and it is altered to use the title, body and reminder date time
      * values passed in
      *
-     * @param rowId id of reminder to update
-     * @param title value to set reminder title to
-     * @param body value to set reminder body to
-     * @param reminderDateTime value to set the reminder time.
+     * @param reminder reminder.
      * @return true if the reminder was successfully updated, false otherwise
      */
-    public boolean updateReminder(long rowId, String title, String body, String reminderDateTime,String user,String type,boolean canRemind,String startTime,String end_date_time) {
+    public boolean updateReminder(ReminderModel reminder) {
         ContentValues args = new ContentValues();
-        args.put(KEY_TITLE, title);
-        args.put(KEY_BODY, body);
-        args.put(KEY_DATE_TIME, reminderDateTime);
-        args.put(KEY_USER, user);
-        args.put(KEY_TYPE, type);
-        args.put(KEY_CAN_REMIND, canRemind==true?1:0);
-        args.put(KEY_END_DATE_TIME, end_date_time);
-        return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+        args.put(KEY_TITLE, reminder.getTitle());
+        args.put(KEY_BODY, reminder.getBody());
+        args.put(KEY_DATE_TIME, reminder.getDate_time());
+        args.put(KEY_USER, reminder.getUser());
+        args.put(KEY_TYPE, reminder.getType());
+        args.put(KEY_CAN_REMIND, reminder.isCanReminde()==true?1:0);
+        args.put(KEY_END_DATE_TIME, reminder.getEnd_date_time());
+        args.put(KEY_UNIQUE_ID, reminder.getUnique_id());
+        args.put(KEY_REMIND_TIME, reminder.getRemindTime());
+        return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + reminder.getRowId(), null) > 0;
     }
+
+
+
+    /**
+     * Update the reminder using the details provided. The reminder to be updated is
+     * specified using the rowId, and it is altered to use the title, body and reminder date time
+     * values passed in
+     *
+     * @param reminder reminder.
+
+     * @return true if the reminder was successfully updated, false otherwise
+     */
+    public boolean updateReminderByUniqueId(ReminderModel reminder) {
+        ContentValues args = new ContentValues();
+        args.put(KEY_TITLE, reminder.getTitle());
+        args.put(KEY_BODY, reminder.getBody());
+        args.put(KEY_DATE_TIME, reminder.getDate_time());
+        args.put(KEY_USER, reminder.getUser());
+        args.put(KEY_TYPE, reminder.getType());
+        args.put(KEY_CAN_REMIND, reminder.isCanReminde()==true?1:0);
+        args.put(KEY_END_DATE_TIME, reminder.getEnd_date_time());
+        args.put(KEY_REMIND_TIME, reminder.getRemindTime());
+        return mDb.update(DATABASE_TABLE, args, KEY_UNIQUE_ID + "='" + reminder.getUnique_id()+"'", null) > 0;
+    }
+
+
 
     /**
      * 更改提醒为可用还是不可用
-     * @param rowId
+     * @param uniqueId
      * @param can
      * @return
      */
-    public boolean updateReminderCanOrEnable(long rowId, boolean can){
+    public boolean updateReminderCanOrEnable(String uniqueId, boolean can){
         ContentValues args = new ContentValues();
         args.put(KEY_CAN_REMIND, can==true?1:0);
-        return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDb.update(DATABASE_TABLE, args, KEY_UNIQUE_ID + "=" + uniqueId, null) > 0;
     }
+
+
+    /**
+     * 更改提醒为可用还是不可用
+     * @param unique_id
+     * @param can
+     * @return
+     */
+    public boolean updateReminderCanOrEnableByUniqueId(long unique_id, boolean can){
+        ContentValues args = new ContentValues();
+        args.put(KEY_CAN_REMIND, can==true?1:0);
+        return mDb.update(DATABASE_TABLE, args, KEY_UNIQUE_ID + "=" + unique_id, null) > 0;
+    }
+
+
 }

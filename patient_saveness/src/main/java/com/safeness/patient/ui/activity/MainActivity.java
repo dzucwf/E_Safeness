@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -17,7 +18,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.easemob.EMConnectionListener;
@@ -72,7 +72,6 @@ public class MainActivity extends AppBaseActivity {
 
 
     private static final String TAG = "MainActivity";
-    private LinearLayout mSwitcher;
     private ViewPager mSearchVp;
     private final int CB_INDEX_FOOD = 0;
     private final int CB_INDEX_DRUG = 1;
@@ -101,6 +100,24 @@ public class MainActivity extends AppBaseActivity {
     private  Calendar saveCalendar = Calendar.getInstance();
 
 
+    //定时发送请求，查看提醒的变化
+
+    Handler handlerReminder=new Handler();
+    private Context mContext;
+
+    //每20分钟执行一次runnable.
+    private static int INTERVAL_REFRESH_REMIND = 1200000;
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            Intent filter = new Intent("com.safeness.e_saveness_common.remind.OnBootReceiver");
+            filter.putExtra("user",PatientApplication.getInstance().getUserName());
+            //发送提醒广播
+            mContext.sendBroadcast(filter);
+            handlerReminder.postDelayed(this, INTERVAL_REFRESH_REMIND);
+        }
+    };
     /*
     * 以下是聊天的变量
     *
@@ -120,6 +137,7 @@ public class MainActivity extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if(savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)){
             // 防止被移除后，没点确定按钮然后按了home键，长期在后台又进app导致的crash
@@ -137,15 +155,42 @@ public class MainActivity extends AppBaseActivity {
         }
 
         //登陆之后加入提醒服务，这个要看后期是不是要重复加入的bug
-        Intent it = new Intent();
-        it.setAction("com.safeness.patient.remind.OnBootReceiver");
-        it.putExtra("user",PatientApplication.getInstance().getUserName());
-        this.sendBroadcast(it);
+        Intent filter = new Intent("com.safeness.e_saveness_common.remind.OnBootReceiver");
+        filter.putExtra("user",PatientApplication.getInstance().getUserName());
+        //发送提醒广播
+        mContext.sendBroadcast(filter);
+
+
+        handlerReminder.postDelayed(runnable, INTERVAL_REFRESH_REMIND);//每20分钟执行一次runnable.
+        PatientApplication.getInstance().addActivity(this);
+    }
+
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                ExitApp();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+    private long exitTime = 0;
+    private void ExitApp() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+
+            PatientApplication.getInstance().exit();
+        }
 
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handlerReminder.removeCallbacks(runnable);
         // 注销广播接收者
         try {
             unregisterReceiver(msgReceiver);
@@ -228,7 +273,6 @@ public class MainActivity extends AppBaseActivity {
     //初始化下层切换
     private void getViews() {
         switchAdapter = new BtmNaviSwitchAdapter(getSupportFragmentManager());
-        mSwitcher = (LinearLayout) findViewById(R.id.navi_switcher);
         mSearchVp = (ViewPager) findViewById(R.id.navi_view_pager);
         mSearchVp.setAdapter(switchAdapter);
         mSearchVp.setOnPageChangeListener(mPageChgListener);
@@ -239,6 +283,8 @@ public class MainActivity extends AppBaseActivity {
         sportbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_sports);
         doctorbtn = (ImageButton)this.findViewById(R.id.navi_switcher_item_doctor);
         createCalControl();
+        //血糖作为初始页
+        mSearchVp.setCurrentItem(2);
 
     }
 

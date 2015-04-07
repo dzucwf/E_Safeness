@@ -7,10 +7,7 @@ import android.content.pm.ComponentInfo;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.safeness.e_saveness_common.util.DateTimeUtil;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.text.ParseException;
 
 
 //TODO:这个接受器不应该是在启动的时候就打开，以后需要在配置文件里修改
@@ -26,38 +23,25 @@ public class OnBootReceiver extends BroadcastReceiver {
 		RemindersDbAdapter dbHelper = new RemindersDbAdapter(context);
 		dbHelper.open();
 			
-		Cursor cursor = dbHelper.fetchReminderByUser(user);
+ 		Cursor cursor = dbHelper.fetchReminderByUser(user);
 		
 		if(cursor != null) {
 			cursor.moveToFirst(); 
 			
-			int rowIdColumnIndex = cursor.getColumnIndex(RemindersDbAdapter.KEY_ROWID);
-			int dateTimeColumnIndex = cursor.getColumnIndex(RemindersDbAdapter.KEY_DATE_TIME); 
-			int canRemindIndex = cursor.getColumnIndex(RemindersDbAdapter.KEY_CAN_REMIND);
+
             while(cursor.isAfterLast() == false) {
 
-				Log.d(TAG, "Adding alarm from boot.");
-				Log.d(TAG, "Row Id Column Index - " + rowIdColumnIndex);
-				Log.d(TAG, "Date Time Column Index - " + dateTimeColumnIndex);
-				
-				Long rowId = cursor.getLong(rowIdColumnIndex); 
-				String dateTime = cursor.getString(dateTimeColumnIndex);
-                //是否需要提醒
-                boolean canRemind = cursor.getInt(canRemindIndex) == 1?true:false;
-				Calendar cal = Calendar.getInstance();
-				SimpleDateFormat format = new SimpleDateFormat(DateTimeUtil.DATE_TIME_FORMAT);
-				
-				try {
-					java.util.Date date = format.parse(dateTime);
-					cal.setTime(date);
-					if(canRemind){
-                        reminderMgr.setReminder(rowId, cal);
-                    }
 
-				} catch (java.text.ParseException e) {
-					Log.e("OnBootReceiver", e.getMessage(), e);
-				}
+                try {
+                   ReminderModel reminder = reminderMgr.getReminderByCursor(cursor);
+                   reminderMgr.setReminder(reminder);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e("OnBootReceiver", e.getMessage(), e);
+                }
+
 				
+
 				cursor.moveToNext(); 
 			}
 			cursor.close() ;	
