@@ -347,7 +347,7 @@ public class NaviDrugFragment extends AppBaseFragment {
             end.add(Calendar.DATE,5);
             int everyTime = o.getInt("everytime");
             for (int j = 0; j < everyTime; j++) {
-                manager.saveState("吃药时间到了",o.getString("name"),"01:49"/*getTimeInterval(everyTime,j)*/,app.getUserID(),"drug",true,
+                manager.saveState("吃药时间到了",o.getString("name"),"01:51"/*getTimeInterval(everyTime,j)*/,app.getUserID(),"drug",true,
                         Calendar.getInstance(), end);
             }
         }

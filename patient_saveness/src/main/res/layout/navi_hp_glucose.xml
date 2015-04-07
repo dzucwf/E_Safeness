@@ -84,14 +84,13 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:background="@drawable/sports_bg">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/glucose_view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:padding="0dip" />
             </LinearLayout>
 
@@ -103,7 +102,7 @@
 
                 <WebView
                     android:layout_width="fill_parent"
-                    android:layout_height="240dp"
+                    android:layout_height="300dp"
 
                     android:id="@+id/glucoseChart"
                     ></WebView>
