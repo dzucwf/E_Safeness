@@ -293,7 +293,7 @@ public class MainActivity extends AppBaseActivity {
 
 
         dialogCaldroidFragment = new CaldroidFragment();
-        dialogCaldroidFragment.setShowNavigationArrows(true);
+
         // Setup dialogTitle
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
@@ -301,9 +301,10 @@ public class MainActivity extends AppBaseActivity {
         args.putInt(dialogCaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putBoolean(dialogCaldroidFragment.ENABLE_SWIPE, true);
         args.putBoolean(dialogCaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
-        args.putBoolean(dialogCaldroidFragment.SHOW_NAVIGATION_ARROWS,true);
+        args.putBoolean(dialogCaldroidFragment.SHOW_NAVIGATION_ARROWS, true);
         dialogCaldroidFragment.setArguments(args);
         dialogCaldroidFragment.setCaldroidListener(Callistener);
+
 
     }
     final SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.NORMAL_PATTERN);
@@ -370,17 +371,12 @@ public class MainActivity extends AppBaseActivity {
      * @param view
      */
     public void openCalendar(View view){
-        //Toast.makeText(this,"打开日历",Toast.LENGTH_LONG).show();
+
+
         dialogCaldroidFragment.show(getSupportFragmentManager(),
                 dialogTag);
 
-        //以上代码，改成弹窗的形式
-        //NaviGlucoseFragment glucoseFragment = (NaviGlucoseFragment)switchAdapter.getItem(CB_INDEX_GLUCOSE);
-       // glucoseFragment.showCalControl();
 
-//        Intent it = new Intent(this, CalendarContainnerActivity.class);
-//        startActivityForResult(it,OPEN_CALENDAR_RQ);
-//        overridePendingTransition(R.anim.in_from_down, R.anim.out_to_down);
     }
 
     /*

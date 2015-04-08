@@ -32,7 +32,6 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactManager;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.safeness.app.PatientApplication;
 import com.safeness.e_saveness_common.base.AppBaseActivity;
@@ -463,6 +462,23 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     //登陆聊天是否成功
     boolean isSuccess = false;
 
+
+
+
+    private  String getNickNameByTest(String userName){
+       switch (userName){
+           case "18363667172":
+               return "纪勇";
+           case "18365947856":
+               return "张建华";
+           case "18363667171":
+               return "张强";
+           case "13175869543":
+               return "李芳";
+           default:
+               return "";
+       }
+    }
     /**
      * 登陆聊天服务器
      *
@@ -502,11 +518,13 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
                     // demo中简单的处理成每次登陆都去获取好友username，开发者自己根据情况而定
                     List<String> usernames = EMContactManager.getInstance().getContactUserNames();
-                    EMLog.d("roster", "contacts size: " + usernames.size());
+                    Log.d("roster", "contacts size: " + usernames.size());
                     Map<String, User> userlist = new HashMap<String, User>();
                     for (String username : usernames) {
                         User user = new User();
                         user.setUsername(username);
+
+                        user.setNick(getNickNameByTest(username));
                         setUserHearder(username, user);
                         userlist.put(username, user);
                     }

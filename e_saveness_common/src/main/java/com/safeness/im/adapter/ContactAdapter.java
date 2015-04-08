@@ -125,6 +125,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements SectionIndexer
 				Log.d("ContactAdapter", position + "");
 			//设置nick，demo里不涉及到完整user，用username代替nick显示
 			String username = user.getUsername();
+			String nick = user.getNick();
 			String header = user.getHeader();
 			if (position == 0 || header != null && !header.equals(getItem(position - 1).getHeader())) {
 				if ("".equals(header)) {
@@ -151,7 +152,9 @@ public class ContactAdapter extends ArrayAdapter<User> implements SectionIndexer
 				nameTextview.setText(user.getNick());
 				avatar.setImageResource(R.drawable.groups_icon);
 			}else{
-				nameTextview.setText(username);
+				//puchao
+				//nameTextview.setText(username);
+				nameTextview.setText(nick);
 				if(unreadMsgView != null)
 					unreadMsgView.setVisibility(View.INVISIBLE);
 				avatar.setImageResource(R.drawable.default_avatar);

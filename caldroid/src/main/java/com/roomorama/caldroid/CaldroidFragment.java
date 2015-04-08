@@ -747,7 +747,7 @@ public class CaldroidFragment extends DialogFragment {
      * @param showNavigationArrows
      */
     public void setShowNavigationArrows(boolean showNavigationArrows) {
-        this.showNavigationArrows = showNavigationArrows;
+
         if (showNavigationArrows) {
             leftArrowButton.setVisibility(View.VISIBLE);
             rightArrowButton.setVisibility(View.VISIBLE);
