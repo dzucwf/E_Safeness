@@ -129,10 +129,10 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     if (isSuccess) {
                         //登陆判断成功
 
-                        Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "登录聊天服务器成功", Toast.LENGTH_LONG).show();
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "登录聊天服务器失败", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), "登录聊天服务器失败", Toast.LENGTH_LONG).show();
 
                     }
                     break;

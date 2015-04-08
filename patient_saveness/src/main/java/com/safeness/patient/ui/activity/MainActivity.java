@@ -293,7 +293,7 @@ public class MainActivity extends AppBaseActivity {
 
 
         dialogCaldroidFragment = new CaldroidFragment();
-
+        dialogCaldroidFragment.setShowNavigationArrows(true);
         // Setup dialogTitle
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();

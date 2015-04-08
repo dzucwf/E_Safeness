@@ -189,6 +189,9 @@
 
     <color name="unselected_tab">#3598dc</color>
 
+    <color name="glucoseRed">#e72b2c</color>
+    <color name="glucoseblue">#3765d9</color>
+    <color name="glucoseblueNormal">#1d81dd</color>
 
 
 

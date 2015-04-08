@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
-                        android:text="饭后血糖"
+                        android:text="饭前血糖"
                         android:textSize="12sp"
                         android:textColor="#833700"
                         android:layout_below="@+id/glucose_value_before_tv"
@@ -62,7 +62,7 @@
                         android:layout_centerHorizontal="true"
                         android:textColor="#ffffff"
                         android:textSize="20sp"
-                        android:tag="after"
+                        android:tag="before"
                         android:layout_marginTop="80dp"
                         android:id="@+id/glucose_value_before_tv"/>
 

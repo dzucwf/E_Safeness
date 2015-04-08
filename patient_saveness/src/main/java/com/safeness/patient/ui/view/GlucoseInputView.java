@@ -72,7 +72,7 @@ public class GlucoseInputView extends LinearLayout {
         if(visibility != View.INVISIBLE){
             glucose_value_before_tv.setText(mContext.getString(R.string.input_glucose));
             glucose_value_before_tv.setTextSize(25);
-            glucose_value_before_tv.setTextColor(mContext.getResources().getColor(R.color.black));
+            glucose_value_before_tv.setTextColor(mContext.getResources().getColor(R.color.glucoseblue));
         }else{
             Log.d(TAG,value);
             glucose_value_before_tv.setVisibility(View.VISIBLE);
@@ -103,7 +103,7 @@ public class GlucoseInputView extends LinearLayout {
         if(visibility != View.INVISIBLE){
             glucose_value_after_tv.setText(mContext.getString(R.string.input_glucose));
             glucose_value_after_tv.setTextSize(25);
-            glucose_value_after_tv.setTextColor(mContext.getResources().getColor(R.color.black));
+            glucose_value_after_tv.setTextColor(mContext.getResources().getColor(R.color.glucoseblue));
 
         }else{
             Log.d(TAG,value);

@@ -19,9 +19,9 @@ public class GlucoseUtil {
     public  int setTextColorByValue(double value){
 
         if(value >9 || value <3){
-            return mContext.getResources().getColor(R.color.red);
+            return mContext.getResources().getColor(R.color.glucoseRed);
         }else{
-            return mContext.getResources().getColor(R.color.blue);
+            return mContext.getResources().getColor(R.color.glucoseblueNormal);
         }
     }
 }
