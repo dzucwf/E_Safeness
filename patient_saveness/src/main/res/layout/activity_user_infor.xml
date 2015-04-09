@@ -118,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView13"
-                    android:background="@drawable/profile"
+                    android:background="@drawable/icon_gender"
                     android:layout_marginLeft="17dp" />
 
                 <TextView
@@ -156,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView114"
-                    android:background="@drawable/profile"
+                    android:background="@drawable/icon_birthday"
                     android:layout_marginLeft="17dp" />
 
                 <EditText
@@ -184,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView16"
-                    android:background="@drawable/profile"
+                    android:background="@drawable/icon_height"
                     android:layout_marginLeft="17dp" />
 
                 <EditText
@@ -193,7 +193,7 @@
                     android:background="@drawable/edittext_no_frame"
                     android:hint="身高"
                     android:id="@+id/txb_userinfor_height"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="22dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:layout_marginRight="20dp"
@@ -212,7 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView15"
-                    android:background="@drawable/profile"
+                    android:background="@drawable/icon_weight"
                     android:layout_marginLeft="17dp" />
 
                 <EditText
@@ -240,7 +240,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView17"
-                    android:background="@drawable/profile"
+                    android:background="@drawable/icon_mail"
                     android:layout_marginLeft="17dp" />
 
                 <EditText
@@ -268,7 +268,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView14"
-                    android:background="@drawable/profile"
+                    android:background="@drawable/icon_tel"
                     android:layout_marginLeft="17dp" />
 
                 <EditText

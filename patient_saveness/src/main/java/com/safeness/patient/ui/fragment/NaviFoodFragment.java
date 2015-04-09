@@ -56,8 +56,11 @@ public class NaviFoodFragment extends AppBaseFragment {
     private LinearLayout ll_segment;
 
     private ImageView btn_food_nav_item;
-    private LinearLayout btn_eated;
-    private ImageView btn_eated_status;
+    private LinearLayout btn_bottom_bar;
+    private LinearLayout btn_bottom_bar_yes;
+    private LinearLayout btn_bottom_bar_no;
+    private ImageView btn_eated_status_yes;
+    private ImageView btn_eated_status_no;
     private TextView btn_food_nav_sync;
 
 
@@ -87,7 +90,6 @@ public class NaviFoodFragment extends AppBaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        btn_eated_status.setVisibility(View.INVISIBLE);
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
@@ -140,7 +142,7 @@ public class NaviFoodFragment extends AppBaseFragment {
                                     listView.setAdapter(adapter);
                                     //listView.setAdapter(adapter);
 
-                                    btn_eated_status.setVisibility(View.INVISIBLE);
+                                    setBottom_bar_status();
                                 }
                             }
                         }
@@ -155,16 +157,15 @@ public class NaviFoodFragment extends AppBaseFragment {
         adapter = new MyAdapter(getActivity(),getLocalData(),R.layout.food_listitem,
                 new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
         listView.setAdapter(adapter);
-
+        setBottom_bar_status();
+        /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.mItemList.get(position).put("status", Integer.parseInt(adapter.mItemList.get(position).get("status").toString()) > 0 ? -1 : 1);
+                adapter.mItemList.get(position).put("status", Integer.parseInt(adapter.mItemList.get(position).get("status").toString()) > 0 ? 3 : 2);
                 adapter.notifyDataSetChanged();
-
-                btn_eated_status.setVisibility(View.INVISIBLE);
             }
-        });
+        });*/
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         //saveCalendar = DateTimeUtil.getSelectCalendar(df.format(date), DateTimeUtil.NORMAL_PATTERN);
@@ -188,20 +189,31 @@ public class NaviFoodFragment extends AppBaseFragment {
          });
 
 
-        btn_eated.setOnClickListener(new View.OnClickListener() {
+
+        btn_bottom_bar_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* List<User> insertUserList = new ArrayList<User>();
-        for(int i = 0; i<10;++i){
-            insertUserList.add(new User(i+10, "BBB"+i));
-        }
-        userDao.batchInsert(insertUserList);*/
                 for(int i = 0; i<adapter.mItemList.size();++i){
                     U_f u_f = new U_f();
-                    u_f.setLife_status(Integer.parseInt(adapter.mItemList.get(i).get("status").toString()));
+                    u_f.setLife_status(2);
                     u_fdDao.update(u_f, "_id=?", adapter.mItemList.get(i).get("_id").toString());
+                    adapter.mItemList.get(i).put("status", 2);
+                    adapter.notifyDataSetChanged();
                 }
-                btn_eated_status.setVisibility(View.VISIBLE);
+                setBottom_bar_status();
+            }
+        });
+        btn_bottom_bar_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i = 0; i<adapter.mItemList.size();++i){
+                    U_f u_f = new U_f();
+                    u_f.setLife_status(3);
+                    u_fdDao.update(u_f, "_id=?", adapter.mItemList.get(i).get("_id").toString());
+                    adapter.mItemList.get(i).put("status", 3);
+                    adapter.notifyDataSetChanged();
+                }
+                setBottom_bar_status();
             }
         });
 
@@ -233,9 +245,12 @@ public class NaviFoodFragment extends AppBaseFragment {
         txv_dateText = (TextView)getActivity().findViewById(R.id.txv_food_nav_date_text);
 
         btn_food_nav_item = (ImageView)getActivity().findViewById(R.id.btn_food_nav_item);
-        btn_eated = (LinearLayout)getActivity().findViewById(R.id.food_ll_bottomBar);
-        btn_eated_status = (ImageView)getActivity().findViewById(R.id.food_ll_bottomBar_status);
+        btn_bottom_bar = (LinearLayout)getActivity().findViewById(R.id.food_ll_bottomBar);
+        btn_bottom_bar_yes = (LinearLayout)getActivity().findViewById(R.id.food_ll_bottomBar_yes);
+        btn_bottom_bar_no = (LinearLayout)getActivity().findViewById(R.id.food_ll_bottomBar_no);
 
+        btn_eated_status_yes= (ImageView)getActivity().findViewById(R.id.food_ll_bottomBar_status_yes);
+        btn_eated_status_no= (ImageView)getActivity().findViewById(R.id.food_ll_bottomBar_status_no);
         btn_food_nav_sync = (TextView)getActivity().findViewById(R.id.txv_food_nav_sync);
     }
 
@@ -268,17 +283,11 @@ public class NaviFoodFragment extends AppBaseFragment {
         try {
             selectDate = date;
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            //saveCalendar = DateTimeUtil.getSelectCalendar(df.format(date), DateTimeUtil.NORMAL_PATTERN);
-
             txv_dateText.setText(df.format(date));
 
-            adapter = new MyAdapter(getActivity(),getLocalData(),R.layout.food_listitem,
-                    new String[]{"title","desc","calorie","status","_id"},new int[]{R.id.food_list_item_title,R.id.food_list_item_desc});
+            adapter.mItemList = getLocalData();
             listView.setAdapter(adapter);
-            //setCalText(selected_calendar);
-
-            //fillChartData();
-            //loadCurrentTimeValue();
+            setBottom_bar_status();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -573,5 +582,45 @@ public class NaviFoodFragment extends AppBaseFragment {
             }
         }
         return reList;
+    }
+    private void setBottom_bar_status(){
+        if (adapter.mItemList != null) {
+            if (adapter.mItemList.size() <= 0) {
+                btn_bottom_bar.setVisibility(View.INVISIBLE);
+                btn_bottom_bar.setEnabled(false);
+                return;
+            } else {
+                btn_eated_status_yes.setVisibility(View.INVISIBLE);
+                btn_eated_status_no.setVisibility(View.INVISIBLE);
+                btn_bottom_bar.setVisibility(View.VISIBLE);
+                btn_bottom_bar.setEnabled(true);
+                btn_bottom_bar_yes.setEnabled(true);
+                btn_bottom_bar_no.setEnabled(true);
+
+                for (int i = 0; i < adapter.mItemList.size(); i++) {
+                    if (Integer.parseInt(adapter.mItemList.get(i).get("status").toString()) == 2) {
+                        btn_eated_status_yes.setVisibility(View.VISIBLE);
+                        btn_eated_status_no.setVisibility(View.INVISIBLE);
+                        btn_bottom_bar.setEnabled(false);
+                        btn_bottom_bar_yes.setEnabled(false);
+                        btn_bottom_bar_no.setEnabled(false);
+                        break;
+                    } else if (Integer.parseInt(adapter.mItemList.get(i).get("status").toString()) == 3) {
+                        btn_eated_status_no.setVisibility(View.VISIBLE);
+                        btn_eated_status_yes.setVisibility(View.INVISIBLE);
+                        btn_bottom_bar.setEnabled(false);
+                        btn_bottom_bar_yes.setEnabled(false);
+                        btn_bottom_bar_no.setEnabled(false);
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            btn_bottom_bar_no.setVisibility(View.INVISIBLE);
+            btn_bottom_bar_yes.setVisibility(View.INVISIBLE);
+            btn_bottom_bar.setVisibility(View.INVISIBLE);
+            btn_bottom_bar.setEnabled(false);
+        }
     }
 }
