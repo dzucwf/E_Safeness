@@ -43,6 +43,7 @@ import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.im.db.UserDao;
 import com.safeness.patient.R;
 import com.safeness.patient.bussiness.WebServiceName;
+import com.safeness.patient.ui.util.UpdateManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,6 +162,11 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
     @Override
     protected void setupView() {
+
+        //升级助手
+        UpdateManager updateTester = new UpdateManager(this);
+
+        updateTester.checkUpdate();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();

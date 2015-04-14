@@ -98,7 +98,7 @@ public class NaviGlucoseFragment extends AppBaseFragment implements ViewPager.On
             public void onPageFinished(WebView view, String url)
             {
                 super.onPageFinished(view, url);
-                //queryGlucoseFromServer();
+                queryGlucoseFromServer();
             }
         });
 
