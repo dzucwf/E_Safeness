@@ -219,6 +219,8 @@ public class SportsSettingActivity extends AppBaseActivity {
                 u_s.setUpdate_datetime(df.format(new Date().getTime()));
                 u_s.setLife_status(2);
                 if(u_sDao.insertOrUpdate(u_s, "u_sid","s_id")){
+                    btn_finish.setBackgroundResource(R.drawable.sport_btn_pressed);
+                    btn_forget.setBackgroundResource(R.drawable.sport_btn_normal);
                     Dialog alertDialog = new AlertDialog.Builder(SportsSettingActivity.this).
                             setTitle("您的运动数据已保存成功").
                             setIcon(R.drawable.ic_launcher).
@@ -246,6 +248,8 @@ public class SportsSettingActivity extends AppBaseActivity {
                 u_s.setUpdate_datetime(df.format(new Date().getTime()));
                 u_s.setLife_status(3);
                 if(u_sDao.insertOrUpdate(u_s, "u_sid","s_id")){
+                    btn_finish.setBackgroundResource(R.drawable.sport_btn_normal);
+                    btn_forget.setBackgroundResource(R.drawable.sport_btn_pressed);
                     Dialog alertDialog = new AlertDialog.Builder(SportsSettingActivity.this).
                             setTitle("您的运动数据已保存成功").
                             setIcon(R.drawable.ic_launcher).
