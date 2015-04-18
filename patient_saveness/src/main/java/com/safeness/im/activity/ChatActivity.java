@@ -196,6 +196,22 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 		setUpView();
 	}
 
+	//测试
+	private  String getNickNameByTest(String userName){
+		switch (userName){
+			case "18363667172":
+				return "纪勇";
+			case "18365947856":
+				return "张建华";
+			case "18363667171":
+				return "张强";
+			case "13175869543":
+				return "李芳";
+			default:
+				return "";
+		}
+	}
+
 	/**
 	 * initView
 	 */
@@ -310,7 +326,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
 		if (chatType == CHATTYPE_SINGLE) { // 单聊
 			toChatUsername = getIntent().getStringExtra("userId");
-			((TextView) findViewById(R.id.name)).setText(toChatUsername);
+			//puchao 测试
+
+			((TextView) findViewById(R.id.name)).setText(getNickNameByTest(toChatUsername));
 			// conversation =
 			// EMChatManager.getInstance().getConversation(toChatUsername,false);
 		} else {

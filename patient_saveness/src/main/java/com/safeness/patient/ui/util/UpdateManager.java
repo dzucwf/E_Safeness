@@ -1,5 +1,6 @@
 package com.safeness.patient.ui.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -105,6 +106,8 @@ public class UpdateManager {
 
         Intent mainIntent = new Intent(mContext, LoginActivity.class);
         mContext.startActivity(mainIntent);
+        Activity activity = (Activity)mContext;
+        activity.finish();
 
 
     }
