@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,7 +22,6 @@ import com.safeness.e_saveness_common.dao.QueryResult;
 import com.safeness.e_saveness_common.net.SourceJsonHandler;
 import com.safeness.e_saveness_common.util.Constant;
 import com.safeness.patient.R;
-
 import com.safeness.patient.bussiness.WebServiceName;
 import com.safeness.patient.model.Sports;
 import com.safeness.patient.model.Sports_plan;
@@ -182,19 +180,24 @@ public class NaviSportsFragment extends AppBaseFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Map<String ,Object> map = mItemList.get(position);
-            View view = super.getView(position, convertView, parent);
 
-            TextView tv_title = (TextView)view.findViewById(R.id.sports_list_item_title);
-            TextView tv_desc = (TextView)view.findViewById(R.id.sports_list_item_desc);
-            TextView tv_calorie = (TextView)view.findViewById(R.id.sports_list_item_calorie);
-            ImageView imageview = (ImageView)view.findViewById(R.id.sports_list_item_status);
+            if(mItemList!= null && mItemList.size()>0){
+                Map<String ,Object> map = mItemList.get(position);
+                View view = super.getView(position, convertView, parent);
 
-            //imageview.setVisibility(Integer.parseInt(map.get("status").toString())>0 ? View.VISIBLE : View.INVISIBLE);
-            tv_title.setText(map.get("title").toString());
-            tv_desc.setText(map.get("desc").toString());
-            tv_calorie.setText(map.get("calorie").toString() +"卡路里");
-            return view;
+                TextView tv_title = (TextView)view.findViewById(R.id.sports_list_item_title);
+                TextView tv_desc = (TextView)view.findViewById(R.id.sports_list_item_desc);
+                TextView tv_calorie = (TextView)view.findViewById(R.id.sports_list_item_calorie);
+                ImageView imageview = (ImageView)view.findViewById(R.id.sports_list_item_status);
+
+                //imageview.setVisibility(Integer.parseInt(map.get("status").toString())>0 ? View.VISIBLE : View.INVISIBLE);
+                tv_title.setText(map.get("title").toString());
+                tv_desc.setText(map.get("desc").toString());
+                tv_calorie.setText(map.get("calorie").toString() +"卡路里");
+                return view;
+            }
+            return convertView;
+
         }
 
 
@@ -214,6 +217,7 @@ public class NaviSportsFragment extends AppBaseFragment {
 
             adapter.mItemList = getListDataLocal();
             listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
 
         } catch (Exception e) {
             e.printStackTrace();
