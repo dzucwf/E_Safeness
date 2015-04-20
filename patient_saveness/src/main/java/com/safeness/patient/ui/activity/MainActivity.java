@@ -36,7 +36,6 @@ import com.easemob.chat.GroupChangeListener;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
-import com.easemob.util.EasyUtils;
 import com.easemob.util.HanziToPinyin;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -1134,9 +1133,11 @@ public class MainActivity extends AppBaseActivity {
     protected void notifyNewMessage(EMMessage message) {
         //如果是设置了不提醒只显示数目的群组(这个是app里保存这个数据的，demo里不做判断)
         //以及设置了setShowNotificationInbackgroup:false(设为false后，后台时sdk也发送广播)
-        if(!EasyUtils.isAppRunningForeground(this)){
-            return;
-        }
+
+        //puchao
+//        if(!EasyUtils.isAppRunningForeground(this)){
+//            return;
+//        }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(getApplicationInfo().icon)
@@ -1156,6 +1157,7 @@ public class MainActivity extends AppBaseActivity {
 
         Notification notification = mBuilder.build();
         notificationManager.notify(notifiId, notification);
+        //puchao
         notificationManager.cancel(notifiId);
     }
 

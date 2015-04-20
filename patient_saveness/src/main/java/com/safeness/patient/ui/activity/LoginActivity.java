@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -97,8 +98,40 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
+
         PatientApplication.getInstance().addActivity(this);
+
+    }
+
+
+    private void saveSharedPreferences(String userName){
+
+        SharedPreferences sp = mContext.getSharedPreferences("LOGIN", MODE_PRIVATE);
+//存入数据
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("userName", userName);
+        editor.commit();
+
+    }
+
+    private  void loadSavedPreference(){
+        SharedPreferences sp = mContext.getSharedPreferences("LOGIN", MODE_PRIVATE);
+
+        String userName = sp.getString("userName", "");
+
+        //测试
+        if(TextUtils.isEmpty(userName)){
+            mEmailView.setText("18363667172");
+        }else{
+            mEmailView.setText(userName);
+        }
+
+
+
+
+
+
+
 
     }
 
@@ -117,7 +150,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     LoginActivity.this.startActivity(it);
                     //登陆完服务器后再次登陆聊天服务器
                     attemptLoginIM();
-
+                    saveSharedPreferences(mEmailView.getText().toString());
                     finish();
                     break;
                 case LOGIN_ERROR_RQ:
@@ -142,7 +175,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
                     errorMsg = mContext.getString(R.string.parse_error);
                     break;
                 case Constant.NETWORK_REQUEST_RETUN_NULL:
-                    errorMsg ="";
+                    errorMsg ="返回结果为空数据";
                     break;
             }
             super.handleMessage(msg);
@@ -162,7 +195,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
     @Override
     protected void setupView() {
 
-
+        mContext = this;
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -189,6 +222,7 @@ public class LoginActivity extends AppBaseActivity implements LoaderManager.Load
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        loadSavedPreference();
     }
 
     @Override
